@@ -1,0 +1,58 @@
+<div class="container-fluid hxj_search" ng-init="openAll = false;openLocation = false">
+	<div class="row xj_title">
+		<a class="col-xs-4 hc-icon01" ng-click="openTag = !openTag">
+			全部分类
+			<div class="animate list-container" ng-show="openTag">
+				<div class="list-item">
+					114
+				</div>
+				<div class="list-item">
+					114
+				</div>
+				<div class="list-item">
+					114
+				</div>
+			</div>
+		</a>
+		<a class="col-xs-4 hc-icon02" ng-click="openLocation = !openLocation">
+			全国
+			<div class="animate list-container" ng-show="openLocation">
+				<div class="list-item">
+					114
+				</div>
+				<div class="list-item">
+					114
+				</div>
+				<div class="list-item">
+					114
+				</div>
+			</div>
+		</a>
+		<a class="col-xs-4 hc-icon03">
+			热度
+		</a>
+	</div>
+
+	<div ng-show="dataList.length==0" class="nothing-find">
+		对不起，没有您搜索的结果！
+	</div>
+
+	<a href="#/product/{{data.id}}" ng-repeat="data in dataList">
+		<div class="row hxj_searchlist">
+			<div class="col-xs-4 xj_search_left">
+				<div class="xj_search_img" style="background-image:url({{data.thumbUrl}})">
+					<div class="xj_btn">开发</div>
+				</div>
+			</div>
+			<div class="col-xs-8 hxj_search_right">
+				<p class="hxj_search_p1">{{data.name}}</p>
+				<p class="hxj_search_p2">{{data.description}}</p>
+
+				<div class="pull-right" style="color: #7C7C7C;">
+				  <img src="imgs/search_list/huo.png" width="12px" style="position: relative;top: -3px;"/>10000
+				</div>
+			</div>
+		</div>
+	</a>
+	
+</div>

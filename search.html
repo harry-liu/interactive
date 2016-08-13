@@ -1,0 +1,18 @@
+<div class="container-fluid hc_search" ontouchstart="" onmouseover="">
+	<div class="row hc_border_bp">
+		<div class="col-xs-12 hc_title">
+			<h1>历史搜索</h1>
+			<a href="" ng-click="cleanSearchList()">
+				
+			</a>
+		</div>
+	</div>
+	<ul class="row" ng-show="hideUl">
+		<li ng-repeat="item in searchList" class="col-xs-12 hc_border_b">
+	        <a href="#/search_list/{{item.content}}">{{item.content}}</a>
+	    </li>
+	</ul>
+<!-- 	<div class="row hc_mt hc_border_bp hc_ggbtn">
+		更多记录
+	</div> -->
+</div>

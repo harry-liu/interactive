@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *;script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost/ blob:; connect-src *;img-src blob: *">
+
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <title>互动圈</title>
+</head>
+<body ng-class="hideBodyOverflow" ng-controller="BodyControl" >
+    <div class="app" >
+        <div id="deviceready">
+            <div class="loading-div">
+                <img src="imgs/spinner/1.png" alt="">
+                <h1><b>互动圈</b></h1>
+                <hr>
+                <h2>一站式企业互联网化众包服务平台</h2>
+            </div>
+            <div class="main-div" ng-class="{true: '', false: 'disable-overflow'}[hideBlackCover]" ng-init="showTM = false;showBM = false">
+                <div class="spinner animate" ng-show = "loadingData">
+                    <img src="imgs/spinner/1.png" alt="">
+                    <p>正在努力加载中...</p>
+                    <div class="span-div">
+                        <!-- <p>加载页</p> -->
+<!--                         <span class="span-1"></span>
+                        <span class="span-2"></span>
+                        <span class="span-3"></span> -->
+                    </div>
+                </div>
+
+                <header ng-show="showTM">
+                    <div class = "top-menu">
+                        <div class = 'col-xs-2 top-menu-left-img' ng-show="topMenuContent.type == 3" ng-click="goBackClicked()">
+                            <img src="imgs/menu/back_icon.png" alt="">
+                        </div>
+                        <div class = "col-xs-8" ng-show="topMenuContent.type == 3">
+                            <p>{{topMenuContent.word}}</p>
+                        </div>
+
+                        <div class = 'col-xs-2 top-menu-left-img' ng-show="topMenuContent.type == 1">
+                            <img src="imgs/menu/t_menu_select.png" alt="" ng-click="toggleSort()">
+                        </div>
+                        <div class="col-xs-8 top-menu-search" ng-show="topMenuContent.type == 1" style="padding:0">
+                            <a href="#search">
+                                <input type="text" placeholder="输入搜索关键词" ng-click="goToSearch()" ng-disabled="true">
+                            </a>
+                        </div>
+                        <div class = 'col-xs-2 top-menu-right-img' ng-show="topMenuContent.type == 1">
+                            <span>西安</span>
+<!--                             <img ng-src="imgs/menu/t_menu_down.png" alt="" ng-click="toggleCity()"> -->
+                        </div>
+                        <div class="sort-container" ng-class="{true: 'sort-container-hide', false: 'sort-container-show'}[hideSort]">
+                            <ul>
+                                <li ng-repeat="menu in menus" ng-click="menu.children.length>0?'':goTo(menu.id)">
+                                    {{menu.name}}
+                                    <ul ng-show="menu.children">
+                                        <li ng-repeat="menuItem in menu.children" ng-click="goTo(menuItem.id)">
+                                            {{menuItem.name}}
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+<!--                             <ul>
+                                <a href="#/search_list/互联网化转型咨询" ng-click="toggleSort()">
+                                    <li style = "background-image:url('imgs/menu/find.png')">
+                                        <span>互联网化转型咨询</span>
+                                        <img src="imgs/menu/arrow_right.png" alt="">
+                                        <ul>
+                                            <li>企业互联网化体验</li>
+                                            <li>互联网化指数分析</li>
+                                            <li>互联网化转型咨询</li>
+                                            <li>价值链重塑咨询</li>
+                                            <li>大数据营销诊断</li>
+                                            <li>用户行为分析</li>
+                                        </ul>
+                                    </li>
+                                </a>
+                                <li style = "background-image:url('imgs/menu/develop.png')">
+                                    <span>全网平台技术开发</span>
+                                    <img src="imgs/menu/arrow_right.png" alt="">
+                                    <ul>
+                                        <a href="#/search_list/官方网站" ng-click="toggleSort()">
+                                            <li>官方网站</li>
+                                        </a>
+                                        <a href="#/search_list/电商交易平台" ng-click="toggleSort()">
+                                            <li>电商交易平台</li>
+                                        </a>
+                                        <a href="#/search_list/会员管理系统" ng-click="toggleSort()">
+                                            <li>会员管理系统</li>
+                                        </a>
+                                        <a href="#/search_list/移动APP" ng-click="toggleSort()">
+                                            <li>移动APP</li>
+                                        </a>
+                                        <a href="#/search_list/微信公众号" ng-click="toggleSort()">
+                                            <li>微信公众号</li>
+                                        </a>
+                                        <a href="#/search_list/HTML5页面设计" ng-click="toggleSort()">
+                                            <li>HTML5页面设计</li>
+                                        </a>
+                                        <li>百度直达号</li>
+                                    </ul>
+                                </li>
+                                <li style = "background-image:url('imgs/menu/publish.png')">
+                                    <span>全生态商业化运营</span>
+                                    <img src="imgs/menu/arrow_right.png" alt="">
+                                    <ul>
+                                        <a href="#/search_list/视觉设计" ng-click="toggleSort()">
+                                            <li>视觉设计</li>
+                                        </a>
+                                        <a href="#/search_list/品牌策划" ng-click="toggleSort()">
+                                            <li>品牌策划</li>
+                                        </a>
+                                        <a href="#/search_list/电商平台托管" ng-click="toggleSort()">
+                                            <li>电商平台托管</li>
+                                        </a>
+                                        <a href="#/search_list/PR营销策划" ng-click="toggleSort()">
+                                            <li>PR营销策划</li>
+                                        </a>
+                                        <a href="#/search_list/社群活动运营" ng-click="toggleSort()">
+                                            <li>社群活动运营</li>
+                                        </a>
+                                        <a href="#/search_list/BPO外包" ng-click="toggleSort()">
+                                            <li>BPO外包</li>
+                                        </a>
+                                    </ul>
+                                </li>
+                                <li style = "background-image:url('imgs/menu/marketing.png')">
+                                    <span>数字整合营销</span>
+                                    <img src="imgs/menu/arrow_right.png" alt="">
+                                    <ul>
+                                        <li>策划创意</li>
+                                        <li>全案营销</li>
+                                        <li>搜索类媒体</li>
+                                        <li>社交类媒体</li>
+                                        <li>视频类媒体</li>
+                                        <li>APP应用类媒体</li>
+                                    </ul>
+                                </li>
+                                <li style = "background-image:url('imgs/menu/booking.png')">
+                                    <span>品牌声誉管理</span>
+                                    <img src="imgs/menu/arrow_right.png" alt="">
+                                    <ul>
+                                        <li>品牌舆情监控</li>
+                                        <li>品牌舆情处置</li>
+                                        <li>品牌舆情管理</li>
+                                        <li>危机公关</li>
+                                    </ul>
+                                </li>
+                            </ul> -->
+                        </div>
+                        <div class="location-container" ng-class="{true: 'location-container-hide', false: 'location-container-show'}[hideCity]">
+                            <div class="col-xs-4">
+                                <span>全国</span>
+                            </div>
+                            <div class="col-xs-4">
+                                <span>全国</span>
+                            </div>
+                            <div class="col-xs-4">
+                                <span>全国</span>
+                            </div>
+                            <div class="col-xs-4">
+                                <span>全国</span>
+                            </div>
+                        </div>
+                        <div class="" ng-class="{true: 'black-cover-hide', false: 'black-cover-show'}[hideBlackCover]" ng-click="closeCityOrSort()"></div>
+
+                        <div class = 'col-xs-2 top-menu-left-img' ng-show="topMenuContent.type == 5" ng-click="goBackClicked()">
+                            <img src="imgs/menu/back_icon.png" alt="">
+                        </div>
+                        <div class="col-xs-8 top-menu-search" ng-show="topMenuContent.type == 5" style="padding:0">
+                            <input type="text" placeholder="输入搜索关键词" ng-model = "searchInput" style="background-image:none;padding-left:10px;">
+                        </div>
+                        <div class = 'col-xs-2 top-menu-right-search-img' ng-show="topMenuContent.type == 5">
+                            <a href="#search_list/{{searchInput}}">
+                                <img src="imgs/menu/t_menu_find.png" alt="" ng-click="addSearchItem()">
+                            </a>
+                        </div>
+
+                        <div class = 'col-xs-2 top-menu-left-img' ng-show="topMenuContent.type == 6" ng-click="goBackClicked()">
+                            <img src="imgs/menu/back_icon.png" alt="">
+                        </div>
+                        <div class="col-xs-8 top-menu-search" ng-show="topMenuContent.type == 6" style="padding:0">
+                            <a href="#search">
+                                <input type="text" placeholder="输入搜索关键词" ng-click="goToSearch()">
+                            </a>
+                        </div>
+                        
+                        <div class = 'col-xs-2 top-menu-left-img' ng-show="topMenuContent.type == 7" ng-click="goBackClicked()">
+                            <img src="imgs/menu/back_icon.png" alt="">
+                        </div>
+                        <div class = "col-xs-8" ng-show="topMenuContent.type == 7">
+                            <p>{{topMenuContent.word}}</p>
+                        </div>
+                        <div class="col-xs-2 top-menu-complete-btn" ng-show="topMenuContent.type == 7">
+                            <a href="" ng-click="pushBookingForm()">完成</a>
+                        </div>
+
+                        <div class = 'col-xs-2 top-menu-left-img' ng-show="topMenuContent.type == 8" ng-click="goBackClicked()">
+                            <img src="imgs/menu/back_icon.png" alt="">
+                        </div>
+                        <div class = "col-xs-8" ng-show="topMenuContent.type == 8">
+                            <p>{{topMenuContent.word}}</p>
+                        </div>
+                        <div class="col-xs-2 top-menu-add-user-btn" ng-show="topMenuContent.type == 8">
+                            <a href="#/client_add">
+                                <img src="imgs/menu/add.png" alt="">
+                            </a>
+                        </div>
+
+                        <div class = 'col-xs-2 top-menu-left-img' ng-show="topMenuContent.type == 9" ng-click="goBackClicked()">
+                            <img src="imgs/menu/back_icon.png" alt="">
+                        </div>
+                        <div class = "col-xs-8" ng-show="topMenuContent.type == 9">
+                            <p>{{topMenuContent.word}}</p>
+                        </div>
+                        <div class="col-xs-2 top-menu-complete-btn" ng-show="topMenuContent.type == 9">
+                            <a href="" ng-click="pushClientInformation()">完成</a>
+                        </div>
+
+                        <div class = 'col-xs-2 top-menu-left-img' ng-show="topMenuContent.type == 10" ng-click="goBackClicked()">
+                            <img src="imgs/menu/back_icon.png" alt="">
+                        </div>
+                        <div class = "col-xs-8" ng-show="topMenuContent.type == 10">
+                            <p>{{topMenuContent.word}}</p>
+                        </div>
+                        <div class="col-xs-2 top-menu-complete-btn" ng-show="topMenuContent.type == 10">
+                            <a href="" ng-click="pushClientInformationEdit()">完成</a>
+                        </div>
+
+                        <div class="col-xs-12" ng-show="topMenuContent.type == 2">
+                            <span class = "col-xs-4 switch-span-container">
+                                <span class = "animate" ng-class="{1: 'switch-span-background-1 ', 2: 'switch-span-background-2'}[topMenuContent.buttonType]"></span>
+                                <span class="col-xs-6 switch-span-left"><a href="#community">社区</a></span>
+                                <span class="col-xs-6 switch-span-right"><a href="#teach">教学</a></span>
+                            </span>
+                        </div>
+
+                        <div class = "col-xs-8 col-xs-offset-2" ng-show="topMenuContent.type == 4">
+                            <p>{{topMenuContent.word}}</p>
+                        </div>
+                    </div>
+                </header>
+
+                <div ng-view ng-show = '!loadingData'></div>
+
+                <footer ng-show="showBM">
+                    <div class = "bottom-menu">
+                        <div class="col-xs-4">
+                            <a href="#/home">
+                                <img ng-src="{{activeBottomMenuImage == 'home'?'imgs/menu/b_menu_home_active.png':'imgs/menu/b_menu_home.png'}}" alt="">
+                            </a>
+                            <p>首页</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <a href="#/community">
+                                <img ng-src="{{activeBottomMenuImage == 'community'?'imgs/menu/b_menu_community_active.png':'imgs/menu/b_menu_community.png'}}" alt="">
+                            </a>
+                            <p>社区</p>
+                        </div>
+<!--                         <div class="col-xs-3">
+                            <a href="#/example">
+                                <img ng-src="{{activeBottomMenuImage == 'example'?'imgs/menu/b_menu_example_active.png':'imgs/menu/b_menu_example.png'}}" alt="">
+                            </a>
+                            <p>案例</p>
+                        </div> -->
+                        <div class="col-xs-4">
+                            <a href="#/us">
+                                <img ng-src="{{activeBottomMenuImage == 'us'?'imgs/menu/b_menu_us_active.png':'imgs/menu/b_menu_us.png'}}" alt="">
+                            </a>
+                            <p>我的</p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <!-- <script type="text/javascript" src="cordova.js"></script> -->
+    <script type="text/javascript" src="js/hammer.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular.hammer.js"></script>
+    <script type="text/javascript" src="js/angular-animate.min.js"></script>
+    <script type="text/javascript" src="js/angular-touch.min.js"></script>
+    <script type="text/javascript" src="js/angular-route.min.js"></script>
+    <script type="text/javascript" src="js/ui-bootstrap-tpls-1.3.3.min.js"></script>
+    <script type="text/javascript" src="js/ng-file-upload-shim.min.js"></script>
+    <script type="text/javascript" src="js/ng-file-upload.min.js"></script>
+    <script type="text/javascript" src="js/controller.js"></script>
+    <script type="text/javascript" src="js/localStorage.service.js"></script>
+    <script type="text/javascript" src="js/API.service.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>

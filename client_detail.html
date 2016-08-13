@@ -1,0 +1,78 @@
+<div class="container-fluid w-client-container">
+	<div class="row w-client-message">
+		<div class="col-xs-3 w-client-pic text-left">
+			<div class="w-client-img-box text-center">
+				<img src="imgs/example/hujiao.jpg"/>
+			</div>
+		</div>
+		<div class="col-xs-9 w-client-name">
+			<p class="w-client-name-p">{{client.contact}}</p>
+			<p>{{client.phone_number}}</p>
+		</div>
+	</div>
+	
+	<!--个人信息-->
+	<div class="row w-client-peoplemessage">
+		<ul class="list-group">
+			<li class=" w-client-peoplemessage-li w-client-contacts">
+				联系人
+			</li>
+			<li class=" w-client-peoplemessage-li">
+				<h1>职位：</h1><span>{{client.position}}</span>
+			</li>
+			<li class="w-client-peoplemessage-li">
+				<h1>性别：</h1><span>{{client.gender}}</span>
+			</li>
+			<li class=" w-client-peoplemessage-li">
+				<h1>车型：</h1><span>{{client.car_type}}</span>
+			</li>
+			<li class=" w-client-peoplemessage-li">
+				<h1>邮箱：</h1><span>{{client.email}}</span>
+			</li>
+			<li class=" w-client-peoplemessage-li">
+				<h1>QQ：</h1><span>
+					{{client.qq}}
+				</span>
+			</li>
+			 
+	    </ul>
+	</div>
+	<!--公司信息-->
+	<div class="row w-client-peoplemessage w-client-peoplemessage-pos">
+		<ul class="list-group">
+			<li class=" w-client-peoplemessage-li w-client-contacts">
+				公司信息
+			</li>
+			<li class=" w-client-peoplemessage-li">
+				<h1>公司名称</h1><span>{{client.company_name}}</span>
+			</li>
+			<li class="w-client-peoplemessage-li">
+				<h1>公司地址</h1><span>{{client.company_addr}}</span>
+			</li>
+			<li class=" w-client-peoplemessage-li">
+				<h1>所属行业</h1><span>{{client.industry}}</span>
+			</li>
+			<li class=" w-client-peoplemessage-li">
+				<h1>所属区域</h1><span>{{client.area}}</span>
+			</li>
+			<li class=" w-client-peoplemessage-li w-client-bottom">
+				<h1>公司网址</h1><span>{{client.website}}</span>
+			</li>
+			 <li class=" w-client-peoplemessage-li w-client-contacts w-client-text">
+				<h1>备注</h1><span></span>
+			</li>
+		    <div class="w-client-text-back" >
+			<div class="w-client-text-message">{{client.remark}}</div>
+			
+	    </ul>
+	</div>
+	
+<div class="row w-client-foot">
+	<a class="w-client-foot-butts hc-bg-yellow hc_border_no" href="#/client_history/1">
+		成交记录
+	</a>
+    <a class="w-client-foot-butts" ng-href="{{'#/client_add/'+client.id}}">修改</a>
+	<a class="w-client-foot-butts" ng-click="deletClient()">删除</a>
+</div>
+	
+</div>

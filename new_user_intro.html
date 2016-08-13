@@ -1,0 +1,34 @@
+<div class="container-fluid lk-intro-container" ng-init="status = 1">
+
+	<div class="animate div-container div-container-1" ng-class="'div-container-1-'+status" hm-swipeLeft="status = status+1" hm-dragLeft="status = status+1">
+		<h1>下订单</h1>
+		<img src="imgs/intro/1.png" alt="">
+		<p style="top: 74.4%;">订单需要审核<br>到个人中心查看所有订单及审核进度</p>
+		<ul>
+			<li style="background-color:#cccccc" ng-click="status = 1"></li>
+			<li ng-click="status = 2"></li>
+			<li ng-click="status = 3"></li>
+		</ul>
+	</div>
+
+	<div class="animate div-container div-container-2" ng-class="'div-container-2-'+status" hm-swipeLeft="status = status+1" hm-dragLeft="status = status+1" hm-swipeRight="status = status-1" hm-dragRight="status = status-1">
+		<h1>去学习</h1>
+		<img src="imgs/intro/2.png" alt="">
+		<p>视频学习，了解更多的产品细节</p>
+		<ul>
+			<li ng-click="status = 1"></li>
+			<li style="background-color:#cccccc" ng-click="status = 2"></li>
+			<li ng-click="status = 3"></li>
+		</ul>
+	</div>
+
+	<div class="animate div-container div-container-3" ng-class="'div-container-3-'+status"  hm-swipeRight="status = status-1" hm-dragRight="status = status-1">
+		<h1>下订单</h1>
+		<img src="imgs/intro/3.png" alt="">
+		<p style="top: 81.1%;">通过考试能更好的了解自己销售的产品</p>
+		<div class="start-btn">
+			<a href="#/home">立即体验</a>
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,73 @@
+<div class="container-fluid hxj_shequ" ontouchstart="" onmouseover="">
+  <div class="row xj_logo">
+  <img src="imgs/community/logo.jpg" width="100%" />
+  </div>
+  <div class="row xj_list" >
+    <a class="col-xs-6 xj_list_1">
+      
+      <p class="p1">商务礼仪</p>
+      <p class="p2">内强素质，外强形象</p>
+
+      
+    </a>
+    <a class="col-xs-6 xj_list_2">
+      
+      <p class="p1">面访技巧</p>
+      <p class="p2">自信，一定要自信！</p>
+
+    </a>
+    <a class="col-xs-6 xj_list_3">
+      
+      <p class="p1">客户关系</p>
+      <p class="p2" style="margin-bottom: 0px">主动与客户建立联系</p>
+    
+      
+    </a>
+    <a class="col-xs-6 xj_list-4">
+      
+      <p class="p1">基础财务</p>
+      <p class="p2" style="margin-bottom: 0px">财务六大元素</p>
+
+      
+    </a>
+  </div>
+  
+  
+  <div class="row xj_list2">
+    <a class="col-xs-5 xj_list2_left">
+      
+      <p class="p1">谈判技巧</p>
+      <p class="p2">自我管理与提升</p>
+      
+    </a>
+    <div class="col-xs-7" style="padding: 0">
+      
+      <a class="xj_list2_right1">
+        
+        <p class="p1">情绪管理</p>
+          <p class="p2">培养驾驭情绪的能力</p>
+  
+      
+      </a>
+      <a class="xj_list2_right2">
+      
+        <p class="p1">办公软件</p>
+          <p class="p2">商务无缝沟通，高效办公</p>
+    
+      </a>
+      </div>
+    </div>
+    
+    <div class="xj_title row">
+      <div class="xj_yellow"></div>
+      <span>论坛信息</span>
+    </div>
+    <ul class="list-group row" >
+      <li class="col-xs-12" ng-repeat="article in articles">
+        <a href="#/community/{{article.id}}" class=" xj_newslist">
+          {{article.title | limitTo: 10}}{{article.title.length > 10 ? '...' : ''}}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

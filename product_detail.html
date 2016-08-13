@@ -1,0 +1,54 @@
+<div class="container-fluid w-container">
+	<div class="row">
+		<div style="height:200px;" class="lunbo">
+			<uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+				<uib-slide ng-repeat="image in images track by image.id" index="image.id">
+					<img ng-src="{{image.url}}" style="margin:auto;width:100%;height:200px;" >
+				</uib-slide>
+			</uib-carousel>
+		</div>
+		<div class="w-product-name text-center">
+			<h4>{{product.name}}</h4>
+			<p>返点{{product.rebate}}%【新用户专享】</p>
+			<div class="col-xs-5 text-right w-hight">
+				<img src="imgs/product_detail/star.png">
+				<img src="imgs/product_detail/star.png">
+				<img src="imgs/product_detail/star.png">
+				<img src="imgs/product_detail/star.png">
+				<img src="imgs/product_detail/star.png">
+			</div>
+			<div class="col-xs-3 text-left w-hight w-border">
+				5.0分
+			</div>
+			<div class="col-xs-4 w-hight text-left"><img src="imgs/product_detail/hot.png" style="width: 10px;">
+				&nbsp;<span>{{product.popularity}}</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="row w-product-message">
+		<div class="w-product-pro"><img src="imgs/product_detail/juxing.png">&nbsp;<b>厂家信息</b></div>
+		<div class="col-xs-8 w-product-cont text-left w-border">
+			<b>{{product.man.name}}</b>
+			<p>{{product.man.description}}</p>
+		</div>
+		<a href="tel:{{product.man.telephone}}">
+			<div class="col-xs-4 w-product-cont text-center"><img src="imgs/product_detail/phone.png"><p>电话咨询</p></div>
+		</a>
+	</div>
+
+	<div class="row w-product-messages w-font" ng-bind-html="thisCanBeusedInsideNgBindHtml">
+	</div>
+
+	<div class="row w-product-buy-row">
+		
+		    	<a class="col-xs-2" href="#/example">
+					<span>成交</span>
+				</a>
+				<a class="col-xs-2"><span>分享</span></a>
+				<a href="#/teach" class="col-xs-2"><span>学习</span></a>
+				<a href="#/test_list" class="col-xs-2 "><span class="hc_border_no">考试</span></a>
+
+			<a class="col-xs-4 hc-bg-yellow" ng-href="{{'#/product_buy/'+product.id}}"><span class="hc_border_no" style="font-size:15px;">使用</pan></a>
+	</div>
+</div>

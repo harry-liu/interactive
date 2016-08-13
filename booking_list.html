@@ -1,0 +1,148 @@
+<div class="container-fluid hxj_order" ng-init="tabStatus = 1">
+	<div class="row xj_order_title">
+		<div class="col-xs-3" ng-click="tabStatus = 1">
+		   <span>已审核</span>
+		   <div class="xj_number" ng-show="auditedUnreadMessage">{{auditedUnreadMessage}}</div>
+		</div>
+		<div class="col-xs-3" ng-click="tabStatus = 2;updateUnreadMessage('2')">
+		    <span>审核中</span>
+		     <div class="xj_number" ng-show="suditingUnreadMessage">{{suditingUnreadMessage}}</div>
+		</div>
+		<div class="col-xs-3" ng-click="tabStatus = 3;updateUnreadMessage('3')">
+		    <span>完成</span>
+		     <div class="xj_number" ng-show="finishedUnreadMessage">{{finishedUnreadMessage}}</div>
+		</div>
+		<div class="col-xs-3" ng-click="tabStatus = 4;updateUnreadMessage('4')">
+		    <span>未通过</span>
+		     <div class="xj_number" ng-show="notPassUnreadMessage">{{notPassUnreadMessage}}</div>
+		</div>
+	</div>
+	
+	<div class="red-bar animate" ng-class="'red-bar-'+tabStatus"></div>
+
+	<div class = "bookings-container bookings-container-1 animate" ng-show="tabStatus == 1">
+
+		<a href="#/booking_detail/1" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':1} as filtered1">
+
+			<div class="col-xs-12 xj_orderlist" >
+				<div class="col-xs-3" style="padding-right: 0;" >
+					<div class="xj_img" ng-style="{'background-image':'url('+booking.image+')'}">	
+					</div>
+				</div>
+				<div class="col-xs-6 xj_order_main">
+					<p style="margin-bottom: 5px;">{{booking.name}}</p>
+					<p style="margin-bottom: 5px">{{booking.company}}</p>
+					<span class="xj_date">{{booking.created_at}}</span>
+				</div>
+				<div class="col-xs-3 xj_order_right">
+					<div class="btn xj_btn">￥{{booking.price}}</div>
+				</div>
+			</div>
+		</a>
+
+		<p ng-show = "!filtered1.length" class="missing-booking-data">
+			<br>
+			<br>
+			<br>
+			<img src="imgs/booking_list/missing_data.png" alt="">
+			<br>
+			<br>
+			目前没有订单需要付款
+		</p>
+
+	</div>
+
+	<div class = "bookings-container bookings-container-2 animate" ng-show="tabStatus == 2">
+
+		<a href="#/booking_detail/1" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':2} as filtered2">
+			<div class="col-xs-12 xj_orderlist" >
+				<div class="col-xs-3" style="padding-right: 0;" >
+					<div class="xj_img" ng-style="{'background-image':'url('+booking.image+')'}">	
+					</div>
+				</div>
+				<div class="col-xs-6 xj_order_main">
+					<p style="margin-bottom: 5px;">{{booking.name}}</p>
+					<p style="margin-bottom: 5px">{{booking.company}}</p>
+					<span class="xj_date">{{booking.created_at}}</span>
+				</div>
+				<div class="col-xs-3 xj_order_right">
+					<div class="btn xj_btn">￥{{booking.price}}</div>
+				</div>
+			</div>
+		</a>
+
+		<p ng-show = "!filtered2.length" class="missing-booking-data">
+			<br>
+			<br>
+			<br>
+			<img src="imgs/booking_list/missing_data.png" alt="">
+			<br>
+			<br>
+			目前没有订单正在审核
+		</p>
+
+	</div>
+
+	<div class = "bookings-container bookings-container-3 animate" ng-show="tabStatus == 3">
+
+		<a href="#/booking_detail/1" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':3} as filtered3">
+			<div class="col-xs-12 xj_orderlist" >
+				<div class="col-xs-3" style="padding-right: 0;" >
+					<div class="xj_img" ng-style="{'background-image':'url('+booking.image+')'}">	
+					</div>
+				</div>
+				<div class="col-xs-6 xj_order_main">
+					<p style="margin-bottom: 5px;">{{booking.name}}</p>
+					<p style="margin-bottom: 5px">{{booking.company}}</p>
+					<span class="xj_date">{{booking.created_at}}</span>
+				</div>
+				<div class="col-xs-3 xj_order_right">
+					<div class="btn xj_btn">￥{{booking.price}}</div>
+				</div>
+			</div>
+		</a>
+
+		<p ng-show = "!filtered3.length" class="missing-booking-data">
+			<br>
+			<br>
+			<br>
+			<img src="imgs/booking_list/missing_data.png" alt="">
+			<br>
+			<br>
+			目前没有订单已完成
+		</p>
+
+	</div>
+
+	<div class = "bookings-container bookings-container-4 animate" ng-show="tabStatus == 4">
+
+		<a href="#/booking_detail/1" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':4} as filtered4">
+			<div class="col-xs-12 xj_orderlist" >
+				<div class="col-xs-3" style="padding-right: 0;" >
+					<div class="xj_img" ng-style="{'background-image':'url('+booking.image+')'}">	
+					</div>
+				</div>
+				<div class="col-xs-6 xj_order_main">
+					<p style="margin-bottom: 5px;">{{booking.name}}</p>
+					<p style="margin-bottom: 5px">{{booking.company}}</p>
+					<span class="xj_date">{{booking.created_at}}</span>
+				</div>
+				<div class="col-xs-3 xj_order_right">
+					<div class="btn xj_btn">￥{{booking.price}}</div>
+				</div>
+			</div>
+		</a>
+
+		<p ng-show = "!filtered4.length" class="missing-booking-data">
+			<br>
+			<br>
+			<br>
+			<img src="imgs/booking_list/missing_data.png" alt="">
+			<br>
+			<br>
+			目前没有订单未通过
+		</p>
+
+	</div>
+	
+</div>

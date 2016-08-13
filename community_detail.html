@@ -1,0 +1,26 @@
+<div class="container-fluid w-com-container">
+	<div class="row w-back" id="back" ng-show="inputAreaStatus">
+		<div class="col-xs-4 w-back-top"><button id="butttwo" ng-click="closeInputArea()">取消</button></div>
+		<div class="col-xs-4 w-back-top text-center">发评论</div>
+		<div class="col-xs-4 w-back-top text-right"><button>发布</button></div>
+		<textarea placeholder="写评论……"></textarea>
+	</div>
+	<div class="row w-com-top">
+		<div class="col-xs-3 w-com-row-padding">
+			<img ng-src="{{article.preview}}" class="img-circle w-com-img" />
+		</div>
+		<div class="col-xs-9 w-com-row-padding">
+			<h1 style="font-size:17px;">{{article.title}}</h1>
+			<p class="w-enjoy">互动未来<span>{{article.publish_at | limitTo:10}}</span></p>
+		</div>
+	</div>
+	<div class="row w-com-cont" ng-bind-html="thisCanBeusedInsideNgBindHtml">
+	</div>
+	<div class="row w-com-foot text-left " id="foot" ng-show="!inputAreaStatus">
+		<div class="w-com-rite col-xs-7" id="input"  ng-click="openInputArea()"/><span style="float:left"><img src="imgs/community_detail/rite.png"/></span>
+		<input type="text" placeholder="写评论">
+
+	</div>
+	<div class="w-com-message col-xs-3 text-right"><img style="margin-bottom:10px;" src="imgs/community_detail/message.png"/><span id="">1506</span></div>
+</div>
+</div>

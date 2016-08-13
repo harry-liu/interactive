@@ -1,0 +1,60 @@
+<div class="container-fluid w-client-container">
+	<div class="row w-client-message">
+		<div class="col-xs-3 w-client-pic text-left">
+			<div class="w-client-img-box text-center">
+				<img src="imgs/home/2.png"/>
+			</div>
+		</div>
+		<div class="col-xs-9 w-client-name">
+			<p class="w-client-name-p hc_border_b">
+				<input type="text" placeholder="{{fields[0].instructions}}" ng-model = 'fields[0].value'>
+			</p>
+			<p style="position: relative;">
+				<input type="text" placeholder="{{fields[1].instructions}}" ng-model = "fields[1].value">
+				<span class=" hc_xkh_label" ng-show="!fields[0].value">新客户</span>
+			</p>
+		</div>
+	</div>
+	
+	<!--个人信息-->
+	<div class="row w-client-peoplemessage">
+		<ul class="list-group">
+			<li class=" w-client-peoplemessage-li w-client-contacts">
+				联系人
+			</li>
+			<li class="w-client-peoplemessage-li" ng-repeat="fild in fields | filter:{'section':'contact'}" ng-switch on="fild.slug">
+				<h1>{{fild.label}}</h1>
+				<span>
+					<input type="text" placeholder="{{fild.instructions}}" ng-model="fild.value" ng-switch-default>
+					<select ng-switch-when="select" ng-model="fild.value">
+						<option ng-repeat="option in fild.options" value="{{option.id}}">{{option.name}}</option>
+					</select>
+				</span>
+			</li>
+	    </ul>
+	</div>
+	<!--公司信息-->
+	<div class="row w-client-peoplemessage">
+		<ul class="list-group">
+			<li class=" w-client-peoplemessage-li w-client-contacts">
+				公司信息
+			</li>
+			<li class=" w-client-peoplemessage-li" ng-repeat="fild in fields | filter:{'section':'company'}" ng-switch on="fild.slug">
+				<h1>{{fild.label}}</h1>
+				<span>
+					<input type="text" placeholder="{{fild.instructions}}" ng-model="fild.value" ng-switch-default>
+					<select ng-switch-when="select" ng-model="fild.value"
+						ng-options="option.name for option in fild.options"
+					>
+					</select>
+				</span>
+			</li>
+	    </ul>
+	    <ul class="list-group">
+	    	<li class=" w-client-peoplemessage-li" ng-repeat="fild in fields | filter:{'section':'other'}" style="height:auto" ng-switch on="fild.slug">
+	    		<textarea ng-switch-when="textarea" class="w-client-text-message"  placeholder="{{fild.instructions}}" ng-model="fild.value"></textarea>
+				<input type="text" placeholder="{{fild.instructions}}" ng-model="fild.value" ng-switch-default>
+	    	</li>
+	    </ul>
+	</div>
+</div>

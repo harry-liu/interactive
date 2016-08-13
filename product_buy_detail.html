@@ -1,0 +1,107 @@
+<div class="container-fluid hc-deplist-container">
+	<div class="row hc-deplist-box">
+		<div class=" hc_titlebox col-xs-12">
+			<span id="">
+			</span>
+			<h1>商品信息</h1>
+		</div>
+		<div class="col-xs-12 hc-deplist-box01 hc_border_bp">
+			<div class=" col-xs-3 hc-headbox">
+				<img src="img/head.png" />
+			</div>
+			<div class=" col-xs-9 hc-deptext">
+				<h1>号码百事通</h1>
+				<span>￥
+					
+					<input  type="text" placeholder="请输入价格">
+
+<!-- onfocus="if(placeholder=='请输入价格') {placeholder=''}" 
+onblur="if (placeholder=='') {placeholder='请输入价格'}" 
+onkeyup="value=value.replace(/[^\d.]/g,'') " 
+onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d.]/g,''))"
+NAME="Text2" -->
+				</span>
+				<strong>中国电信旗下电话传播渠道下电话传播渠道下电话传播渠道</strong>
+			</div>
+			<div class="hc-statebox">
+				<ul>
+					<li class="hc-state  ">
+						<div class="hc-state01">
+						</div>
+						<span>
+						</span> 订单
+					</li>
+					<li class="hc-state  ">
+						<div class="hc-state01">
+						</div>
+						<span>
+						</span> 审核
+					</li>
+					<li class="hc-state  ">
+						<div class="hc-state01">
+						</div>
+						<span>
+						</span> 审核通过
+					</li>
+					<li class="hc-state  ">
+						<div class="hc-state01">
+						</div>
+						<span>
+						</span> 支付
+					</li>
+					<li class="hc-state  ">
+						<div class="hc-state01">
+						</div>
+						<span style="display: none;">
+						</span> 完成
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="row hc-deplist-box">
+		<div class=" hc_titlebox hc_border_b col-xs-12">
+			<span id="">
+			</span>
+			<h1>甲方信息</h1>
+		</div>
+
+		<ul class="hc_center col-xs-12">
+
+			<li ng-repeat="bookingDetail in bookingDetails">
+				<h1>{{bookingDetail.name}}</h1>
+				<p>
+					<input type="text" placeholder="请输入{{form.name}}" ng-model = "bookingDetail.value"></input>
+				</p>
+				<a href="#/insert_user"><img src="imgs/product_detail/mykh.png"/></a>
+			</li>
+
+		</ul>
+	</div>
+	<div class="row hc-deplist-box">
+		<div class=" hc_titlebox hc_border_b col-xs-12">
+			<span id="">
+			</span>
+			<h1>订单信息</h1>
+		</div>
+
+		<ul class="hc_center col-xs-12">
+			<li>
+				<h1>关键字：</h1>
+				<p><input type="text" value="请输入关键字" onfocus="if(value=='请输入关键字') {value=''}" onblur="if (value=='') {value='请输入关键字'}">
+
+					</input>
+				</p>
+			</li>
+			<li class="hc_border_no">
+				<h1>广告时长：</h1>
+				<p id="">
+					<input type="text" value="请输入广告时长" onfocus="if(value=='请输入广告时长') {value=''}" onblur="if (value=='') {value='请输入广告时长'}">
+
+					</input>
+				</p>
+			</li>
+		</ul>
+	</div>
+
+</div>

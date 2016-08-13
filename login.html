@@ -1,0 +1,36 @@
+<div class = "container-fluid lk-login-container">
+	<div class = 'row'>
+		<div class = "col-xs-12">
+			<p class="welcome-back">欢迎回来</p>
+		</div>
+		<div class = "col-xs-12">
+			<p class = "log-in-words">登录账号查看更多精彩</p>
+		</div>
+		<div class = "col-xs-12">
+			<div class=" insert-row">
+				<img src="imgs/login/mobile_icon.png" alt="" class = "telphone-icon" style="width:20px">
+				<input type="text" placeholder="请输入您的手机号码" class = "login-input remove-outline" ng-model = "phoneNumber">
+				<button class = "send-verify-code-button btn" ng-class="activeButton" ng-click="getSms()" ng-disabled="disableButton">
+					{{sendSms}}
+				</button>
+			</div>
+		</div>
+		<div class = "col-xs-12">
+			<div class=" insert-row">
+				<img src="imgs/login/key_icon.png" alt="" class = "telphone-icon">
+				<input type="text" placeholder="请输入四位验证码" class = "login-input remove-outline" ng-model = "password">
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<button class="log-in-button btn remove-outline" ng-click="login()">登&nbsp;&nbsp;&nbsp;陆</button>
+		</div>
+		<div class="col-xs-6">
+			<button class="wechat-buton btn col-xs-10 third-log-in-button" style="float:right;"><img class = "small-icon" src="imgs/login/wechat.png" alt="">微信登陆</button>
+		</div>
+		<div class="col-xs-6">
+			<button class="qq-buton btn col-xs-10 third-log-in-button"><img class = "small-icon" src="imgs/login/qq.png" alt=""> QQ登陆</button>
+		</div>
+			
+
+	</div>
+</div>
