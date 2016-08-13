@@ -37,6 +37,16 @@
 //     },
 //     // Update DOM on a Received Event
 //     receivedEvent: function(id) {
+
+//         // document.addEventListener("backbutton", function(e){
+//         //     if(window.location.hash=='#/home'||window.location.hash=='#/community'||window.location.hash=='#/us'||window.location.hash=='#/disconnect'){
+//         //         e.preventDefault();
+//         //         navigator.app.exitApp();
+//         //     } else {
+//         //         navigator.app.backHistory()
+//         //     }
+//         // }, false);
+
         var parentElement = document.getElementById('deviceready');
         var listeningElement = parentElement.querySelector('.loading-div');
         var receivedElement = parentElement.querySelector('.main-div');
