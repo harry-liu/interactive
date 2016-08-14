@@ -11,14 +11,8 @@
 			</div>
 			<div class=" col-xs-9 hc-deptext">
 				<h1>号码百事通</h1>
-				<span>￥
-					
-					<input  type="text" placeholder="请输入价格">
-<!-- onfocus="if(placeholder=='请输入价格') {placeholder=''}" 
-onblur="if (placeholder=='') {placeholder='请输入价格'}" 
-onkeyup="value=value.replace(/[^\d.]/g,'') " 
-onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d.]/g,''))"
-NAME="Text2" -->
+				<span>
+					￥<input type="text" placeholder="请输入价格" ng-repeat="(key, value) in productFields | filter:{'field':'subtotal'}" ng-model = "value.value">
 				</span>
 				<strong>中国电信旗下电话传播渠道下电话传播渠道下电话传播渠道</strong>
 			</div>
@@ -67,40 +61,43 @@ NAME="Text2" -->
 
 		<ul class="hc_center col-xs-12">
 
-			<li ng-repeat="bookingDetail in bookingDetails">
-				<h1>{{bookingDetail.name}}</h1>
-				<p>
-					<input type="text" placeholder="请输入{{form.name}}" ng-model = "bookingDetail.value"></input>
-				</p>
-				<a href="#/insert_user"><img src="imgs/product_detail/mykh.png"/></a>
+			<li ng-repeat="(key, value) in productFields | filter:{'section':'part_a'}">
+				<h1>{{value.label}}:</h1>
+				<input type="text" placeholder="请输入{{value.instructions}}" ng-model = "value.value" ng-disabled="true"></input>
+				<a ng-show="value.label == '甲方名称'" ng-click="saveData()">
+					<img src="imgs/product_detail/mykh.png"/>
+				</a>
 			</li>
 
 		</ul>
 	</div>
 	<div class="row hc-deplist-box">
 		<div class=" hc_titlebox hc_border_b col-xs-12">
-			<span id="">
-			</span>
+			<span></span>
 			<h1>订单信息</h1>
 		</div>
 
 		<ul class="hc_center col-xs-12">
+
 			<li>
 				<h1>关键字：</h1>
-				<p><input type="text" value="请输入关键字" onfocus="if(value=='请输入关键字') {value=''}" onblur="if (value=='') {value='请输入关键字'}">
-
+				<p>
+					<input type="text" value="请输入关键字" onfocus="if(value=='请输入关键字') {value=''}" onblur="if (value=='') {value='请输入关键字'}">
 					</input>
 				</p>
 			</li>
-			<li class="hc_border_no">
-				<h1>广告时长：</h1>
-				<p id="">
-					<input type="text" value="请输入广告时长" onfocus="if(value=='请输入广告时长') {value=''}" onblur="if (value=='') {value='请输入广告时长'}">
 
-					</input>
-				</p>
-			</li>
 		</ul>
 	</div>
 
 </div>
+
+
+
+
+
+<!-- onfocus="if(placeholder=='请输入价格') {placeholder=''}" 
+onblur="if (placeholder=='') {placeholder='请输入价格'}" 
+onkeyup="value=value.replace(/[^\d.]/g,'') " 
+onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d.]/g,''))"
+NAME="Text2" -->

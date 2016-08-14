@@ -2,8 +2,8 @@ var APIService = angular.module('APIService', []);
 
 APIService.factory('PublicURL', function(){
   //return 'http://192.168.1.16/api/';
-  //return 'http://front.hudongcn.com/api/';
-  return 'http://192.168.1.116/api/';
+  return 'http://front.hudongcn.com/api/';
+  //return 'http://192.168.1.116/api/';
 })
 
 //save token into localstorage
@@ -26,6 +26,11 @@ APIService.factory('AuthenticationService', function(locals) {
       },
       getRefreshToken:function(){
         return locals.get('refresh_token','');
+      },
+      logOut:function(){
+        locals.remove('access_token');
+        locals.remove('refresh_token');
+        locals.remove('token_type');
       }
     }
 });
@@ -114,12 +119,22 @@ APIService.factory('LogService', function LogService($http,PublicURL) {
           },
           data: 'grant_type=refresh_token&client_id=hdq&client_secret=hdq&refresh_token='+info
         });
+      },
+      checkToken:function(){
+        return $http({
+          url:PublicURL+'check_token',
+          method:"POST",
+          headers:{
+            'Authorization':'Bearer '+token
+          }
+        })
       }
     };  
 });
 
-APIService.service('GetDataFromAPI', ['', function(){
+APIService.service('GetDataFromAPI', ['AuthenticationService', function(AuthenticationService){
 	this.getData = function(url,token,type){
     return 'test';
   }
+  //var checkUserToken = 
 }])

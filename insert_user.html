@@ -1,58 +1,34 @@
-<div class="container-fluid hc_import_customer" ontouchstart="" onmouseover="">
-
-
-	<div class="row hc-search">
+<div class="container-fluid w-client-container" ontouchstart="" onmouseover="" style="padding-left: 0;padding-right: 0;
+">
+<!-- 	<div class="row hc-search">
 		<input type="text" placeholder="输入搜索关键词" ng-model="searchInput" class="ng-pristine ng-untouched ng-valid ng-empty">
-	</div>
+	</div> -->
 	
-	
-	
-	
-	<ul class="row hc_mt hc_border_b">
-		<li class="col-xs-12 hc_perlist">
+	<ul class="list-group w-myclient-cont">
+<!-- 		<li class="col-xs-12 hc_perlist" ng-repeat="client in clients | orderBy:'created_at'">
 			<a href="">
 				<div class="hc_menuimg03">
 				</div>
-				<h1>张三</h1>
+				<h1>{{client.contact}}</h1>
 				<p id="">
-					西安博大有限公司
+					{{client.company_name}}
 				</p>
 				<span>新客户</span>
 			</a>
+		</li> -->
+		<li class="w-myclient-cont-number" ng-repeat = "firstChar in firstCharList | orderBy:firstChar" id="{{firstChar}}">
+			{{firstChar | uppercase}}
+			<ul class="w-myclient-cont-number-ul">
+				<a ng-click="getUserInfo(client.id)" ng-repeat = "client in clients | filter:{'initial':firstChar} | orderBy:'name'">
+					<li class="w-myclient-cont-message">
+						<span style="color:#383838" class="w-myclient-top-message-text">{{client.contact}}</span>
+					<span class="w-myclient-top-message-color w-myclient-top-message-padding">{{client.position}}
+					</span>
+					<span class="w-myclient-top-message-color">{{client.phone_number}}</span>
+					</li>
+				</a>
+			</ul>
 		</li>
-		<li class="col-xs-12 hc_perlist">
-			<a href="">
-				<div class="hc_menuimg03">
-				</div>
-				<h1>张三</h1>
-				<p id="">
-					西安博大有限公司
-				</p>
-				<span>新客户</span>
-			</a>
-		</li><li class="col-xs-12 hc_perlist">
-			<a href="">
-				<div class="hc_menuimg03">
-				</div>
-				<h1>张三</h1>
-				<p id="">
-					西安博大有限公司
-				</p>
-				<span>新客户</span>
-			</a>
-		</li><li class="col-xs-12 hc_perlist">
-			<a href="">
-				<div class="hc_menuimg03">
-				</div>
-				<h1>张三</h1>
-				<p id="">
-					西安博大有限公司
-				</p>
-				<span>新客户</span>
-			</a>
-		</li>
-		
-
 	</ul>
 
 </div>

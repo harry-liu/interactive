@@ -1,5 +1,3 @@
-'use strict';
-
 var interactiveControllers = angular.module('interactiveControllers', []);
 
 interactiveControllers.controller('BodyControl', function($scope,$window,locals,$location,$rootScope,FetchData) {
@@ -160,15 +158,15 @@ interactiveControllers.controller('LoginCtrl', function($timeout,SaveToken,$scop
 	$scope.activeButton = '';
 
 	function startTimeOut(){
-		$scope.counter = 0;
+		$scope.counter = 60;
 		$scope.onTimeout = function(){
-		    $scope.counter++;
+		    $scope.counter--;
 		    mytimeout = $timeout($scope.onTimeout,1000);
 		    //console.log($scope.counter);
 		    $scope.sendSms = '重发 '+$scope.counter;
 		    $scope.disableButton = true;
 		    $scope.activeButton = 'active-button';
-		    if($scope.counter == 60){
+		    if($scope.counter == 1){
 		    	$scope.stop();
 		    }
 		}
@@ -485,7 +483,7 @@ interactiveControllers.controller('ClientAddCtrl', function($scope,$rootScope,Pu
 			var token = AuthenticationService.getAccessToken();
 			PushData.push(url,data,token)
 			.success(function(data){
-				$location.path('/us');
+				$location.path('/client_list');
 			})
 			.error(function(status,error){
 				console.log(status);
@@ -708,7 +706,7 @@ interactiveControllers.controller('ProductDetailCtrl', function($scope,$route,Fe
 	});
 });
 
-interactiveControllers.controller('ProductBuyDetailCtrl', function($scope,$rootScope,FetchData,AuthenticationService,PushData,$location,$routeParams) {
+interactiveControllers.controller('ProductBuyDetailCtrl', function($scope,$rootScope,FetchData,AuthenticationService,PushData,$location,$routeParams,NewOrder) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 
@@ -717,41 +715,35 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function($scope,$rootS
 		word:'产品订单'
 	}
 	$scope.$emit('changeTM',change);
+	//$scope.bookingDetails = [];
 
-	$scope.bookingDetails = [];
-
-	FetchData.getData('order/get-form?id='+$routeParams.id,AuthenticationService.getAccessToken())
-	.success(function(data){
-		console.log(data);
+	if(NewOrder.getOrderData().length>0){
 		$rootScope.loadingData = false;
-		//$scope.productForm = data.form;
-		for(var i = 0;i<data.form.length;i++){
-			if(data.form[i].type_name != 'hidden'){
-				$scope.bookingDetails.push({
-					id:i,
-					name:data.form[i].name,
-					value:''
-				})
-			}
-		}
-		$scope.modelId = data.model_id;
-		console.log($scope.bookingDetails);
-	})
-	.error(function(status,data){
-		console.log(data);
-		console.log(status);
-	})
+		$scope.productFields = NewOrder.getOrderData();
+	}
+	else{
+		FetchData.getData('orders/create?id='+$routeParams.id,AuthenticationService.getAccessToken())
+		.success(function(data){
+			console.log(data);
+			$rootScope.loadingData = false;
+			$scope.productFields = data.fields;
+		})
+		.error(function(status,data){
+			console.log(data);
+			console.log(status);
+		})
+	}
 
 	$scope.$on('pushBookingForm',function(){
 		//console.log('pushForm');
-		var url = 'order/submit';
-		var formData = 'model_id='+$scope.modelId+'&';
-		for(var i=0;i<$scope.bookingDetails.length;i++){
-			if(i+1 == $scope.bookingDetails.length){
-				formData = formData+$scope.bookingDetails[i].name+'='+$scope.bookingDetails[i].value
+		var url = 'orders/create?id='+$routeParams.id;
+		var formData = '';
+		for(var i=0;i<$scope.productFields.length;i++){
+			if(i+1 == $scope.productFields.length){
+				formData = formData+$scope.productFields[i].prefix+$scope.productFields[i].field+'='+$scope.productFields[i].value
 			}
 			else{
-				formData = formData+$scope.bookingDetails[i].name+'='+$scope.bookingDetails[i].value+'&'
+				formData = formData+$scope.productFields[i].prefix+$scope.productFields[i].field+'='+$scope.productFields[i].value+'&'
 			}
 			
 		}
@@ -766,11 +758,15 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function($scope,$rootS
 			console.log(error);
 		})
 	})
+
+	$scope.saveData = function(){
+		NewOrder.saveOrderData($scope.productFields);
+		console.log($scope.productFields);
+		$location.path('/insert_user');
+	}
 });
 
-interactiveControllers.controller('InsertUserCtrl', function($scope,$rootScope) {
-	$rootScope.loadingData = false;
-
+interactiveControllers.controller('InsertUserCtrl', function($window,$scope,$rootScope,FetchData,AuthenticationService,$filter,NewOrder) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 
@@ -779,6 +775,59 @@ interactiveControllers.controller('InsertUserCtrl', function($scope,$rootScope) 
 		word:'选择客户'
 	}
 	$scope.$emit('changeTM',change);
+
+	$scope.clients = [];
+
+	var url = 'customers/my-customers';
+	var token = AuthenticationService.getAccessToken();
+	FetchData.getData(url,token)
+	.success(function(data){
+		console.log(data);
+		$rootScope.loadingData = false;
+		$scope.clients = data.customers;
+		$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
+	})
+	.error(function(status,error){
+		console.log(status);
+	})
+
+	$scope.updateFirstCharList = function updateFirstCharList(list){
+		if(list){
+			$scope.firstCharList = [];
+			//console.log(list);
+			for(var i = 0; i<list.length; i++){
+			    if ($scope.firstCharList.indexOf(list[i].initial) == -1) {
+			        $scope.firstCharList.push(list[i].initial);
+			    }
+			}
+			console.log($scope.firstCharList);
+		}
+	}
+
+	$scope.getUserInfo = function(id){
+		var url = 'customers/view?id='+id;
+		var token = AuthenticationService.getAccessToken();
+		FetchData.getData(url,token)
+		.success(function(data){
+			console.log(data);
+			var necessaryUserData = NewOrder.getOrderData();
+			for(var i = 0;i<necessaryUserData.length;i++){
+				if(necessaryUserData[i].section == "part_a"){
+					// for(var k = 0;k<data.customer.length;k++){
+					var field = NewOrder.getOrderData()[i].field;
+					necessaryUserData[i].value = data.customer[field];
+					// }
+				}
+			}
+			console.log(necessaryUserData);
+			NewOrder.saveOrderData(necessaryUserData);
+			$window.history.back();
+		})
+		.error(function(status,error){
+			console.log(status);
+			console.log(error);
+		})
+	}
 });
 
 interactiveControllers.controller('CommunityCtrl', function($scope,$rootScope,FetchData,$location) {
@@ -1070,7 +1119,7 @@ interactiveControllers.controller('WithdrawCompleteCtrl', function($scope,$rootS
 	$scope.$emit('setBottomMenuImage','us');
 });
 
-interactiveControllers.controller('SettingsCtrl', function($scope,$rootScope) {
+interactiveControllers.controller('SettingsCtrl', function($scope,$rootScope,AuthenticationService) {
 	$rootScope.loadingData = false;
 
 	$scope.$emit('hideTM',true);
@@ -1081,6 +1130,10 @@ interactiveControllers.controller('SettingsCtrl', function($scope,$rootScope) {
 	}
 	$scope.$emit('changeTM',change);
 	$scope.$emit('setBottomMenuImage','us');
+
+	$scope.logOut = function(){
+		AuthenticationService.logOut();
+	}
 });
 
 interactiveControllers.controller('TestListCtrl', function($scope,$rootScope) {

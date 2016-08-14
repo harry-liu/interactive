@@ -2,7 +2,19 @@ var app = angular.module('hudongquan', ['interactiveControllers','ngRoute','ngAn
 
 app.constant('ProductContImageReplace', 'http://192.168.1.16');
 
-app.run(['$rootScope', '$location','locals','AuthenticationService','FetchData','$anchorScroll',function($rootScope,$location,locals,AuthenticationService,FetchData,$anchorScroll){
+app.factory('NewOrder', [function(){
+  var order;
+  return {
+    saveOrderData:function(data){
+      order = data;
+    },
+    getOrderData:function(){
+      return order;
+    }
+  }
+}])
+
+app.run(['$rootScope', '$location','locals','AuthenticationService','FetchData','$anchorScroll','NewOrder',function($rootScope,$location,locals,AuthenticationService,FetchData,$anchorScroll,NewOrder){
   $anchorScroll.yOffset = 44;   // always scroll by 50 extra pixels
 
   $rootScope.$on('$routeChangeStart', function(evt, next, current){
@@ -18,6 +30,14 @@ app.run(['$rootScope', '$location','locals','AuthenticationService','FetchData',
     }
     else{
       $rootScope.loadingData = true;
+
+      //判断是否有填写订单数据
+      if(next.originalPath == "/product_buy/:id"||next.originalPath == "/insert_user"){
+      }
+      else{
+        var ob = {};
+        NewOrder.saveOrderData(ob);
+      }
 
       //判断页面是否需要登录
       if(next.data){
