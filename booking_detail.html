@@ -10,11 +10,11 @@
 				<img src="img/head.png" />
 			</div>
 			<div class=" col-xs-9 hc-deptext">
-				<h1>号码百事通</h1>
+				<h1>{{orderInfo.production.name}}</h1>
 				<p>￥<span id="">
-					85550
+					{{orderInfo.subtotal}}
 				</span></p>
-				<strong>中国电信旗下电话传播渠道下电话传播渠道下电话传播渠道</strong>
+				<strong>{{orderInfo.production.description}}</strong>
 			</div>
 			<div class="hc-statebox">
 				<ul>
@@ -52,7 +52,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="row hc-deplist-box">
+	<div class="row hc-deplist-box" ng-hide="true">
 		<div class=" hc_titlebox hc_border_b col-xs-12">
 			<span id="">
 			</span>
@@ -79,13 +79,13 @@
 			<li>
 				<h1>企业名称：</h1>
 				<p>
-					西安互动未来信息技术有限责任公司
+					{{orderInfo.company_name}}
 				</p>
 			</li>
 			<li class="hc_border_no">
 				<h1>企业地址：</h1>
 				<p>
-					西安市高新区科技一路40号盛放科技园
+					{{orderInfo.company_addr}}
 				</p>
 			</li>
 		</ul>

@@ -240,12 +240,10 @@ interactiveControllers.controller('NewUserCtrl', function($scope,$rootScope) {
 	$scope.$emit('hideBM',false);
 });
 
-interactiveControllers.controller('HomeCtrl', function($scope,$rootScope) {
+interactiveControllers.controller('HomeCtrl', function($scope,$rootScope,FetchData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',true);
 	$scope.$emit('setBottomMenuImage','home');
-
-	$rootScope.loadingData = false;
 
 	var change = {
 		type:1
@@ -265,6 +263,14 @@ interactiveControllers.controller('HomeCtrl', function($scope,$rootScope) {
 		text:'test'
 	}
 	];
+
+	var url = "categories/get?id=5";
+	FetchData.getPublicAPI(url,function(error,data){
+		if(data){
+			$scope.dataList = data.productions;
+			$rootScope.loadingData = false;
+		}
+	})
 });
 
 interactiveControllers.controller('MyDiscountCtrl', function($scope,$rootScope) {
@@ -293,13 +299,13 @@ interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$r
 
 	$scope.bookingList = [];
 
-	var url = "order/my-orders";
+	var url = "orders/my-orders";
 	var token = AuthenticationService.getAccessToken();
 	FetchData.getData(url,token)
 	.success(function(data){
 		$rootScope.loadingData = false;
 		$scope.bookingList = data.orders;
-		updateNumberUnreadMessage();
+		$scope.updateNumberUnreadMessage();
 		$scope.updateUnreadMessage('1');
 		console.log($scope.bookingList);
 	})
@@ -307,14 +313,14 @@ interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$r
 		console.log('status');
 	})
 
-	function updateNumberUnreadMessage(){
-		$scope.auditedUnreadMessage = getUnreadMessage('1');
-		$scope.suditingUnreadMessage = getUnreadMessage('2');
-		$scope.finishedUnreadMessage = getUnreadMessage('3');
-		$scope.notPassUnreadMessage = getUnreadMessage('4');
+	$scope.updateNumberUnreadMessage = function (){
+		$scope.auditedUnreadMessage = $scope.getUnreadMessage('1');
+		$scope.suditingUnreadMessage = $scope.getUnreadMessage('2');
+		$scope.finishedUnreadMessage = $scope.getUnreadMessage('3');
+		$scope.notPassUnreadMessage = $scope.getUnreadMessage('4');
 	}
 	$scope.updateUnreadMessage = function(status){
-		var url = "order/has-read";
+		var url = "orders/has-read";
 		var data = 'status='+status;
 		var token = AuthenticationService.getAccessToken();
 
@@ -328,7 +334,7 @@ interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$r
 				// console.log(value);
 				// console.log(key);
 			})
-			updateNumberUnreadMessage();
+			$scope.updateNumberUnreadMessage();
 			//console.log($filter('filter')($scope.bookingList,{'hasRead':false})[0]);
 		})
 		.error(function(status,error){
@@ -336,7 +342,7 @@ interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$r
 		})
 
 	}
-	function getUnreadMessage(status){
+	$scope.getUnreadMessage = function(status){
 		var number = 0;
 		angular.forEach($filter('filter')($scope.bookingList,{'status':status,'has_read':0}),function(){
 			number++;
@@ -483,7 +489,7 @@ interactiveControllers.controller('ClientAddCtrl', function($scope,$rootScope,Pu
 			var token = AuthenticationService.getAccessToken();
 			PushData.push(url,data,token)
 			.success(function(data){
-				$location.path('/client_list');
+				$location.path('/client_list').replace();
 			})
 			.error(function(status,error){
 				console.log(status);
@@ -605,9 +611,7 @@ interactiveControllers.controller('ClientDetailCtrl', function($scope,$rootScope
 	}
 });
 
-interactiveControllers.controller('BookingDetailCtrl', function($scope,$rootScope,FetchData) {
-	$rootScope.loadingData = false;
-
+interactiveControllers.controller('BookingDetailCtrl', function($scope,$rootScope,FetchData,AuthenticationService,$route) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -615,6 +619,18 @@ interactiveControllers.controller('BookingDetailCtrl', function($scope,$rootScop
 		word:'订单详情'
 	}
 	$scope.$emit('changeTM',change);
+
+	var url = 'orders/detail?id='+$route.current.params.id;
+	var token = AuthenticationService.getAccessToken();
+	FetchData.getData(url,token)
+	.success(function(data){
+		console.log(data);
+		$rootScope.loadingData = false;
+		$scope.orderInfo = data.order;
+	})
+	.error(function(status,error){
+		console.log(status);
+	})
 });
 
 interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope) {
@@ -785,7 +801,7 @@ interactiveControllers.controller('InsertUserCtrl', function($window,$scope,$roo
 		console.log(data);
 		$rootScope.loadingData = false;
 		$scope.clients = data.customers;
-		$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
+		$scope.updateFirstCharList($scope.clients);
 	})
 	.error(function(status,error){
 		console.log(status);

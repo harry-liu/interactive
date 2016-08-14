@@ -22,7 +22,7 @@
 
 	<div class = "bookings-container bookings-container-1 animate" ng-show="tabStatus == 1">
 
-		<a href="#/booking_detail/1" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':1} as filtered1">
+		<a href="#/booking_detail/{{booking.id}}" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':1} as filtered1">
 
 			<div class="col-xs-12 xj_orderlist" >
 				<div class="col-xs-3" style="padding-right: 0;" >
@@ -30,12 +30,12 @@
 					</div>
 				</div>
 				<div class="col-xs-6 xj_order_main">
-					<p style="margin-bottom: 5px;">{{booking.name}}</p>
-					<p style="margin-bottom: 5px">{{booking.company}}</p>
+					<p style="margin-bottom: 5px;">{{booking.production.name}}</p>
+					<p style="margin-bottom: 5px">{{booking.company_name}}</p>
 					<span class="xj_date">{{booking.created_at}}</span>
 				</div>
 				<div class="col-xs-3 xj_order_right">
-					<div class="btn xj_btn">￥{{booking.price}}</div>
+					<div class="btn xj_btn">￥{{booking.subtotal}}</div>
 				</div>
 			</div>
 		</a>
@@ -54,19 +54,19 @@
 
 	<div class = "bookings-container bookings-container-2 animate" ng-show="tabStatus == 2">
 
-		<a href="#/booking_detail/1" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':2} as filtered2">
+		<a href="#/booking_detail/{{booking.id}}" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':2} as filtered2">
 			<div class="col-xs-12 xj_orderlist" >
 				<div class="col-xs-3" style="padding-right: 0;" >
 					<div class="xj_img" ng-style="{'background-image':'url('+booking.image+')'}">	
 					</div>
 				</div>
 				<div class="col-xs-6 xj_order_main">
-					<p style="margin-bottom: 5px;">{{booking.name}}</p>
-					<p style="margin-bottom: 5px">{{booking.company}}</p>
+					<p style="margin-bottom: 5px;">{{booking.production.name}}</p>
+					<p style="margin-bottom: 5px">{{booking.company_name}}</p>
 					<span class="xj_date">{{booking.created_at}}</span>
 				</div>
 				<div class="col-xs-3 xj_order_right">
-					<div class="btn xj_btn">￥{{booking.price}}</div>
+					<div class="btn xj_btn">￥{{booking.subtotal}}</div>
 				</div>
 			</div>
 		</a>
@@ -85,19 +85,19 @@
 
 	<div class = "bookings-container bookings-container-3 animate" ng-show="tabStatus == 3">
 
-		<a href="#/booking_detail/1" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':3} as filtered3">
+		<a href="#/booking_detail/{{booking.id}}" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':3} as filtered3">
 			<div class="col-xs-12 xj_orderlist" >
 				<div class="col-xs-3" style="padding-right: 0;" >
 					<div class="xj_img" ng-style="{'background-image':'url('+booking.image+')'}">	
 					</div>
 				</div>
 				<div class="col-xs-6 xj_order_main">
-					<p style="margin-bottom: 5px;">{{booking.name}}</p>
-					<p style="margin-bottom: 5px">{{booking.company}}</p>
+					<p style="margin-bottom: 5px;">{{booking.production.name}}</p>
+					<p style="margin-bottom: 5px">{{booking.company_name}}</p>
 					<span class="xj_date">{{booking.created_at}}</span>
 				</div>
 				<div class="col-xs-3 xj_order_right">
-					<div class="btn xj_btn">￥{{booking.price}}</div>
+					<div class="btn xj_btn">￥{{booking.subtotal}}</div>
 				</div>
 			</div>
 		</a>
@@ -116,19 +116,19 @@
 
 	<div class = "bookings-container bookings-container-4 animate" ng-show="tabStatus == 4">
 
-		<a href="#/booking_detail/1" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':4} as filtered4">
+		<a href="#/booking_detail/{{booking.id}}" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':4} as filtered4">
 			<div class="col-xs-12 xj_orderlist" >
 				<div class="col-xs-3" style="padding-right: 0;" >
 					<div class="xj_img" ng-style="{'background-image':'url('+booking.image+')'}">	
 					</div>
 				</div>
 				<div class="col-xs-6 xj_order_main">
-					<p style="margin-bottom: 5px;">{{booking.name}}</p>
-					<p style="margin-bottom: 5px">{{booking.company}}</p>
+					<p style="margin-bottom: 5px;">{{booking.production.name}}</p>
+					<p style="margin-bottom: 5px">{{booking.company_name}}</p>
 					<span class="xj_date">{{booking.created_at}}</span>
 				</div>
 				<div class="col-xs-3 xj_order_right">
-					<div class="btn xj_btn">￥{{booking.price}}</div>
+					<div class="btn xj_btn">￥{{booking.subtotal}}</div>
 				</div>
 			</div>
 		</a>
