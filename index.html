@@ -57,6 +57,7 @@
                             <ul>
                                 <li ng-repeat="menu in menus" ng-click="menu.children.length>0?'':goTo(menu.id)">
                                     {{menu.name}}
+                                    <img src="imgs/menu/arrow_right.png" alt="" ng-show="menu.children.length>0">
                                     <ul ng-show="menu.children">
                                         <li ng-repeat="menuItem in menu.children" ng-click="goTo(menuItem.id)">
                                             {{menuItem.name}}
