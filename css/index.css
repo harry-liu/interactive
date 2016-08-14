@@ -116,6 +116,11 @@ body {
 	src: url(../fonts/SIMYOU.TTF);
 }
 
+.top-menu .ng-hide.ng-hide-animate,
+.ng-scope.ng-hide.ng-hide-animate
+{
+     display: none !important;
+}
 
 /*lk added*/
 /*spinner*/
