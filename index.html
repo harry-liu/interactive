@@ -135,6 +135,16 @@
                             <a href="" ng-click="pushClientInformation()">完成</a>
                         </div>
 
+                        <div class = 'col-xs-2 top-menu-left-img' ng-show="topMenuContent.type == 11" ng-click="goBackClicked()">
+                            <img src="imgs/menu/back_icon.png" alt="">
+                        </div>
+                        <div class = "col-xs-8" ng-show="topMenuContent.type == 11">
+                            <p>{{topMenuContent.word}}</p>
+                        </div>
+                        <div class="col-xs-2 top-menu-complete-btn" ng-show="topMenuContent.type == 11">
+                            <a href="" ng-click="pushPersonalInformation()">完成</a>
+                        </div>
+
                         <div class = 'col-xs-2 top-menu-left-img' ng-show="topMenuContent.type == 10" ng-click="goBackClicked()">
                             <img src="imgs/menu/back_icon.png" alt="">
                         </div>

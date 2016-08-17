@@ -55,6 +55,7 @@
         receivedElement.setAttribute('style', 'display:block;');
         //var domElement = document.getElementById(...) / document.querySelector(...);
         var bodyElement = document.getElementsByTagName('body');
+        
         angular.bootstrap(bodyElement, ["hudongquan"]);
 
 //         //console.log('Received Event: ' + id);

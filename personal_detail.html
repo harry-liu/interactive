@@ -4,7 +4,7 @@
 			<h1 class="pull-left hc_">头像</h1>
 			<div class=" pull-right hc_per_head " type="file" ngf-select="uploadFiles($file, $invalidFiles)"
           accept="image/*" ngf-max-height="1000" ngf-max-size="10MB">
-				<img ng-src="{{user.image}}" />
+				<img ng-src="{{user.avatarUrl||'imgs/personal_detail/head.jpg'}}" />
 			</div>
 <!-- 			  <button type="file" ngf-select="uploadFiles($file, $invalidFiles)"
           accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
@@ -13,7 +13,7 @@
 		<div class="col-xs-12 hc_perlist hc_data02">
 			<h1 class="pull-left ">用户名</h1>
 			
-			<input type="text" value="" placeholder="请输入用户名" onfocus="if(placeholder=='请输入用户名') {placeholder=''}" onblur="if (placeholder=='') {placeholder='请输入用户名'}">
+			<input type="text" placeholder="请输入用户名" onfocus="if(placeholder=='请输入用户名') {placeholder=''}" onblur="if (placeholder=='') {placeholder='请输入用户名'}" ng-model = "user.username">
 
 					</input>
 		</div>
@@ -23,13 +23,14 @@
 			
 			<input  type="text" placeholder="请输入身份证号码"
 						 onfocus="if(placeholder=='请输入身份证号码') {placeholder=''}" 
-						 onblur="if (placeholder=='') {placeholder='请输入身份证号码'}" 
+						 onblur="if (placeholder=='') {placeholder='请输入身份证号码'}" ng-model = "user.card_id"
 						>
 		</div>
 		<div class="col-xs-12 hc_perlist hc_data03">
 			<h1 class="pull-left ">支付宝账户</h1>
-			<a href="#/add_alipay"></a>
-			<div class=" pull-left hc_accountbox <!--hc_not_show-->" >
+			<!-- <a href="#/add_alipay"></a> -->	
+			<a href=""></a>
+		<div class=" pull-left hc_accountbox <!--hc_not_show-->" >
 				<p class="col-xs-6" style="height: 50px;margin: 0;line-height: 50px;color: #868686;padding:0">
 					张三
 				</p>

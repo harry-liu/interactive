@@ -79,12 +79,11 @@
 
 		<ul class="hc_center col-xs-12">
 
-			<li>
-				<h1>关键字：</h1>
-				<p>
-					<input type="text" value="请输入关键字" onfocus="if(value=='请输入关键字') {value=''}" onblur="if (value=='') {value='请输入关键字'}">
-					</input>
-				</p>
+			<li ng-repeat="(key, value) in productFields | filter:{'section':'other'}" ng-switch on="value.slug">
+				<h1>{{value.label}}</h1>
+				<input type="text" placeholder="请输入{{value.instructions}}" ng-model = "value.value" ng-switch-default>
+				</input>
+				<textarea placeholder="请输入{{value.instructions}}" cols="30" rows="3" ng-switch-when="textarea" style=" width: 100%;margin: 10px 0;border-radius: 7px;" ng-model = "value.value"></textarea>
 			</li>
 
 		</ul>

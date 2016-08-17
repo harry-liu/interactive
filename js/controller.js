@@ -1,6 +1,7 @@
 var interactiveControllers = angular.module('interactiveControllers', []);
 
 interactiveControllers.controller('BodyControl', function($scope,$window,locals,$location,$rootScope,FetchData) {
+
 	$scope.showTM = true;
 	$scope.showBM = true;
 	$scope.$on('hideTM', function(e,data){
@@ -20,6 +21,7 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 		//top menu type 8:返回+文字+添加客户按钮
 		//top menu type 9:返回+文字+完成添加客户按钮
 		//top menu type 9:返回+文字+完成修改客户按钮
+		//top menu type 10:返回+文字+完成修改个人信息按钮
 		$scope.topMenuContent = data;
 	});
 	$scope.$on('setBottomMenuImage', function(e,data){
@@ -123,6 +125,9 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 	}
 	$scope.pushClientInformationEdit = function(){
 		$scope.$broadcast ('pushClientInformationEdit');
+	}
+	$scope.pushPersonalInformation = function(){
+		$scope.$broadcast ('pushPersonalInformation');
 	}
 
 	$scope.getMenu = function(){
@@ -353,6 +358,9 @@ interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$r
 			number++;
 		})
 		return number;
+	}
+	$scope.downPage = function(){
+		alert('up');
 	}
 });
 
@@ -652,13 +660,14 @@ interactiveControllers.controller('BookingDetailCtrl', function($scope,$rootScop
 	}
 	$scope.$emit('changeTM',change);
 
-	var url = 'orders/detail?id='+$route.current.params.id;
+	var url = 'orders/edit?id='+$route.current.params.id;
 	var token = AuthenticationService.getAccessToken();
 	FetchData.getData(url,token)
 	.success(function(data){
 		console.log(data);
 		$rootScope.loadingData = false;
 		$scope.orderInfo = data.order;
+		$scope.fields = data.fields;
 		$scope.bookingStatus = $route.current.params.type;
 	})
 	.error(function(status,error){
@@ -679,8 +688,6 @@ interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope) {
 });
 
 interactiveControllers.controller('OfflinePaymentCtrl', function($scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,$route,FetchData) {
-	$rootScope.loadingData = false;
-
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -689,8 +696,17 @@ interactiveControllers.controller('OfflinePaymentCtrl', function($scope,$rootSco
 	}
 	$scope.$emit('changeTM',change);
 
-
-	$scope.imageUrl = '';
+	var url = 'orders/detail?id='+$route.current.params.id;
+	var token = AuthenticationService.getAccessToken();
+	FetchData.getData(url,token)
+	.success(function(data){
+		console.log(data);
+		$rootScope.loadingData = false;
+		$scope.imageUrl = data.order.instrument;
+	})
+	.error(function(status,error){
+		console.log(status);
+	})
 
     $scope.uploadFiles = function(file, errFiles) {
         $scope.f = file;
@@ -853,29 +869,42 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function($scope,$rootS
 			$scope.disableButton = true;
 			var url = 'orders/create?id='+$routeParams.id;
 			var formData = '';
+			var alertMsg = '';
 			for(var i=0;i<$scope.productFields.length;i++){
-				// if(i+1 == $scope.productFields.length){
-				// 	formData = formData+$scope.productFields[i].prefix+$scope.productFields[i].field+'='+$scope.productFields[i].value
-				// }
-				// else{
-				formData = formData+$scope.productFields[i].prefix+$scope.productFields[i].field+'='+$scope.productFields[i].value+'&'
-				//}
-				
+				if($scope.productFields[i].required == '1'){
+					if(!$scope.productFields[i].value){
+						alertMsg =alertMsg + $scope.productFields[i].label + ',';
+					}
+				}
 			}
-			formData = formData + '&customer_id=' + $scope.productFields.customer_id;
-			console.log(url);
-			console.log(formData);
-			PushData.push(url,formData,AuthenticationService.getAccessToken())
-			.success(function(data){
-				console.log(data);
-				$location.path('/us');
-			})
-			.error(function(error,data){
-				console.log(error);
+			if(alertMsg){
+				alert('请填写'+alertMsg);
 				$scope.disableButton = false;
-			})
+			}
+			else{
+				for(var i=0;i<$scope.productFields.length;i++){
+					// if(i+1 == $scope.productFields.length){
+					// 	formData = formData+$scope.productFields[i].prefix+$scope.productFields[i].field+'='+$scope.productFields[i].value
+					// }
+					// else{
+					formData = formData+$scope.productFields[i].prefix+$scope.productFields[i].field+'='+$scope.productFields[i].value+'&'
+					//}
+					
+				}
+				formData = formData + '&customer_id=' + $scope.productFields.customer_id;
+				console.log(url);
+				console.log(formData);
+				PushData.push(url,formData,AuthenticationService.getAccessToken())
+				.success(function(data){
+					console.log(data);
+					$location.path('/us');
+				})
+				.error(function(error,data){
+					console.log(error);
+					$scope.disableButton = false;
+				})
+			}
 		}
-
 	})
 
 	$scope.saveData = function(){
@@ -1150,13 +1179,11 @@ interactiveControllers.controller('UsCtrl', function($scope,$rootScope,Authentic
 	getData();
 });
 
-interactiveControllers.controller('PersonalDetailCtrl', function($scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService) {
-	$rootScope.loadingData = false;
-
+interactiveControllers.controller('PersonalDetailCtrl', function($scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,FetchData,PushData,$location) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
-		type:9,
+		type:11,
 		word:'个人信息'
 	}
 	$scope.$emit('changeTM',change);
@@ -1186,7 +1213,8 @@ interactiveControllers.controller('PersonalDetailCtrl', function($scope,$rootSco
                 $timeout(function () {
                     file.result = response.data;
                     console.log(response);
-                    $scope.user.image = response.data.url;
+                    $scope.user.avatarUrl = response.data.url;
+                    $scope.user.avatarId = response.data.id;
                 });
             }, function (response) {
                 if (response.status > 0)
@@ -1199,6 +1227,46 @@ interactiveControllers.controller('PersonalDetailCtrl', function($scope,$rootSco
             });
         }   
     }
+
+    FetchData.getUserInfo(AuthenticationService.getAccessToken())
+    .success(function(data){
+    	$rootScope.loadingData = false;
+    	$scope.user = data.user;
+    })
+    .error(function(status,error){
+    	console.log(status);
+    })
+
+    $scope.$on('pushPersonalInformation',function(){
+
+    	if(!$scope.user.username){
+    		alert('请输入姓名');
+    	}
+    	else if(!$scope.user.card_id){
+    		alert('请输入身份证号');
+    	}
+    	else{    	
+    		var url = 'user/edit';
+    		var token = AuthenticationService.getAccessToken();
+    		if($scope.user.avatarId){
+    			var data = 'avatar='+$scope.user.avatarId+'&username='+$scope.user.username+'&card_id='+$scope.user.card_id;
+    		}
+    		else{
+    			var data = 'avatar='+'&username='+$scope.user.username+'&card_id='+$scope.user.card_id;
+    		}
+    		PushData.push(url,data,token)
+    		.success(function(data){
+    			alert('修改成功！');
+    			$location.path('/us');
+    		})
+    		.error(function(status,error){
+    			console.log(status);
+    		})
+    	}
+
+
+
+    })
 });
 
 interactiveControllers.controller('AddAliPayCtrl', function($scope,$rootScope) {

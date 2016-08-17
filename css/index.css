@@ -133,6 +133,7 @@ body {
 
 .did-not-found p{
 	margin-top: 10px;
+	color: #d1d1d1;
 }
 /*lk added*/
 /*spinner*/
@@ -1319,7 +1320,8 @@ body {
 }
 
 .w-container .w-hight img {
-	vertical-align: inherit
+	vertical-align: inherit;
+	width: 12px;
 }
 
 .w-container .row {
@@ -2040,6 +2042,8 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 
 .hc_pcenter .hc_headbox img {
 	width: 100%;
+	min-height: 80px;
+	min-width: 80px;
 }
 
 .hc_pcenter .hc_topbg h1 {
@@ -3035,12 +3039,13 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 .hxj_order .missing-booking-data{
 	text-align: center;
 	font-size: 15px;
-	color:#868686;
+	color:#d1d1d1;
 }
 
 .hxj_order .missing-booking-data img{
 	clear: both;
-	width:60%;
+	margin-top: 20px;
+	width:89%;
 }
 
 .hxj_order .xj_order_title {
@@ -3103,15 +3108,16 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 }
 
 .hxj_order .bookings-container {
-	position: absolute;
-	height: auto;
-	padding-bottom: 44px;
-	width: 100%;
-	top: 95px;
-	left: 0;
-	background-color: #f6f6f6;
-	transition: all linear 0.5s;
-	min-height: 100%;
+    position: absolute;
+    height: auto;
+    padding-bottom: 44px;
+    width: 100%;
+    top: 0;
+    padding-top: 95px;
+    left: 0;
+    background-color: #f6f6f6;
+    transition: all linear 0.5s;
+    min-height: 100%;
 }
 
 .hxj_order .bookings-container.ng-hide {

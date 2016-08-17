@@ -7,7 +7,7 @@
 		</div>
 		<div class="col-xs-12 hc-deplist-box01 hc_border_bp">
 			<div class=" col-xs-3 hc-headbox">
-				<img src="img/head.png" />
+				<img ng-src="{{orderInfo.production.thumbUrl}}" style="min-height:70px;min-width:70px" />
 			</div>
 			<div class=" col-xs-9 hc-deptext">
 				<h1>{{orderInfo.production.name}}</h1>
@@ -76,16 +76,10 @@
 		</div>
 
 		<ul class="hc_center col-xs-12">
-			<li>
-				<h1>企业名称：</h1>
+			<li ng-repeat="(key, value) in fields | filter:{'section':'part_a'}">
+				<h1>{{value.label}}</h1>
 				<p>
-					{{orderInfo.company_name}}
-				</p>
-			</li>
-			<li class="hc_border_no">
-				<h1>企业地址：</h1>
-				<p>
-					{{orderInfo.company_addr}}
+					{{value.value}}
 				</p>
 			</li>
 		</ul>
@@ -98,22 +92,10 @@
 		</div>
 
 		<ul class="hc_center col-xs-12">
-			<li>
-				<h1>关键字：</h1>
-				<p><span>
-				汽车
-			</span>
-					<span id="">
-				奥迪
-			</span>
-					<span id="">
-				比亚迪
-			</span></p>
-			</li>
-			<li class="hc_border_no">
-				<h1>广告时长：</h1>
+			<li class="hc_border_no" ng-repeat="(key, value) in fields | filter:{'section':'other'}">
+				<h1>{{value.label}}</h1>
 				<p id="">
-					西安市高新区科技一路40号盛放科技园
+					{{value.value}}
 				</p>
 			</li>
 		</ul>

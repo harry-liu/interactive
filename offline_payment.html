@@ -12,8 +12,8 @@
 		</div>
 	</div>
 	<div class=" btn btn-block xj_btn" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
-          accept="image/*" ngf-max-height="1000" ngf-max-size="10MB">添加凭证</div>
+          accept="image/*" ngf-max-height="1000" ngf-max-size="10MB" ng-show="!imageUrl">添加凭证</div>
     <img ng-src="{{imageUrl}}" alt="" style="width:100%">
-    <div class=" btn btn-block xj_btn" style="margin:20px 0" ng-click="submit()">提交</div>
+    <div class=" btn btn-block xj_btn" style="margin:20px 0" ng-click="submit()" ng-show="!imageUrl">提交</div>
 	<!-- <div class="xj_picture" style="background-image:url({{imageUrl}})"></div> -->
 </div>
