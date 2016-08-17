@@ -32,15 +32,19 @@
 	 		<!-- <li ng-click = "goto(a)">#</li> -->
 	 	</ul>
 	 </div>
+	 <div class="row did-not-found" ng-show="clients.length<=0">
+	 	<img src="imgs/404.png" alt="">
+	 	<p>暂无已添加客户</p>
+	 </div>
 	<!--遮罩层-->
-	<div class="w-myclient-back" ng-show = "top||bottom"></div>
+	<div class="w-myclient-back" ng-show = "top||bottom" hm-tap="pullBack($event)"></div>
 	<!--按钮-->
 	<div type="button" class="w-myclient-back-butt" ng-show = "top" hm-tap="pushTop($event)">置顶</div>
 	<div type="button" class="w-myclient-back-butt" ng-show = "bottom" hm-tap="pushBottom($event)">取消置顶</div>
 	<!--置顶-->
 	<div class="row">
 		<ul class="list-group w-myclient-top">
-			<a ng-href="{{'#/client_detail/'+client.id}}" ng-repeat = "client in clients | filter:{'top':1} | orderBy:'-top_at'">
+			<a ng-click="goTo('/client_detail/'+client.id)" ng-repeat = "client in clients | filter:{'top':1} | orderBy:'-top_at'">
 				<li class="w-myclient-top-message" hm-press="onHammer($event,client,'bottom')">
 					<span style="color:#383838">{{client.contact}}</span>
 					<span class="w-myclient-top-message-color">{{client.position}}</span>
@@ -55,7 +59,7 @@
 		  <li class="w-myclient-cont-number" ng-repeat = "firstChar in firstCharList | orderBy:firstChar" id="{{firstChar}}">
 		  	{{firstChar | uppercase}}
 		  	<ul class="w-myclient-cont-number-ul">
-		  		<a ng-href="{{'#/client_detail/'+client.id}}" ng-repeat = "client in clients | filter:{'initial':firstChar,'top':0} | orderBy:'name'">
+		  		<a ng-click="goTo('/client_detail/'+client.id)" ng-repeat = "client in clients | filter:{'initial':firstChar,'top':0} | orderBy:'name'">
 		  			  <li class="w-myclient-cont-message" hm-press="onHammer($event,client,'top')">
 		  			  	<span style="color:#383838" class="w-myclient-top-message-text">{{client.contact}}</span>
 		  				<span class="w-myclient-top-message-color w-myclient-top-message-padding">{{client.position}}</span>

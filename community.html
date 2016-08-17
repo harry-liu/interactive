@@ -43,7 +43,7 @@
     <ul class="list-group row" >
       <li class="col-xs-12" ng-repeat="article in articles">
         <a href="#/community/{{article.id}}" class=" xj_newslist">
-          {{article.title | limitTo: 10}}{{article.title.length > 10 ? '...' : ''}}
+          {{article.title}}
         </a>
       </li>
     </ul>

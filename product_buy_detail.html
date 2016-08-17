@@ -7,18 +7,18 @@
 		</div>
 		<div class="col-xs-12 hc-deplist-box01 hc_border_bp">
 			<div class=" col-xs-3 hc-headbox">
-				<img src="img/head.png" />
+				<img ng-src="{{production.thumbUrl}}" style="height:70px;width:70px;" />
 			</div>
 			<div class=" col-xs-9 hc-deptext">
-				<h1>号码百事通</h1>
+				<h1>{{production.name}}</h1>
 				<span>
 					￥<input type="text" placeholder="请输入价格" ng-repeat="(key, value) in productFields | filter:{'field':'subtotal'}" ng-model = "value.value">
 				</span>
-				<strong>中国电信旗下电话传播渠道下电话传播渠道下电话传播渠道</strong>
+				<strong>{{production.description}}</strong>
 			</div>
 			<div class="hc-statebox">
 				<ul>
-					<li class="hc-state  ">
+					<li class="hc-state hc_on ">
 						<div class="hc-state01">
 						</div>
 						<span>
@@ -63,7 +63,7 @@
 
 			<li ng-repeat="(key, value) in productFields | filter:{'section':'part_a'}">
 				<h1>{{value.label}}:</h1>
-				<input type="text" placeholder="请输入{{value.instructions}}" ng-model = "value.value" ng-disabled="true"></input>
+				<input type="text" placeholder="请输入{{value.instructions}}" ng-model = "value.value"></input>
 				<a ng-show="value.label == '甲方名称'" ng-click="saveData()">
 					<img src="imgs/product_detail/mykh.png"/>
 				</a>

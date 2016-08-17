@@ -201,7 +201,7 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'booking_list.html',
       controller: 'BookingListCtrl'
     }).
-    when('/booking_detail/:id', {
+    when('/booking_detail/:id/:type', {
       templateUrl: 'booking_detail.html',
       controller: 'BookingDetailCtrl'
     }).

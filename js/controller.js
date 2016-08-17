@@ -157,15 +157,15 @@ interactiveControllers.controller('LoginCtrl', function($timeout,SaveToken,$scop
 	$scope.disableButton = false;
 	$scope.activeButton = '';
 
-	function startTimeOut(){
+	$scope.startTimeOut = function(){
 		$scope.counter = 60;
+		$scope.sendSms = '重发 '+$scope.counter;
+		$scope.disableButton = true;
+		$scope.activeButton = 'active-button';
 		$scope.onTimeout = function(){
 		    $scope.counter--;
 		    mytimeout = $timeout($scope.onTimeout,1000);
-		    //console.log($scope.counter);
-		    $scope.sendSms = '重发 '+$scope.counter;
-		    $scope.disableButton = true;
-		    $scope.activeButton = 'active-button';
+			$scope.sendSms = '重发 '+$scope.counter;
 		    if($scope.counter == 1){
 		    	$scope.stop();
 		    }
@@ -182,12 +182,12 @@ interactiveControllers.controller('LoginCtrl', function($timeout,SaveToken,$scop
 
 	$scope.getSms = function(){
 		if($scope.phoneNumber){
+			$scope.startTimeOut();
 			var data = 'mobile='+$scope.phoneNumber;
 			LogService.sms(data)
 			.success(function(data){
 				console.log(data);
 				if(data.success){
-					startTimeOut();
 				}
 				else{
 					alert('必须输入有效的号码');
@@ -196,6 +196,9 @@ interactiveControllers.controller('LoginCtrl', function($timeout,SaveToken,$scop
 			.error(function(status,error){
 				console.log(status);
 			})
+		}
+		else{
+			alert('请输入电话号码');
 		}
 		//startTimeOut();
 	}
@@ -255,12 +258,14 @@ interactiveControllers.controller('HomeCtrl', function($scope,$rootScope,FetchDa
 	{
 		id:0,
 		image: 'imgs/home/1.jpg',
-		text:'test'
+		text:'test',
+		url:''
 	},
 	{
 		id:1,
 		image: 'imgs/home/2.jpg',
-		text:'test'
+		text:'test',
+		url:'#/product/25'
 	}
 	];
 
@@ -364,14 +369,14 @@ interactiveControllers.controller('ClientListCtrl', function($scope,$rootScope,$
 	$scope.goto = function(x){
         var newHash = x;
         if ($location.hash() !== newHash) {
-			// set the $location.hash to `newHash` and
-			// $anchorScroll will automatically scroll to it
 			$location.hash(x).replace();
         }else {
-          // call $anchorScroll() explicitly,
-          // since $location.hash hasn't changed
-          $anchorScroll();
+          	$anchorScroll();
         }
+	}
+
+	$scope.goTo = function(url){
+		$location.path(url);
 	}
 
 	$scope.clients = [];
@@ -404,37 +409,54 @@ interactiveControllers.controller('ClientListCtrl', function($scope,$rootScope,$
 
 	$scope.onHammer = function (e,client,direction) {
 		e.preventDefault();
+		if(direction == 'top'){
+			$scope.currentClient = client;
+			$scope.top = 1;
+		}
+		else{
+			$scope.currentClient = client;
+			$scope.bottom = 1;
+		}
+	}
+
+	$scope.pushTop = function(e){
+		e.preventDefault();
+
 		var url = 'customers/top';
-		var data = 'id='+client.id;
+		var data = 'id='+$scope.currentClient.id;
 		var token = AuthenticationService.getAccessToken();
 		PushData.push(url,data,token)
 		.success(function(data){
-			if(direction == 'top'){
-				$scope.currentClient = client;
-				$scope.top = 1;
-			}
-			else{
-				$scope.currentClient = client;
-				$scope.bottom = 1;
-			}
+			$scope.currentClient.top = 1;
+			$scope.top = 0;
+			$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
 		})
 		.error(function(status,error){
 			console.log(status);
 		})
 	}
 
-	$scope.pushTop = function(e){
-		e.preventDefault();
-		$scope.currentClient.top = 1;
-		$scope.top = 0;
-		$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
-	}
-
 	$scope.pushBottom = function(e){
 		e.preventDefault();
-		$scope.currentClient.top = 0;
+
+		var url = 'customers/top';
+		var data = 'id='+$scope.currentClient.id;
+		var token = AuthenticationService.getAccessToken();
+		PushData.push(url,data,token)
+		.success(function(data){
+			$scope.currentClient.top = 0;
+			$scope.bottom = 0;
+			$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
+		})
+		.error(function(status,error){
+			console.log(status);
+		})
+	}
+
+	$scope.pullBack = function(e){
+		e.preventDefault();
+		$scope.top = 0;
 		$scope.bottom = 0;
-		$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
 	}
 });
 
@@ -463,9 +485,11 @@ interactiveControllers.controller('ClientAddCtrl', function($scope,$rootScope,Pu
 		var hasError = false;
 		var errorMsg = '';
 		for(var key in $scope.fields){
-			if($scope.fields[key].required&&!$scope.fields[key].value){
-				errorMsg  = errorMsg+' '+$scope.fields[key].label+',';
-				hasError = true;
+			if($scope.fields[key].required == '1'){
+				if (!$scope.fields[key].value){
+					errorMsg  = errorMsg+' '+$scope.fields[key].label+',';
+					hasError = true;
+				}
 			}
 		}
 		if(hasError){
@@ -552,7 +576,7 @@ interactiveControllers.controller('ClientChangeCtrl', function($location,$scope,
 			var token = AuthenticationService.getAccessToken();
 			PushData.push(url,data,token)
 			.success(function(data){
-				$location.path('/us');
+				$location.path('/client_list').replace();
 			})
 			.error(function(status,error){
 				console.log(status);
@@ -573,7 +597,7 @@ interactiveControllers.controller('ClientHistoryCtrl', function($scope,$rootScop
 	$scope.$emit('changeTM',change);
 });
 
-interactiveControllers.controller('ClientDetailCtrl', function($scope,$rootScope,AuthenticationService,FetchData,$route,$location) {
+interactiveControllers.controller('ClientDetailCtrl', function($scope,$rootScope,AuthenticationService,FetchData,$route,$location,$window) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -596,18 +620,26 @@ interactiveControllers.controller('ClientDetailCtrl', function($scope,$rootScope
 		console.log(error);
 	})
 
+	$scope.goTo = function(url){
+		$location.path(url).replace();
+	}
+
 	$scope.deletClient = function(){
-		var deletUrl = 'customers/delete?id='+id;
-		FetchData.getData(deletUrl,token)
-		.success(function(data){
-			console.log(data);
-			if(data.success){
-				$location.path('/client_list').replace();
-			}
-		})
-		.error(function(status,error){
-			console.log(status);
-		})
+		deleteUser = $window.confirm('确认删除客户?');
+	    if(deleteUser){
+	     	var deletUrl = 'customers/delete?id='+id;
+	     	FetchData.getData(deletUrl,token)
+	     	.success(function(data){
+	     		console.log(data);
+	     		if(data.success){
+	     			$location.path('/client_list').replace();
+	     		}
+	     	})
+	     	.error(function(status,error){
+	     		console.log(status);
+	     	})
+	    }
+
 	}
 });
 
@@ -627,6 +659,7 @@ interactiveControllers.controller('BookingDetailCtrl', function($scope,$rootScop
 		console.log(data);
 		$rootScope.loadingData = false;
 		$scope.orderInfo = data.order;
+		$scope.bookingStatus = $route.current.params.type;
 	})
 	.error(function(status,error){
 		console.log(status);
@@ -645,16 +678,70 @@ interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope) {
 	$scope.$emit('changeTM',change);
 });
 
-interactiveControllers.controller('OfflinePaymentCtrl', function($scope,$rootScope) {
+interactiveControllers.controller('OfflinePaymentCtrl', function($scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,$route,FetchData) {
 	$rootScope.loadingData = false;
 
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
 		type:3,
-		word:'二维码支付'
+		word:'线下支付'
 	}
 	$scope.$emit('changeTM',change);
+
+
+	$scope.imageUrl = '';
+
+    $scope.uploadFiles = function(file, errFiles) {
+        $scope.f = file;
+        $scope.errFile = errFiles && errFiles[0];
+        if (file) {
+            file.upload = Upload.upload({
+                url: PublicURL+'upload',
+                method:"post",
+                headers: {
+                    'Authorization': 'Bearer '+AuthenticationService.getAccessToken()
+                    //'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                file:file,
+       //          folder:'user_upload',
+       //          data: {
+			    //     //'awesomeThings': $scope.awesomeThings,
+			    //     'targetPath' : 'user_upload'
+			    // }
+            });
+
+            file.upload.then(function (response) {
+                $timeout(function () {
+                    file.result = response.data;
+                    console.log(response);
+                    $scope.imageUrl = response.data.url;
+                    $scope.imageID = response.data.id;
+                });
+            }, function (response) {
+                if (response.status > 0)
+                    $scope.errorMsg = response.status + ': ' + response.data;
+                console.log($scope.errorMsg);
+            }, function (evt) {
+                file.progress = Math.min(100, parseInt(100.0 * 
+                                         evt.loaded / evt.total));
+                console.log(file.progress);
+            });
+        }   
+    }
+
+    $scope.submit = function(){
+    	var id = $route.current.params.id
+    	var url = 'orders/instrument?id='+id+'&instrument='+$scope.imageID;
+    	var token = AuthenticationService.getAccessToken();
+    	FetchData.getData(url,token)
+    	.success(function(data){
+    		alert('success');
+    	})
+    	.error(function(status,error){
+    		console.log(status);
+    	})
+    }
 });
 
 interactiveControllers.controller('DiscountCtrl', function($scope,$rootScope) {
@@ -734,8 +821,17 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function($scope,$rootS
 	//$scope.bookingDetails = [];
 
 	if(NewOrder.getOrderData().length>0){
-		$rootScope.loadingData = false;
 		$scope.productFields = NewOrder.getOrderData();
+		FetchData.getData('orders/create?id='+$routeParams.id,AuthenticationService.getAccessToken())
+		.success(function(data){
+			console.log(data);
+			$rootScope.loadingData = false;
+			$scope.production = data.production;
+		})
+		.error(function(status,data){
+			console.log(data);
+			console.log(status);
+		})
 	}
 	else{
 		FetchData.getData('orders/create?id='+$routeParams.id,AuthenticationService.getAccessToken())
@@ -743,36 +839,43 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function($scope,$rootS
 			console.log(data);
 			$rootScope.loadingData = false;
 			$scope.productFields = data.fields;
+			$scope.production = data.production;
 		})
 		.error(function(status,data){
 			console.log(data);
 			console.log(status);
 		})
 	}
-
+	$scope.disableButton = false;
 	$scope.$on('pushBookingForm',function(){
 		//console.log('pushForm');
-		var url = 'orders/create?id='+$routeParams.id;
-		var formData = '';
-		for(var i=0;i<$scope.productFields.length;i++){
-			if(i+1 == $scope.productFields.length){
-				formData = formData+$scope.productFields[i].prefix+$scope.productFields[i].field+'='+$scope.productFields[i].value
-			}
-			else{
+		if(!$scope.disableButton){
+			$scope.disableButton = true;
+			var url = 'orders/create?id='+$routeParams.id;
+			var formData = '';
+			for(var i=0;i<$scope.productFields.length;i++){
+				// if(i+1 == $scope.productFields.length){
+				// 	formData = formData+$scope.productFields[i].prefix+$scope.productFields[i].field+'='+$scope.productFields[i].value
+				// }
+				// else{
 				formData = formData+$scope.productFields[i].prefix+$scope.productFields[i].field+'='+$scope.productFields[i].value+'&'
+				//}
+				
 			}
-			
+			formData = formData + '&customer_id=' + $scope.productFields.customer_id;
+			console.log(url);
+			console.log(formData);
+			PushData.push(url,formData,AuthenticationService.getAccessToken())
+			.success(function(data){
+				console.log(data);
+				$location.path('/us');
+			})
+			.error(function(error,data){
+				console.log(error);
+				$scope.disableButton = false;
+			})
 		}
-		console.log(url);
-		console.log(formData);
-		PushData.push(url,formData,AuthenticationService.getAccessToken())
-		.success(function(data){
-			console.log(data);
-			$location.path('/us');
-		})
-		.error(function(error,data){
-			console.log(error);
-		})
+
 	})
 
 	$scope.saveData = function(){
@@ -836,6 +939,7 @@ interactiveControllers.controller('InsertUserCtrl', function($window,$scope,$roo
 				}
 			}
 			console.log(necessaryUserData);
+			necessaryUserData.customer_id = data.customer.id;
 			NewOrder.saveOrderData(necessaryUserData);
 			$window.history.back();
 		})
@@ -861,7 +965,7 @@ interactiveControllers.controller('CommunityCtrl', function($scope,$rootScope,Fe
 	FetchData.getPublicAPI('community/articles',function(error,data){
 		if (data) {
 			console.log(data);
-			$scope.articles = data.articles;
+			$scope.articles = data.articles.data;
 			$rootScope.loadingData = false;
 		}
 		else if(!data&&!error){

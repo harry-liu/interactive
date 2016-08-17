@@ -14,7 +14,7 @@
 				</div>
 			</div>
 		</a>
-		<a class="col-xs-4 hc-icon02" ng-click="openLocation = !openLocation">
+<!-- 		<a class="col-xs-4 hc-icon02" ng-click="openLocation = !openLocation">
 			全国
 			<div class="animate list-container" ng-show="openLocation">
 				<div class="list-item">
@@ -27,7 +27,7 @@
 					114
 				</div>
 			</div>
-		</a>
+		</a> -->
 		<a class="col-xs-4 hc-icon03">
 			热度
 		</a>
@@ -41,7 +41,7 @@
 		<div class="row hxj_searchlist">
 			<div class="col-xs-4 xj_search_left">
 				<div class="xj_search_img" style="background-image:url({{data.thumbUrl}})">
-					<div class="xj_btn">开发</div>
+					<div class="xj_btn">{{data.tag[0]}}</div>
 				</div>
 			</div>
 			<div class="col-xs-8 hxj_search_right">

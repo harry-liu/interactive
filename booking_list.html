@@ -20,9 +20,9 @@
 	
 	<div class="red-bar animate" ng-class="'red-bar-'+tabStatus"></div>
 
-	<div class = "bookings-container bookings-container-1 animate" ng-show="tabStatus == 1">
+	<div class = "bookings-container bookings-container-1 animate" ng-show="tabStatus == 1" hm-swipeLeft="tabStatus = 2" hm-dragLeft="tabStatus = 2">
 
-		<a href="#/booking_detail/{{booking.id}}" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':1} as filtered1">
+		<a href="#/booking_detail/{{booking.id}}/{{booking.status}}" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':1} as filtered1">
 
 			<div class="col-xs-12 xj_orderlist" >
 				<div class="col-xs-3" style="padding-right: 0;" >
@@ -52,9 +52,9 @@
 
 	</div>
 
-	<div class = "bookings-container bookings-container-2 animate" ng-show="tabStatus == 2">
+	<div class = "bookings-container bookings-container-2 animate" ng-show="tabStatus == 2" hm-swipeLeft="tabStatus = 3" hm-dragLeft="tabStatus = 3" hm-swipeRight="tabStatus = 1" hm-dragRight="tabStatus = 1">
 
-		<a href="#/booking_detail/{{booking.id}}" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':2} as filtered2">
+		<a href="#/booking_detail/{{booking.id}}/{{booking.status}}" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':2} as filtered2">
 			<div class="col-xs-12 xj_orderlist" >
 				<div class="col-xs-3" style="padding-right: 0;" >
 					<div class="xj_img" ng-style="{'background-image':'url('+booking.image+')'}">	
@@ -83,9 +83,9 @@
 
 	</div>
 
-	<div class = "bookings-container bookings-container-3 animate" ng-show="tabStatus == 3">
+	<div class = "bookings-container bookings-container-3 animate" ng-show="tabStatus == 3" hm-swipeLeft="tabStatus = 4" hm-dragLeft="tabStatus = 4" hm-swipeRight="tabStatus = 2" hm-dragRight="tabStatus = 2">
 
-		<a href="#/booking_detail/{{booking.id}}" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':3} as filtered3">
+		<a href="#/booking_detail/{{booking.id}}/{{booking.status}}" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':3} as filtered3">
 			<div class="col-xs-12 xj_orderlist" >
 				<div class="col-xs-3" style="padding-right: 0;" >
 					<div class="xj_img" ng-style="{'background-image':'url('+booking.image+')'}">	
@@ -114,9 +114,9 @@
 
 	</div>
 
-	<div class = "bookings-container bookings-container-4 animate" ng-show="tabStatus == 4">
+	<div class = "bookings-container bookings-container-4 animate" ng-show="tabStatus == 4" hm-swipeRight="tabStatus = 3" hm-dragRight="tabStatus = 3">
 
-		<a href="#/booking_detail/{{booking.id}}" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':4} as filtered4">
+		<a href="#/booking_detail/{{booking.id}}/{{booking.status}}" ng-repeat="booking in bookingList | orderBy:'-created_at' | filter:{'status':4} as filtered4">
 			<div class="col-xs-12 xj_orderlist" >
 				<div class="col-xs-3" style="padding-right: 0;" >
 					<div class="xj_img" ng-style="{'background-image':'url('+booking.image+')'}">	

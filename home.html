@@ -3,32 +3,40 @@
 		<div style="height:167px;">
 			<uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
 				<uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
-					<img ng-src="{{slide.image}}" style="margin:auto;height:167px" >
+					<a ng-href="{{slide.url}}">
+						<img ng-src="{{slide.image}}" style="margin:auto;height:167px" >
+					</a>
 				</uib-slide>
 			</uib-carousel>
 		</div>
-		<a href="#product/2">
+		<a href="#product/21">
 			<div class="col-xs-3 home-services">
 				<img src="imgs/home/114.png" alt="">
 				<p>114商机通</p>
 			</div>
 		</a>
-		<div class="col-xs-3 home-services">
-			<img src="imgs/home/huicong.png" alt="">
-			<p>慧聪网</p>
-		</div>
-		<div class="col-xs-3 home-services">
-			<img src="imgs/home/lift_adv.png" alt="">
-			<p>官网建设</p>
-		</div>
-		<div class="col-xs-3 home-services">
-			<img src="imgs/home/search.png" alt="">
-			<p>APP开发</p>
-		</div>
+		<a href="#product/27">
+			<div class="col-xs-3 home-services">
+				<img src="imgs/home/huicong.png" alt="">
+				<p>慧聪网</p>
+			</div>
+		</a>
+		<a href="#product/3">
+			<div class="col-xs-3 home-services">
+				<img src="imgs/home/lift_adv.png" alt="">
+				<p>官网建设</p>
+			</div>
+		</a>
+		<a href="#product/9">
+			<div class="col-xs-3 home-services">
+				<img src="imgs/home/search.png" alt="">
+				<p>APP开发</p>
+			</div>
+		</a>
 		<a href="#home/discount">
 			<div class="discount-container">
 				<div class = "col-xs-4">
-					<img src="imgs/home/discount.png" alt="">
+					<img src="imgs/home/discount.jpg" alt="">
 				</div>
 				<div class="col-xs-8">
 					<span class="start-time">距离开始</span>
@@ -43,7 +51,7 @@
 		</a>
 
 		<div class="task-container col-xs-12">
-			<a href="#product/1">
+			<a href="#product/5">
 				<div class="col-xs-6" style = "border-right:1px solid #f5f5f5;border-bottom:1px solid #f5f5f5;background-image:url('imgs/home/background_1.png');">
 					<p class="title">视觉设计</p>
 					<p class="words">非凡视觉，眼球经济</p>
@@ -51,7 +59,7 @@
 					</span>
 				</div>
 			</a>
-			<a href="#">
+			<a href="#product/4">
 				<div class="col-xs-6" style = "border-bottom:1px solid #f5f5f5;background-image:url('imgs/home/background_2.png');">
 					<p class="title">电商交易平台</p>
 					<p class="words">模块开发，自由定制</p>
@@ -59,7 +67,7 @@
 					</span>
 				</div>
 			</a>
-			<a href="#">
+			<a href="#product/22">
 				<div class="col-xs-6" style = "border-right:1px solid #f5f5f5;background-image:url('imgs/home/background_3.png');">
 					<p class="title">微信营销</p>
 					<p class="words">丰富应用，个性营销</p>
@@ -67,7 +75,7 @@
 					</span>
 				</div>
 			</a>
-			<a href="#">
+			<a href="#product/28">
 				<div class="col-xs-6" style = "background-image:url('imgs/home/background_4.png');">
 					<p class="title">大数据营销诊断</p>
 					<p class="words">因为需求，所以精准</p>
@@ -96,7 +104,7 @@
 		<div class="row hxj_searchlist">
 			<div class="col-xs-4 xj_search_left">
 				<div class="xj_search_img" style="background-image:url({{data.thumbUrl}})">
-					<div class="xj_btn">开发</div>
+					<div class="xj_btn">{{data.tag[0]}}</div>
 				</div>
 			</div>
 			<div class="col-xs-8 hxj_search_right">

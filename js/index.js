@@ -39,7 +39,7 @@
 //     receivedEvent: function(id) {
 
 //         // document.addEventListener("backbutton", function(e){
-//         //     if(window.location.hash=='#/home'||window.location.hash=='#/community'||window.location.hash=='#/us'||window.location.hash=='#/disconnect'){
+//         //     if(window.location.hash=='#/home'||window.location.hash=='#/community'||window.location.hash=='#/us'||window.location.hash=='#/disconnect'||window.location.hash=='#/teach'){
 //         //         e.preventDefault();
 //         //         navigator.app.exitApp();
 //         //     } else {
