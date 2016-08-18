@@ -7,13 +7,12 @@
 		</div>
 		<div>
 			<p>西安互动未来信息技术有限公司</p>
-			<p>中国银行西安市高新支行</p>
-			<p style="margin-bottom: 0;">3101040160000079993</p>
+			<p>西安银行股份有限公司科技路支行</p>
+			<p style="margin-bottom: 0;">591011580000182705</p>
 		</div>
 	</div>
-	<div class=" btn btn-block xj_btn" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
-          accept="image/*" ngf-max-height="1000" ngf-max-size="10MB" ng-show="!imageUrl">添加凭证</div>
-    <img ng-src="{{imageUrl}}" alt="" style="width:100%">
-    <div class=" btn btn-block xj_btn" style="margin:20px 0" ng-click="submit()" ng-show="!imageUrl">提交</div>
+	<div class=" btn btn-block xj_btn" type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-height="10000" ngf-max-size="10MB" ngf-resize="{height: 600}">添加凭证</div>
+    <img ng-src="{{imageUrl}}" style="width:100%">
+    <div class=" btn btn-block xj_btn" style="margin:20px 0" ng-click="submit()">提交</div>
 	<!-- <div class="xj_picture" style="background-image:url({{imageUrl}})"></div> -->
 </div>

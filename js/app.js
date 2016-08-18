@@ -1,5 +1,21 @@
 var app = angular.module('hudongquan', ['interactiveControllers','ngRoute','ngAnimate','ui.bootstrap','ngTouch','ngFileUpload','hmTouchEvents','localStorageService','APIService']);
 
+app.directive('focusMe', function($timeout) {
+  return {
+    scope: { trigger: '@focusMe' },
+    link: function(scope, element) {
+      scope.$watch('trigger', function(value) {
+        if(value === "true") { 
+          // console.log('trigger',value);
+          $timeout(function() {
+            element[0].focus(); 
+          });
+        }
+      });
+    }
+  };
+});
+
 app.constant('ProductContImageReplace', 'http://192.168.1.16');
 
 app.factory('NewOrder', [function(){

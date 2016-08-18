@@ -12,7 +12,7 @@
 			<div class=" col-xs-9 hc-deptext">
 				<h1>{{production.name}}</h1>
 				<span>
-					￥<input type="text" placeholder="请输入价格" ng-repeat="(key, value) in productFields | filter:{'field':'subtotal'}" ng-model = "value.value">
+					￥<input type="text"  ng-repeat="(key, value) in productFields | filter:{'field':'subtotal'}" ng-model = "value.value" style="    font-size: 21px;width: 138px;border-bottom: 1px #868686 solid;"  focus-me="true">
 				</span>
 				<strong>{{production.description}}</strong>
 			</div>
@@ -79,10 +79,23 @@
 
 		<ul class="hc_center col-xs-12">
 
+			<li ng-repeat="(key, value) in productFields | filter:{'section':'extra'}" ng-switch on="value.slug">
+				<h1>{{value.label}}</h1>
+				<input type="text" placeholder="请输入{{value.instructions}}" ng-model = "value.value" ng-switch-default>
+				</input>
+				<select ng-switch-when="select" ng-model="value.value">
+					<option ng-repeat="option in value.options" value="{{option.id}}">{{option.name}}</option>
+				</select>
+				<textarea placeholder="请输入{{value.instructions}}" cols="30" rows="3" ng-switch-when="textarea" style=" width: 100%;margin: 10px 0;border-radius: 7px;" ng-model = "value.value"></textarea>
+			</li>
+
 			<li ng-repeat="(key, value) in productFields | filter:{'section':'other'}" ng-switch on="value.slug">
 				<h1>{{value.label}}</h1>
 				<input type="text" placeholder="请输入{{value.instructions}}" ng-model = "value.value" ng-switch-default>
 				</input>
+				<select ng-switch-when="select" ng-model="value.value">
+					<option ng-repeat="option in value.options" value="{{option.id}}">{{option.name}}</option>
+				</select>
 				<textarea placeholder="请输入{{value.instructions}}" cols="30" rows="3" ng-switch-when="textarea" style=" width: 100%;margin: 10px 0;border-radius: 7px;" ng-model = "value.value"></textarea>
 			</li>
 

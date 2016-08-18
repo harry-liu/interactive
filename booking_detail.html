@@ -92,6 +92,13 @@
 		</div>
 
 		<ul class="hc_center col-xs-12">
+			<li class="hc_border_no" ng-repeat="(key, value) in fields | filter:{'section':'extra'}">
+				<h1>{{value.label}}</h1>
+				<p id="">
+					{{value.value}}
+				</p>
+			</li>
+
 			<li class="hc_border_no" ng-repeat="(key, value) in fields | filter:{'section':'other'}">
 				<h1>{{value.label}}</h1>
 				<p id="">

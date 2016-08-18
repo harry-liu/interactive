@@ -204,7 +204,7 @@ body {
 	top: 0;
 	left: 0;
 	height: 44px;
-	background-color: #f2d152;
+	background-color: #ffd500;
 	z-index: 100;
 }
 
@@ -1584,7 +1584,7 @@ body {
 
 
 /*reset*/
-.hc-bg-yellow{background: #f2d152 !important;}
+.hc-bg-yellow{background: #ffd500 !important;}
 .hc_border_b {
 	border-bottom: 1px solid #f5f5f5 !important;
 }
@@ -2851,11 +2851,12 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 
 .hc-deplist-container .hc-deptext strong {
 	display: block;
-	height: 26px;
+	height: auto;
 	line-height: 26px;
 	font-size: 14px;
 	font-weight: normal;
 	color: #868686;
+	margin-top: 10px;
 }
 
 .hc-deplist-container .hc-statebox {
@@ -3549,6 +3550,7 @@ border: 1px solid #ff0000; color: #FF0000; font-size: 10px !important;border-rad
 
 .w-client-container .w-myclient-numberlist ul li {
 	list-style: none;
+	font-size: 13px;
 }
 
 .w-client-container .w-myclient-numberlist li {

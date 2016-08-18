@@ -27,6 +27,9 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 	$scope.$on('setBottomMenuImage', function(e,data){
 		$scope.activeBottomMenuImage = data;
 	});
+
+	$rootScope.tabStatus = 1;
+
 	$scope.goBackClicked = function(){
 		$window.history.back();
 	}
@@ -316,7 +319,7 @@ interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$r
 		$rootScope.loadingData = false;
 		$scope.bookingList = data.orders;
 		$scope.updateNumberUnreadMessage();
-		$scope.updateUnreadMessage('1');
+		$scope.updateUnreadMessage($rootScope.tabStatus);
 		console.log($scope.bookingList);
 	})
 	.error(function(status,error){
@@ -350,8 +353,8 @@ interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$r
 		.error(function(status,error){
 			console.log('something wrong');
 		})
-
 	}
+
 	$scope.getUnreadMessage = function(status){
 		var number = 0;
 		angular.forEach($filter('filter')($scope.bookingList,{'status':status,'has_read':0}),function(){
@@ -530,7 +533,7 @@ interactiveControllers.controller('ClientAddCtrl', function($scope,$rootScope,Pu
 	})
 });
 
-interactiveControllers.controller('ClientChangeCtrl', function($location,$scope,$rootScope,FetchData,AuthenticationService,$route,PushData) {
+interactiveControllers.controller('ClientChangeCtrl', function($window,$location,$scope,$rootScope,FetchData,AuthenticationService,$route,PushData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -557,7 +560,7 @@ interactiveControllers.controller('ClientChangeCtrl', function($location,$scope,
 		var hasError = false;
 		var errorMsg = '';
 		for(var key in $scope.fields){
-			if($scope.fields[key].required&&!$scope.fields[key].value){
+			if($scope.fields[key].required=='1'&&!$scope.fields[key].value){
 				errorMsg  = errorMsg+' '+$scope.fields[key].label+',';
 				hasError = true;
 			}
@@ -584,7 +587,7 @@ interactiveControllers.controller('ClientChangeCtrl', function($location,$scope,
 			var token = AuthenticationService.getAccessToken();
 			PushData.push(url,data,token)
 			.success(function(data){
-				$location.path('/client_list').replace();
+				$window.history.back();
 			})
 			.error(function(status,error){
 				console.log(status);
@@ -640,7 +643,7 @@ interactiveControllers.controller('ClientDetailCtrl', function($scope,$rootScope
 	     	.success(function(data){
 	     		console.log(data);
 	     		if(data.success){
-	     			$location.path('/client_list').replace();
+	     			$window.history.back();
 	     		}
 	     	})
 	     	.error(function(status,error){
@@ -834,7 +837,9 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function($scope,$rootS
 		word:'产品订单'
 	}
 	$scope.$emit('changeTM',change);
-	//$scope.bookingDetails = [];
+
+	//angular.element('#').trigger('focus');
+	//angular.element('#money-inut').focus();
 
 	if(NewOrder.getOrderData().length>0){
 		$scope.productFields = NewOrder.getOrderData();

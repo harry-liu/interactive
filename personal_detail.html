@@ -2,8 +2,7 @@
 	<div class="row hc_border_b">
 		<div class="col-xs-12 hc_perlist hc_data01">
 			<h1 class="pull-left hc_">头像</h1>
-			<div class=" pull-right hc_per_head " type="file" ngf-select="uploadFiles($file, $invalidFiles)"
-          accept="image/*" ngf-max-height="1000" ngf-max-size="10MB">
+			<div class=" pull-right hc_per_head " type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-height="10000" ngf-max-size="10MB" ngf-resize="{height: 300}" >
 				<img ng-src="{{user.avatarUrl||'imgs/personal_detail/head.jpg'}}" />
 			</div>
 <!-- 			  <button type="file" ngf-select="uploadFiles($file, $invalidFiles)"
