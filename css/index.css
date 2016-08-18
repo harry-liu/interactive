@@ -204,7 +204,7 @@ body {
 	top: 0;
 	left: 0;
 	height: 44px;
-	background-color: #ffeb00;
+	background-color: #f2d152;
 	z-index: 100;
 }
 
@@ -738,7 +738,7 @@ body {
 
 .lk-home-container .discount-container .time-container {
 	color: red;
-	padding: 3px;
+	padding: 2px;
 	border: 1px solid #cccccc;
 	border-radius: 5px;
 }
@@ -1344,6 +1344,7 @@ body {
     line-height: 25px;
     border-bottom: 1px solid #f5f5f5;
     padding-bottom: 15px;
+    height: 35px;
 }
 
 .w-container .w-product-pro img {
@@ -1583,7 +1584,7 @@ body {
 
 
 /*reset*/
-.hc-bg-yellow{background: #FFFF00 !important;}
+.hc-bg-yellow{background: #f2d152 !important;}
 .hc_border_b {
 	border-bottom: 1px solid #f5f5f5 !important;
 }
@@ -2124,14 +2125,14 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 .hc_pcenter .hc_khtitle {
 	background: url(../imgs/us/customer_icon.png) no-repeat 15px center;
 	background-size: 26px;
-	padding-left: 64px;
+	padding-left: 59px;
 	border-top: 1px solid #f5f5f5;
 	border-bottom: 1px solid #f5f5f5;
 	height: 50px;
 }
 
 .hc_pcenter .hc_khtitle h1 {
-	font-size: 14px;
+	font-size: 13px;
 	line-height: 50px;
 	margin: 0;
 	float: left;
@@ -2169,7 +2170,7 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 
 .hc_pcenter .hc_perlist .hc_menuimg03 {
 	float: left;
-	width: 50px;
+	width: 45px;
 	height: 50px;
 	background: url(../imgs/us/order_icon.png) no-repeat left center;
 	background-size: 24px;
@@ -2177,7 +2178,7 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 
 .hc_pcenter .hc_perlist h1 {
 	float: left;
-	font-size: 14px;
+	font-size: 13px;
 	color: #575757;
 	line-height: 50px;
 	margin: 0;
@@ -2209,7 +2210,7 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 
 .hc_pcenter .hc_perlist .hc_menuimg04 {
 	float: left;
-	width: 50px;
+	width: 45px;
 	height: 50px;
 	background: url(../imgs/us/test_icon.png) no-repeat left center;
 	background-size: 24px;
@@ -2217,7 +2218,7 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 
 .hc_pcenter .hc_perlist .hc_menuimg05 {
 	float: left;
-	width: 50px;
+	width: 45px;
 	height: 50px;
 	background: url(../imgs/us/recommend_icon.png) no-repeat left center;
 	background-size: 24px;
@@ -2225,7 +2226,7 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 
 .hc_pcenter .hc_perlist .hc_menuimg06 {
 	float: left;
-	width: 50px;
+	width: 45px;
 	height: 50px;
 	background: url(../imgs/us/discount_icon.png) no-repeat left center;
 	background-size: 24px;
@@ -2233,7 +2234,7 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 
 .hc_pcenter .hc_perlist .hc_menuimg07 {
 	float: left;
-	width: 50px;
+	width: 45px;
 	height: 50px;
 	background: url(../imgs/us/setup_icon.png) no-repeat left center;
 	background-size: 24px;
