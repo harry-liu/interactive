@@ -1290,9 +1290,6 @@ interactiveControllers.controller('PersonalDetailCtrl', function($scope,$rootSco
     			console.log(status);
     		})
     	}
-
-
-
     })
 });
 
