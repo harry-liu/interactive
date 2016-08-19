@@ -13,23 +13,22 @@
 			智能排序
 		</div>
 	</div> -->
-<!-- 	<a href="#/example_detail/1">
+	<a href="#/example_detail/1" ng-repeat="example in examples">
 		<div class="row xj_anli">
 			<div class="col-xs-4 xj_anli_left">
-				<div class="xj_anli_img" style="background-image: url(imgs/example/img01.png)"></div>
+				<div class="xj_anli_img" style="background-image: url({{example.production.thumbUrl}})"></div>
 			</div>
 			<div class="col-xs-8 xj_anli_right">
-				<p class="xj_anli_p1">电信114</p>
-				<p class="xj_anli_p2">中国电信旗下电话传播渠道，日活跃40万人...</p>
-				<span>2016.7.16</span>
-				<span>14:45</span>
+				<p class="xj_anli_p1">{{example.production.name}}</p>
+				<p class="xj_anli_p2">{{example.production.description}}</p>
+				<span>{{example.created_at}}</span>
 				<div class="pull-right" style="color: #7C7C7C;">
 				  <img src="imgs/example/huo.png" width="12px" style="position: relative;top: -3px;"/>10000
 				</div>
 			</div>
 		</div>
-	</a> -->
-	<div class="row did-not-found">
+	</a>
+	<div class="row did-not-found" ng-show="examples==0">
 		<img src="imgs/404.png" alt="">
 		<p>暂无成交记录</p>
 	</div>

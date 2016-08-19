@@ -596,9 +596,7 @@ interactiveControllers.controller('ClientChangeCtrl', function($window,$location
 	})
 });
 
-interactiveControllers.controller('ClientHistoryCtrl', function($scope,$rootScope) {
-	$rootScope.loadingData = false;
-
+interactiveControllers.controller('ClientHistoryCtrl', function($scope,$rootScope,FetchData,AuthenticationService,$route) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -606,6 +604,19 @@ interactiveControllers.controller('ClientHistoryCtrl', function($scope,$rootScop
 		word:'成交记录'
 	}
 	$scope.$emit('changeTM',change);
+
+	var id = $route.current.params.id;
+	var url = 'customers/orders?id='+id;
+	var token = AuthenticationService.getAccessToken();
+	FetchData.getData(url,token)
+	.success(function(data){
+		console.log(data);
+		$scope.orders = data.orders;
+		$rootScope.loadingData = false;
+	})
+	.error(function(status,error){
+		console.log(status);
+	})
 });
 
 interactiveControllers.controller('ClientDetailCtrl', function($scope,$rootScope,AuthenticationService,FetchData,$route,$location,$window) {
@@ -1112,9 +1123,7 @@ interactiveControllers.controller('SearchListCtrl', function($location,$scope,$r
 	//$scope.data = getData;
 });
 
-interactiveControllers.controller('ExampleCtrl', function($scope,$rootScope) {
-	$rootScope.loadingData = false;
-
+interactiveControllers.controller('ExampleCtrl', function($scope,$rootScope,FetchData,AuthenticationService,$route) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 
@@ -1123,6 +1132,19 @@ interactiveControllers.controller('ExampleCtrl', function($scope,$rootScope) {
 		word:'成交记录'
 	}
 	$scope.$emit('changeTM',change);
+
+	var id = $route.current.params.id;
+	var url = "productions/orders?id="+id;
+	var token = AuthenticationService.getAccessToken();
+	FetchData.getData(url,token)
+	.success(function(data){
+		console.log(data);
+		$scope.examples = data.orders;
+		$rootScope.loadingData = false;
+	})
+	.error(function(status,error){
+		console.log(status);
+	})
 });
 
 interactiveControllers.controller('ExampleDetailCtrl', function($scope,$rootScope) {
