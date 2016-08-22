@@ -133,16 +133,10 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 		$scope.$broadcast ('pushPersonalInformation');
 	}
 
-	$scope.getMenu = function(){
-		var url = "categories";
-		FetchData.getPublicAPI(url,function(error,data){
-			if(data){
-				$scope.menus = data.categories;
-				console.log($scope.menus);
-			}
-		})
-	}
-	$scope.getMenu();
+	$scope.$on('setTM',function(e,data){
+		$scope.menus = data;
+		console.log($scope.menus);
+	})
 
 	$scope.goTo = function(id){
 		if(id){
@@ -208,27 +202,12 @@ interactiveControllers.controller('LoginCtrl', function($timeout,SaveToken,$scop
 		else{
 			alert('请输入电话号码');
 		}
-		//startTimeOut();
 	}
 
 	$scope.login = function(){
 		if($scope.phoneNumber&&$scope.password){
-			//console.log('login');
 			var user = $scope.phoneNumber;
 			var code = $scope.password;
-			// LogService.login(user).success(function(data){
-			// 	//console.log('login success');
-			// 	console.log(data);
-			// 	SaveToken(data);
-			// 	$location.path($rootScope.nextUrl).replace();
-			// 	//$location.path('/us');
-			// }).error(function(status,data){
-			// 	console.log(status);
-			// 	if(data = 500){
-			// 		console.log('error username or password');
-			// 	}
-			// 	console.log(data);
-			// })
 			LogService.login(user,code)
 			.success(function(data){
 				console.log(data);
@@ -251,15 +230,15 @@ interactiveControllers.controller('NewUserCtrl', function($scope,$rootScope) {
 	$scope.$emit('hideBM',false);
 });
 
-interactiveControllers.controller('HomeCtrl', function($scope,$rootScope,FetchData) {
+interactiveControllers.controller('HomeCtrl', function(listData,menuData,$scope,$rootScope,FetchData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',true);
 	$scope.$emit('setBottomMenuImage','home');
-
 	var change = {
 		type:1
 	}
 	$scope.$emit('changeTM',change);
+	$scope.$emit('setTM',menuData);
 
 	$scope.myInterval = 6000;
 	$scope.slides = [
@@ -277,13 +256,8 @@ interactiveControllers.controller('HomeCtrl', function($scope,$rootScope,FetchDa
 	}
 	];
 
-	var url = "categories/get?id=5";
-	FetchData.getPublicAPI(url,function(error,data){
-		if(data){
-			$scope.dataList = data.productions;
-			$rootScope.loadingData = false;
-		}
-	})
+	$scope.dataList = listData;
+	$rootScope.loadingData = false;
 });
 
 interactiveControllers.controller('MyDiscountCtrl', function($scope,$rootScope) {
@@ -340,15 +314,9 @@ interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$r
 		PushData.push(url,data,token)
 		.success(function(data){
 			angular.forEach($filter('filter')($scope.bookingList,{'status':status,'has_read':0}),function(value,key){
-				// if (this) {
-				// 	this.hasRead = true;
-				// }
 				value.has_read = 1;
-				// console.log(value);
-				// console.log(key);
 			})
 			$scope.updateNumberUnreadMessage();
-			//console.log($filter('filter')($scope.bookingList,{'hasRead':false})[0]);
 		})
 		.error(function(status,error){
 			console.log('something wrong');
@@ -661,7 +629,7 @@ interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope) {
 	$scope.$emit('changeTM',change);
 });
 
-interactiveControllers.controller('OfflinePaymentCtrl', function($scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,$route,FetchData) {
+interactiveControllers.controller('OfflinePaymentCtrl', function($window,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,$route,FetchData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -677,6 +645,7 @@ interactiveControllers.controller('OfflinePaymentCtrl', function($scope,$rootSco
 		console.log(data);
 		$rootScope.loadingData = false;
 		$scope.imageUrl = data.order.instrument;
+		$scope.imageID = data.order.payment_instrument_id;
 	})
 	.error(function(status,error){
 		console.log(status);
@@ -691,14 +660,8 @@ interactiveControllers.controller('OfflinePaymentCtrl', function($scope,$rootSco
                 method:"post",
                 headers: {
                     'Authorization': 'Bearer '+AuthenticationService.getAccessToken()
-                    //'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                file:file,
-       //          folder:'user_upload',
-       //          data: {
-			    //     //'awesomeThings': $scope.awesomeThings,
-			    //     'targetPath' : 'user_upload'
-			    // }
+                file:file
             });
 
             file.upload.then(function (response) {
@@ -727,6 +690,7 @@ interactiveControllers.controller('OfflinePaymentCtrl', function($scope,$rootSco
     	FetchData.getData(url,token)
     	.success(function(data){
     		alert('success');
+    		$window.history.back();
     	})
     	.error(function(status,error){
     		console.log(status);

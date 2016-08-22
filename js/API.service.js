@@ -1,10 +1,10 @@
 var APIService = angular.module('APIService', []);
 
 APIService.factory('PublicURL', function(){
-  return 'http://192.168.1.16/api/';
+  //return 'http://192.168.1.16/api/';
   //return 'http://io52.com/api/';
   //return 'http://192.168.40.27/api/';
-  //return 'http://hdq.hudongcn.com/api/';
+  return 'http://hdq.hudongcn.com/api/';
 })
 
 //save token into localstorage
@@ -68,7 +68,6 @@ APIService.factory('FetchData', function FetchData($http,PublicURL) {
           }
         })
       }
-
     };  
 });
 
@@ -134,8 +133,7 @@ APIService.factory('LogService', function LogService($http,PublicURL) {
 });
 
 APIService.service('GetDataFromAPI', ['AuthenticationService', function(AuthenticationService){
-	this.getData = function(url,token,type){
-    return 'test';
-  }
-  
+    this.getData = function(url,token,type){
+        return 'test';
+    }
 }])

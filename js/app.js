@@ -3,30 +3,31 @@ var app = angular.module('hudongquan', ['interactiveControllers','ngRoute','ngAn
 app.directive('focusMe', function($timeout) {
 	return {
 	scope: { trigger: '@focusMe' },
-	link: function(scope, element) {
-		scope.$watch('trigger', function(value) {
-		if(value === "true") { 
-			// console.log('trigger',value);
-			$timeout(function() {
-			element[0].focus(); 
+		link: function(scope, element) {
+			scope.$watch('trigger', function(value) {
+			if(value === "true") { 
+				// console.log('trigger',value);
+				$timeout(function() {
+				element[0].focus(); 
+				});
+			}
 			});
 		}
-		});
-	}
 	};
 });
 
-app.constant('ProductContImageReplace', 'http://192.168.1.16');
+//app.constant('ProductContImageReplace', 'http://192.168.1.16');
+app.constant('ProductContImageReplace', 'http://hdq.hudongcn.com');
 
 app.factory('NewOrder', [function(){
 	var order;
 	return {
-	saveOrderData:function(data){
-		order = data;
-	},
-	getOrderData:function(){
-		return order;
-	}
+		saveOrderData:function(data){
+			order = data;
+		},
+		getOrderData:function(){
+			return order;
+		}
 	}
 }])
 
@@ -38,10 +39,10 @@ app.run(['$rootScope', '$location','locals','AuthenticationService','FetchData',
 	//check black cover is opern
 	if(!$rootScope.hideBlackCover){
 		if(next.originalPath == "/search_list/:id"||next.originalPath == "/product_list/:id"){
-		$rootScope.loadingData = true;
+			$rootScope.loadingData = true;
 		}
 		else{
-		evt.preventDefault();
+			evt.preventDefault();
 		}
 	}
 	else{
@@ -51,8 +52,8 @@ app.run(['$rootScope', '$location','locals','AuthenticationService','FetchData',
 		if(next.originalPath == "/product_buy/:id"||next.originalPath == "/insert_user"){
 		}
 		else{
-		var ob = {};
-		NewOrder.saveOrderData(ob);
+			var ob = {};
+			NewOrder.saveOrderData(ob);
 		}
 
 		//判断页面是否需要登录
@@ -75,9 +76,9 @@ app.run(['$rootScope', '$location','locals','AuthenticationService','FetchData',
 		if(locals.get('alreadyLogIn',false)){
 		}
 		else{
-		evt.preventDefault();
-		$location.path('/new_user');
-		locals.set('alreadyLogIn',true)
+			evt.preventDefault();
+			$location.path('/new_user');
+			locals.set('alreadyLogIn',true)
 		}
 	}
 	});
@@ -96,7 +97,29 @@ app.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.
 	when('/home', {                                          //首页
 		templateUrl: 'home.html',
-		controller: 'HomeCtrl'
+		controller: 'HomeCtrl',
+		resolve:{
+			menuData: function ($q,$location,FetchData) {
+			  var defer = $q.defer();
+			  var url = "categories";
+			  FetchData.getPublicAPI(url,function(error,data){
+			  	if(data){
+			  		defer.resolve(data.categories);
+			  	}
+			  })
+			  return defer.promise;
+			},
+			listData:function($q,FetchData){
+				var defer = $q.defer();
+				var url = "categories/get?id=5";
+				FetchData.getPublicAPI(url,function(error,data){
+					if(data){
+						defer.resolve(data.productions);
+					}
+				})
+				return defer.promise;
+			}
+		}
 	}).
 	when('/new_user', {                                      //
 		templateUrl: 'new_user_intro.html',
@@ -126,7 +149,7 @@ app.config(['$routeProvider', function($routeProvider) {
 		templateUrl: 'product_buy_detail.html',
 		controller: 'ProductBuyDetailCtrl',
 		data:{
-		requireUserlogin:true
+			requireUserlogin:true
 		}
 	}).
 	when('/insert_user', {
@@ -165,7 +188,7 @@ app.config(['$routeProvider', function($routeProvider) {
 		templateUrl: 'us.html',
 		controller: 'UsCtrl',
 		data:{
-		requireUserlogin:true
+			requireUserlogin:true
 		}
 	}).
 	when('/client_list', {

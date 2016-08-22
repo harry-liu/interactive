@@ -3,19 +3,11 @@
 <!-- 	<div class="row hc-search">
 		<input type="text" placeholder="输入搜索关键词" ng-model="searchInput" class="ng-pristine ng-untouched ng-valid ng-empty">
 	</div> -->
-	
+	<div class="row did-not-found" ng-show="clients.length<=0">
+		<img src="imgs/404.png" alt="">
+		<p style="color:#d1d1d1">暂无已添加客户</p>
+	</div>
 	<ul class="list-group w-myclient-cont">
-<!-- 		<li class="col-xs-12 hc_perlist" ng-repeat="client in clients | orderBy:'created_at'">
-			<a href="">
-				<div class="hc_menuimg03">
-				</div>
-				<h1>{{client.contact}}</h1>
-				<p id="">
-					{{client.company_name}}
-				</p>
-				<span>新客户</span>
-			</a>
-		</li> -->
 		<li class="w-myclient-cont-number" ng-repeat = "firstChar in firstCharList | orderBy:firstChar" id="{{firstChar}}">
 			{{firstChar | uppercase}}
 			<ul class="w-myclient-cont-number-ul">

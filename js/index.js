@@ -34,18 +34,23 @@
 //     // function, we must explicitly call 'app.receivedEvent(...);'
 //     onDeviceReady: function() {
 //         app.receivedEvent('deviceready');
+//         StatusBar.backgroundColorByHexString("#ffcc00");
 //     },
 //     // Update DOM on a Received Event
 //     receivedEvent: function(id) {
 
-//         // document.addEventListener("backbutton", function(e){
-//         //     if(window.location.hash=='#/home'||window.location.hash=='#/community'||window.location.hash=='#/us'||window.location.hash=='#/disconnect'||window.location.hash=='#/teach'){
-//         //         e.preventDefault();
-//         //         navigator.app.exitApp();
-//         //     } else {
-//         //         navigator.app.backHistory()
-//         //     }
-//         // }, false);
+//         //if (cordova.platformId == 'android') {
+//             StatusBar.backgroundColorByHexString("#ffcc00");
+//         //}
+
+//         document.addEventListener("backbutton", function(e){
+//             if(window.location.hash=='#/home'||window.location.hash=='#/community'||window.location.hash=='#/us'||window.location.hash=='#/disconnect'||window.location.hash=='#/teach'){
+//                 e.preventDefault();
+//                 navigator.app.exitApp();
+//             } else {
+//                 navigator.app.backHistory()
+//             }
+//         }, false);
 
         var parentElement = document.getElementById('deviceready');
         var listeningElement = parentElement.querySelector('.loading-div');
@@ -55,10 +60,10 @@
         receivedElement.setAttribute('style', 'display:block;');
         //var domElement = document.getElementById(...) / document.querySelector(...);
         var bodyElement = document.getElementsByTagName('body');
-        
         angular.bootstrap(bodyElement, ["hudongquan"]);
 
 //         //console.log('Received Event: ' + id);
+
 //     }
 // };
 
