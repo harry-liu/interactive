@@ -51,12 +51,12 @@ APIService.factory('FetchData', function FetchData($http,PublicURL) {
       },
       getPublicAPI:function getPublicAPI(url,callback){
         $http.get(PublicURL+url)
-          .success(function(data){
-            callback(null,data);
-          })
-          .error(function(e){
-            callback(e);
-          });
+        .success(function(data){
+          callback(null,data);
+        })
+        .error(function(e){
+          callback(e);
+        });
       },
       getData:function getData(url,token){
         return $http({
@@ -137,5 +137,5 @@ APIService.service('GetDataFromAPI', ['AuthenticationService', function(Authenti
 	this.getData = function(url,token,type){
     return 'test';
   }
-  //var checkUserToken = 
+  
 }])

@@ -9,7 +9,7 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 	});
 	$scope.$on('hideBM', function(e,data){
 		$scope.showBM = data;
-	});
+	});	
 	$scope.$on('changeTM', function(e,data){
 		//top menu type 1:首页
 		//top menu type 2:社区
@@ -471,7 +471,7 @@ interactiveControllers.controller('ClientListCtrl', function($scope,$rootScope,$
 	}
 });
 
-interactiveControllers.controller('ClientAddCtrl', function($scope,$rootScope,PushData,$location,AuthenticationService,FetchData) {
+interactiveControllers.controller('ClientAddCtrl', function(FormDataService,$scope,$rootScope,PushData,$location,AuthenticationService,FetchData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -493,34 +493,13 @@ interactiveControllers.controller('ClientAddCtrl', function($scope,$rootScope,Pu
 	})
 
 	$scope.$on('pushClientInformation',function(){
-		var hasError = false;
-		var errorMsg = '';
-		for(var key in $scope.fields){
-			if($scope.fields[key].required == '1'){
-				if (!$scope.fields[key].value){
-					errorMsg  = errorMsg+' '+$scope.fields[key].label+',';
-					hasError = true;
-				}
-			}
-		}
-		if(hasError){
-			alert('请输入'+errorMsg);
+		var errorMsg = FormDataService.getAlertMsg($scope.fields);
+		if(errorMsg){
+			alert(errorMsg);
 		}
 		else{
 			var url = "customers/create";
-			var data = "";
-			$scope.updateData = function(){
-				for(var key in $scope.fields){
-					if(key == $scope.fields.length-1){
-						data =data + $scope.fields[key].prefix+$scope.fields[key].field+'='+$scope.fields[key].value;
-					}
-					else{
-						data =data + $scope.fields[key].prefix+$scope.fields[key].field+'='+$scope.fields[key].value+'&';	
-					}
-				}
-			}
-			$scope.updateData();
-			console.log(data);
+			var data = FormDataService.getValueData($scope.fields);
 			var token = AuthenticationService.getAccessToken();
 			PushData.push(url,data,token)
 			.success(function(data){
@@ -533,7 +512,7 @@ interactiveControllers.controller('ClientAddCtrl', function($scope,$rootScope,Pu
 	})
 });
 
-interactiveControllers.controller('ClientChangeCtrl', function($window,$location,$scope,$rootScope,FetchData,AuthenticationService,$route,PushData) {
+interactiveControllers.controller('ClientChangeCtrl', function(FormDataService,$window,$location,$scope,$rootScope,FetchData,AuthenticationService,$route,PushData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -557,33 +536,14 @@ interactiveControllers.controller('ClientChangeCtrl', function($window,$location
 	})
 
 	$scope.$on('pushClientInformationEdit',function(){
-		var hasError = false;
-		var errorMsg = '';
-		for(var key in $scope.fields){
-			if($scope.fields[key].required=='1'&&!$scope.fields[key].value){
-				errorMsg  = errorMsg+' '+$scope.fields[key].label+',';
-				hasError = true;
-			}
-		}
-		if(hasError){
-			alert('请输入'+errorMsg);
+		var errorMsg = FormDataService.getAlertMsg($scope.fields);
+		if(errorMsg){
+			alert(errorMsg);
 		}
 		else{
 			var id = $route.current.params.id;
 			var url = "customers/edit?id="+id;
-			var data = "";
-			$scope.updateData =  function(){
-				for(var key in $scope.fields){
-					if(key == $scope.fields.length-1){
-						data =data + $scope.fields[key].prefix+$scope.fields[key].field+'='+$scope.fields[key].value;
-					}
-					else{
-						data =data + $scope.fields[key].prefix+$scope.fields[key].field+'='+$scope.fields[key].value+'&';	
-					}
-				}
-			}
-			$scope.updateData();
-			console.log(data);
+			var data = FormDataService.getValueData($scope.fields);
 			var token = AuthenticationService.getAccessToken();
 			PushData.push(url,data,token)
 			.success(function(data){
@@ -839,7 +799,7 @@ interactiveControllers.controller('ProductDetailCtrl', function($scope,$route,Fe
 	});
 });
 
-interactiveControllers.controller('ProductBuyDetailCtrl', function($scope,$rootScope,FetchData,AuthenticationService,PushData,$location,$routeParams,NewOrder) {
+interactiveControllers.controller('ProductBuyDetailCtrl', function(FormDataService,$scope,$rootScope,FetchData,AuthenticationService,PushData,$location,$routeParams,NewOrder) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 
@@ -848,9 +808,6 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function($scope,$rootS
 		word:'产品订单'
 	}
 	$scope.$emit('changeTM',change);
-
-	//angular.element('#').trigger('focus');
-	//angular.element('#money-inut').focus();
 
 	if(NewOrder.getOrderData().length>0){
 		$scope.productFields = NewOrder.getOrderData();
@@ -885,30 +842,13 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function($scope,$rootS
 			$scope.disableButton = true;
 			var url = 'orders/create?id='+$routeParams.id;
 			var formData = '';
-			var alertMsg = '';
-			for(var i=0;i<$scope.productFields.length;i++){
-				if($scope.productFields[i].required == '1'){
-					if(!$scope.productFields[i].value){
-						alertMsg =alertMsg + $scope.productFields[i].label + ',';
-					}
-				}
-			}
+			var alertMsg = FormDataService.getAlertMsg($scope.productFields);
 			if(alertMsg){
-				alert('请填写'+alertMsg);
+				alert(alertMsg);
 				$scope.disableButton = false;
 			}
 			else{
-				for(var i=0;i<$scope.productFields.length;i++){
-					// if(i+1 == $scope.productFields.length){
-					// 	formData = formData+$scope.productFields[i].prefix+$scope.productFields[i].field+'='+$scope.productFields[i].value
-					// }
-					// else{
-					formData = formData+$scope.productFields[i].prefix+$scope.productFields[i].field+'='+$scope.productFields[i].value+'&'
-					//}
-					
-				}
-				formData = formData + '&customer_id=' + $scope.productFields.customer_id;
-				console.log(url);
+				formData = FormDataService.getValueData($scope.productFields);
 				console.log(formData);
 				PushData.push(url,formData,AuthenticationService.getAccessToken())
 				.success(function(data){
