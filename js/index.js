@@ -16,41 +16,40 @@
 //  * specific language governing permissions and limitations
 //  * under the License.
 //  */
-// var app = {
-//     // Application Constructor
-//     initialize: function() {
-//         this.bindEvents();
-//     },
-//     // Bind Event Listeners
-//     //
-//     // Bind any events that are required on startup. Common events are:
-//     // 'load', 'deviceready', 'offline', and 'online'.
-//     bindEvents: function() {
-//         document.addEventListener('deviceready', this.onDeviceReady, false);
-//     },
-//     // deviceready Event Handler
-//     //
-//     // The scope of 'this' is the event. In order to call the 'receivedEvent'
-//     // function, we must explicitly call 'app.receivedEvent(...);'
-//     onDeviceReady: function() {
-//         app.receivedEvent('deviceready');
-//         StatusBar.backgroundColorByHexString("#ffcc00");
-//     },
-//     // Update DOM on a Received Event
-//     receivedEvent: function(id) {
+var app = {
+    // Application Constructor
+    initialize: function() {
+        this.bindEvents();
+    },
+    // Bind Event Listeners
+    //
+    // Bind any events that are required on startup. Common events are:
+    // 'load', 'deviceready', 'offline', and 'online'.
+    bindEvents: function() {
+        document.addEventListener('deviceready', this.onDeviceReady, false);
+    },
+    // deviceready Event Handler
+    //
+    // The scope of 'this' is the event. In order to call the 'receivedEvent'
+    // function, we must explicitly call 'app.receivedEvent(...);'
+    onDeviceReady: function() {
+        app.receivedEvent('deviceready');
+    },
+    // Update DOM on a Received Event
+    receivedEvent: function(id) {
 
-//         //if (cordova.platformId == 'android') {
-//             StatusBar.backgroundColorByHexString("#ffcc00");
-//         //}
+        if (cordova.platformId == 'android') {
+        	StatusBar.backgroundColorByHexString("#ffcc00");
+        }
 
-//         document.addEventListener("backbutton", function(e){
-//             if(window.location.hash=='#/home'||window.location.hash=='#/community'||window.location.hash=='#/us'||window.location.hash=='#/disconnect'||window.location.hash=='#/teach'){
-//                 e.preventDefault();
-//                 navigator.app.exitApp();
-//             } else {
-//                 navigator.app.backHistory()
-//             }
-//         }, false);
+        document.addEventListener("backbutton", function(e){
+            if(window.location.hash=='#/home'||window.location.hash=='#/community'||window.location.hash=='#/us'||window.location.hash=='#/disconnect'||window.location.hash=='#/teach'){
+                e.preventDefault();
+                navigator.app.exitApp();
+            } else {
+                navigator.app.backHistory()
+            }
+        }, false);
 
         var parentElement = document.getElementById('deviceready');
         var listeningElement = parentElement.querySelector('.loading-div');
@@ -62,9 +61,9 @@
         var bodyElement = document.getElementsByTagName('body');
         angular.bootstrap(bodyElement, ["hudongquan"]);
 
-//         //console.log('Received Event: ' + id);
+        //console.log('Received Event: ' + id);
 
-//     }
-// };
+    }
+};
 
-// app.initialize();
+app.initialize();

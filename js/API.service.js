@@ -41,12 +41,12 @@ APIService.factory('FetchData', function FetchData($http,PublicURL) {
     return {  
       getUserInfo: function getUserInfo(token) {  
         return $http({
-               url:PublicURL+'user',
-               method:"post",
-               headers: {
-                'Authorization': 'Bearer '+token,
-                'Content-Type': 'application/x-www-form-urlencoded'
-               }
+             url:PublicURL+'user',
+             method:"post",
+             headers: {
+              'Authorization': 'Bearer '+token,
+              'Content-Type': 'application/x-www-form-urlencoded'
+             }
           })
       },
       getPublicAPI:function getPublicAPI(url,callback){

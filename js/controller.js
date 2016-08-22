@@ -256,6 +256,7 @@ interactiveControllers.controller('HomeCtrl', function(listData,menuData,$scope,
 	}
 	];
 
+	console.log(listData);
 	$scope.dataList = listData;
 	$rootScope.loadingData = false;
 });

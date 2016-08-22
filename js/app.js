@@ -86,9 +86,9 @@ app.run(['$rootScope', '$location','locals','AuthenticationService','FetchData',
 
 app.service('SaveToken', ['AuthenticationService', function(AuthenticationService){
 	function saveData(data){
-	AuthenticationService.setAccessToken(data.access_token);
-	AuthenticationService.setTokenType(data.token_type);
-	AuthenticationService.setRefreshToken(data.refresh_token);
+		AuthenticationService.setAccessToken(data.access_token);
+		AuthenticationService.setTokenType(data.token_type);
+		AuthenticationService.setRefreshToken(data.refresh_token);
 	}
 	return saveData;
 }])
