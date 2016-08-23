@@ -230,7 +230,7 @@ interactiveControllers.controller('NewUserCtrl', function($scope,$rootScope) {
 	$scope.$emit('hideBM',false);
 });
 
-interactiveControllers.controller('HomeCtrl', function(listData,menuData,$scope,$rootScope,FetchData) {
+interactiveControllers.controller('HomeCtrl', function(listData,menuData,$scope,$rootScope) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',true);
 	$scope.$emit('setBottomMenuImage','home');
@@ -238,7 +238,7 @@ interactiveControllers.controller('HomeCtrl', function(listData,menuData,$scope,
 		type:1
 	}
 	$scope.$emit('changeTM',change);
-	$scope.$emit('setTM',menuData);
+	$scope.$emit('setTM',menuData.data.categories);
 
 	$scope.myInterval = 6000;
 	$scope.slides = [
@@ -256,8 +256,8 @@ interactiveControllers.controller('HomeCtrl', function(listData,menuData,$scope,
 	}
 	];
 
-	console.log(listData);
-	$scope.dataList = listData;
+	//console.log(listData);
+	$scope.dataList = listData.data.productions;
 	$rootScope.loadingData = false;
 });
 
@@ -726,7 +726,7 @@ interactiveControllers.controller('DiscountDetailCtrl', function($scope,$rootSco
 	$scope.$emit('setBottomMenuImage','home');
 });
 
-interactiveControllers.controller('ProductDetailCtrl', function($scope,$route,FetchData,$sce,$rootScope,$location,AuthenticationService,ProductContImageReplace) {
+interactiveControllers.controller('ProductDetailCtrl', function(productDetail,$scope,$route,FetchData,$sce,$rootScope,$location,AuthenticationService,ProductContImageReplace) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -737,31 +737,18 @@ interactiveControllers.controller('ProductDetailCtrl', function($scope,$route,Fe
 	$scope.$emit('setBottomMenuImage','home');
 
 	$scope.images = [];
-
-	//console.log(ProductContImageReplace);
-
-	var id = $route.current.params.id;
-	var url = "productions/detail?id="+id;
-	FetchData.getPublicAPI(url,function(error,data){
-		if(data){
-			console.log(data);
-			$scope.product = data.production;
-			$rootScope.loadingData = false;
-			if(data.production.cont){
-				$scope.thisCanBeusedInsideNgBindHtml = $sce.trustAsHtml(data.production.cont.replace(/src=["]/g,'src="'+ProductContImageReplace));	
-			}
-			
-			for(var i = 0;i<data.production.imagesUrl.length;i++){
-				$scope.images[i] = {
-					id:i,
-					url:data.production.imagesUrl[i]
-				}
-			}
+	$scope.product = productDetail.data.production;
+	if($scope.product.cont){
+		$scope.thisCanBeusedInsideNgBindHtml = $sce.trustAsHtml($scope.product.cont.replace(/src=["]/g,'src="'+ProductContImageReplace));	
+	}
+	for(var i = 0;i<$scope.product.imagesUrl.length;i++){
+		$scope.images[i] = {
+			id:i,
+			url:$scope.product.imagesUrl[i]
 		}
-		else if(!error&&!data){
-			$location.path('/disconnect');
-		}
-	});
+	}
+
+	$rootScope.loadingData = false;
 });
 
 interactiveControllers.controller('ProductBuyDetailCtrl', function(FormDataService,$scope,$rootScope,FetchData,AuthenticationService,PushData,$location,$routeParams,NewOrder) {
@@ -900,7 +887,7 @@ interactiveControllers.controller('InsertUserCtrl', function($window,$scope,$roo
 	}
 });
 
-interactiveControllers.controller('CommunityCtrl', function($scope,$rootScope,FetchData,$location) {
+interactiveControllers.controller('CommunityCtrl', function(communityList,$scope,$rootScope) {
 
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',true);
@@ -911,20 +898,11 @@ interactiveControllers.controller('CommunityCtrl', function($scope,$rootScope,Fe
 	$scope.$emit('changeTM',change);
 
 	$scope.$emit('setBottomMenuImage','community');
-
-	FetchData.getPublicAPI('community/articles',function(error,data){
-		if (data) {
-			console.log(data);
-			$scope.articles = data.articles.data;
-			$rootScope.loadingData = false;
-		}
-		else if(!data&&!error){
-			$location.path('/disconnect');
-		}
-	})
+	$scope.articles = communityList.data.articles.data;
+	$rootScope.loadingData = false;
 });
 
-interactiveControllers.controller('CommunityDetailCtrl', function($route,$scope,$rootScope,FetchData,$sce,$location,ProductContImageReplace) {
+interactiveControllers.controller('CommunityDetailCtrl', function(communityDetail,$route,$scope,$rootScope,$sce,ProductContImageReplace) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -941,20 +919,9 @@ interactiveControllers.controller('CommunityDetailCtrl', function($route,$scope,
 		$scope.inputAreaStatus = false;
 	}
 
-	var id = $route.current.params.id;
-	var url = "community/view?id="+id;
-	FetchData.getPublicAPI(url,function(error,data){
-		if(data){
-			$rootScope.loadingData = false;
-			console.log(data);
-			$scope.article = data.article;
-			$rootScope.loadingData = false;
-			$scope.thisCanBeusedInsideNgBindHtml = $sce.trustAsHtml(data.article.content.replace(/src=["]/g,'src="'+ProductContImageReplace));
-		}
-		else if(!error&&!data){
-			$location.path('/disconnect');
-		}
-	});
+	$scope.article = communityDetail.data.article;
+	$rootScope.loadingData = false;
+	$scope.thisCanBeusedInsideNgBindHtml = $sce.trustAsHtml(communityDetail.data.article.content.replace(/src=["]/g,'src="'+ProductContImageReplace));
 });
 
 interactiveControllers.controller('TeachCtrl', function($scope,$rootScope) {
@@ -990,42 +957,16 @@ interactiveControllers.controller('SearchCtrl', function($scope,locals,$rootScop
 	}
 });
 
-interactiveControllers.controller('SearchListCtrl', function($location,$scope,$route,FetchData,$rootScope) {
-	var id = $route.current.params.id;
-	//console.log($route.originalPath);
-	if($route.current.originalPath == '/product_list/:id'){
-		var url = "categories/get?id="+id;
+interactiveControllers.controller('SearchListCtrl', function(productList,$location,$scope,$rootScope) {
+	$scope.$emit('hideTM',true);
+	$scope.$emit('hideBM',false);
+	var change = {
+		type:6
 	}
-	else {
-		if(id){
-			var url = "productions?keyword="+id;
-		}
-		else{
-			var url = "productions";
-		}
-	}
+	$scope.$emit('changeTM',change);
 
-	FetchData.getPublicAPI(url,function(error,data){
-		$scope.$emit('hideTM',true);
-		$scope.$emit('hideBM',false);
-		var change = {
-			type:6
-		}
-		$scope.$emit('changeTM',change);
-
-		
-		if(data){
-			$rootScope.loadingData = false;
-			console.log(data);
-			$scope.dataList = data.productions;
-		}
-		else if(!error&&!data){
-			$location.path('/disconnect');
-		}
-	});
-
-
-	//$scope.data = getData;
+	$scope.dataList = productList.data.productions;
+	$rootScope.loadingData = false;
 });
 
 interactiveControllers.controller('ExampleCtrl', function($scope,$rootScope,FetchData,AuthenticationService,$route) {

@@ -99,15 +99,9 @@ app.config(['$routeProvider', function($routeProvider) {
 		templateUrl: 'home.html',
 		controller: 'HomeCtrl',
 		resolve:{
-			menuData: function ($q,$location,FetchData) {
-			  // var defer = $q.defer();
-			  // var url = "categories";
-			  // FetchData.getPublicAPI(url,function(error,data){
-			  // 	if(data){
-			  // 		defer.resolve(data.categories);
-			  // 	}
-			  // })
-			  return '';
+			menuData: function (FetchData) {
+				var url = "categories";
+				return FetchData.getPublicAPI(url);
 			},
 			listData:function(FetchData){
 				var url = "categories/get?id=5";
@@ -129,15 +123,34 @@ app.config(['$routeProvider', function($routeProvider) {
 	}).
 	when('/community', {
 		templateUrl: 'community.html',
-		controller: 'CommunityCtrl'
+		controller: 'CommunityCtrl',
+		resolve:{
+			communityList:function(FetchData){
+				return FetchData.getPublicAPI('community/articles');
+			}
+		}
 	}).
 	when('/community/:id', {
 		templateUrl: 'community_detail.html',
-		controller: 'CommunityDetailCtrl'
+		controller: 'CommunityDetailCtrl',
+		resolve:{
+			communityDetail:function(FetchData,$route){
+				var id = $route.current.params.id;
+				var url = "community/view?id="+id;
+				return FetchData.getPublicAPI(url);
+			}
+		}
 	}).
 	when('/product/:id', {
 		templateUrl: 'product_detail.html',
-		controller: 'ProductDetailCtrl'
+		controller: 'ProductDetailCtrl',
+		resolve:{
+			productDetail:function(FetchData,$route){
+				var id = $route.current.params.id;
+				var url = "productions/detail?id="+id;
+				return FetchData.getPublicAPI(url);
+			}
+		}
 	}).
 	when('/product_buy/:id', {
 		templateUrl: 'product_buy_detail.html',
@@ -160,15 +173,35 @@ app.config(['$routeProvider', function($routeProvider) {
 	}).
 	when('/search_list', {
 		templateUrl: 'search_list.html',
-		controller: 'SearchListCtrl'
+		controller: 'SearchListCtrl',
+		resolve:{
+			productList:function(FetchData,$route){
+				var url = "productions";
+				return FetchData.getPublicAPI(url);
+			}
+		}
 	}).
 	when('/search_list/:id', {
 		templateUrl: 'search_list.html',
-		controller: 'SearchListCtrl'
+		controller: 'SearchListCtrl',
+		resolve:{
+			productList:function(FetchData,$route){
+				var id = $route.current.params.id;
+				var url = "productions?keyword="+id;
+				return FetchData.getPublicAPI(url);
+			}
+		}
 	}).
 	when('/product_list/:id', {
 		templateUrl: 'search_list.html',
-		controller: 'SearchListCtrl'
+		controller: 'SearchListCtrl',
+		resolve:{
+			productList:function(FetchData,$route){
+				var id = $route.current.params.id;
+				var url = "categories/get?id="+id;
+				return FetchData.getPublicAPI(url);
+			}
+		}
 	}).
 	when('/example/:id', {
 		templateUrl: 'example.html',

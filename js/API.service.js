@@ -35,7 +35,7 @@ APIService.factory('AuthenticationService', function(locals) {
 });
 
 
-APIService.factory('FetchData', function FetchData($http,PublicURL) {  
+APIService.factory('FetchData', function FetchData($http,PublicURL,$location) {  
     return {  
       getUserInfo: function getUserInfo(token) {  
         return $http({
@@ -48,17 +48,12 @@ APIService.factory('FetchData', function FetchData($http,PublicURL) {
           })
       },
       getPublicAPI:function getPublicAPI(url){
-        $http.get(PublicURL+url).then(function successCallback(response){
+        return $http.get(PublicURL+url).then(function successCallback(response){
           return response;
         }, function errorCallback(response){
-          return response;
+          console.log(response);
+          $location.path('/disconnect');
         })
-        // .success(function(data){
-        //   callback(null,data);
-        // })
-        // .error(function(e){
-        //   callback(e);
-        // });
       },
       getData:function getData(url,token){
         return $http({
