@@ -289,17 +289,12 @@ interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$r
 
 	var url = "orders/my-orders";
 	var token = AuthenticationService.getAccessToken();
-	FetchData.getData(url,token)
-	.success(function(data){
-		$rootScope.loadingData = false;
-		$scope.bookingList = data.orders;
-		$scope.updateNumberUnreadMessage();
-		$scope.updateUnreadMessage($rootScope.tabStatus);
-		console.log($scope.bookingList);
-	})
-	.error(function(status,error){
-		console.log('status');
-	})
+
+	$rootScope.loadingData = false;
+	console.log(FetchData.getData(url,token));
+	$scope.bookingList = FetchData.getData(url,token).data.orders;
+	$scope.updateNumberUnreadMessage();
+	$scope.updateUnreadMessage($rootScope.tabStatus);
 
 	$scope.updateNumberUnreadMessage = function (){
 		$scope.auditedUnreadMessage = $scope.getUnreadMessage('1');

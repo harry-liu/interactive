@@ -1,8 +1,8 @@
 var APIService = angular.module('APIService', []);
 
 APIService.factory('PublicURL', function(){
-  return 'http://192.168.1.16/api/';
-  //return 'http://hdq.hudongcn.com/api/';
+  //return 'http://192.168.1.16/api/';
+  return 'http://hdq.hudongcn.com/api/';
 })
 
 //save token into localstorage
@@ -34,7 +34,6 @@ APIService.factory('AuthenticationService', function(locals) {
     }
 });
 
-
 APIService.factory('FetchData', function FetchData($http,PublicURL,$location) {  
     return {  
       getUserInfo: function getUserInfo(token) {  
@@ -48,7 +47,8 @@ APIService.factory('FetchData', function FetchData($http,PublicURL,$location) {
           })
       },
       getPublicAPI:function getPublicAPI(url){
-        return $http.get(PublicURL+url).then(function successCallback(response){
+        return $http.get(PublicURL+url)
+        .then(function successCallback(response){
           return response;
         }, function errorCallback(response){
           console.log(response);
@@ -63,6 +63,12 @@ APIService.factory('FetchData', function FetchData($http,PublicURL,$location) {
             'Authorization': 'Bearer '+token,
             'Content-Type': 'application/json'
           }
+        })
+        .then(function successCallback(response){
+            return response;
+        }, function errorCallback(response) {
+          console.log(response);
+          $location.path('/disconnect');
         })
       }
     };  
