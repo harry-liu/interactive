@@ -16,8 +16,8 @@ app.directive('focusMe', function($timeout) {
 	};
 });
 
-//app.constant('ProductContImageReplace', 'http://192.168.1.16');
-app.constant('ProductContImageReplace', 'http://hdq.hudongcn.com');
+app.constant('ProductContImageReplace', 'http://192.168.1.16');
+//app.constant('ProductContImageReplace', 'http://hdq.hudongcn.com');
 
 app.factory('NewOrder', [function(){
 	var order;
@@ -100,24 +100,18 @@ app.config(['$routeProvider', function($routeProvider) {
 		controller: 'HomeCtrl',
 		resolve:{
 			menuData: function ($q,$location,FetchData) {
-			  var defer = $q.defer();
-			  var url = "categories";
-			  FetchData.getPublicAPI(url,function(error,data){
-			  	if(data){
-			  		defer.resolve(data.categories);
-			  	}
-			  })
-			  return defer.promise;
+			  // var defer = $q.defer();
+			  // var url = "categories";
+			  // FetchData.getPublicAPI(url,function(error,data){
+			  // 	if(data){
+			  // 		defer.resolve(data.categories);
+			  // 	}
+			  // })
+			  return '';
 			},
-			listData:function($q,FetchData){
-				var defer = $q.defer();
+			listData:function(FetchData){
 				var url = "categories/get?id=5";
-				FetchData.getPublicAPI(url,function(error,data){
-					if(data){
-						defer.resolve(data.productions);
-					}
-				})
-				return defer.promise;
+				return FetchData.getPublicAPI(url);
 			}
 		}
 	}).
