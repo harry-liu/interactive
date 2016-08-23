@@ -275,33 +275,7 @@ interactiveControllers.controller('MyDiscountCtrl', function($scope,$rootScope) 
 	$scope.$emit('setBottomMenuImage','home');
 });
 
-interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$rootScope,$filter,FetchData,AuthenticationService) {
-	$scope.$emit('hideTM',true);
-	$scope.$emit('hideBM',true);
-	var change = {
-		type:3,
-		word:'我的订单'
-	}
-	$scope.$emit('changeTM',change);
-	$scope.$emit('setBottomMenuImage','us');
-
-	$scope.bookingList = [];
-
-	var url = "orders/my-orders";
-	var token = AuthenticationService.getAccessToken();
-
-	$rootScope.loadingData = false;
-	console.log(FetchData.getData(url,token));
-	$scope.bookingList = FetchData.getData(url,token).data.orders;
-	$scope.updateNumberUnreadMessage();
-	$scope.updateUnreadMessage($rootScope.tabStatus);
-
-	$scope.updateNumberUnreadMessage = function (){
-		$scope.auditedUnreadMessage = $scope.getUnreadMessage('1');
-		$scope.suditingUnreadMessage = $scope.getUnreadMessage('2');
-		$scope.finishedUnreadMessage = $scope.getUnreadMessage('3');
-		$scope.notPassUnreadMessage = $scope.getUnreadMessage('4');
-	}
+interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$rootScope,$filter,FetchData,AuthenticationService,bookingListData) {
 	$scope.updateUnreadMessage = function(status){
 		var url = "orders/has-read";
 		var data = 'status='+status;
@@ -326,9 +300,36 @@ interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$r
 		})
 		return number;
 	}
-	$scope.downPage = function(){
-		alert('up');
+
+	$scope.updateNumberUnreadMessage = function (){
+		$scope.auditedUnreadMessage = $scope.getUnreadMessage('1');
+		$scope.suditingUnreadMessage = $scope.getUnreadMessage('2');
+		$scope.finishedUnreadMessage = $scope.getUnreadMessage('3');
+		$scope.notPassUnreadMessage = $scope.getUnreadMessage('4');
 	}
+
+	$scope.$emit('hideTM',true);
+	$scope.$emit('hideBM',true);
+	var change = {
+		type:3,
+		word:'我的订单'
+	}
+	$scope.$emit('changeTM',change);
+	$scope.$emit('setBottomMenuImage','us');
+
+	$scope.bookingList = [];
+
+	$rootScope.loadingData = false;
+
+	$scope.bookingList = bookingListData.data.orders;
+
+	$scope.updateNumberUnreadMessage();
+	$scope.updateUnreadMessage($rootScope.tabStatus);
+
+
+	// $scope.downPage = function(){
+	// 	alert('up');
+	// }
 });
 
 interactiveControllers.controller('ClientListCtrl', function($scope,$rootScope,$filter,$anchorScroll,$location,FetchData,AuthenticationService,PushData) {

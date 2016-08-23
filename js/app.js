@@ -265,7 +265,14 @@ app.config(['$routeProvider', function($routeProvider) {
 	}).
 	when('/booking_list', {
 		templateUrl: 'booking_list.html',
-		controller: 'BookingListCtrl'
+		controller: 'BookingListCtrl',
+		resolve:{
+			bookingListData:function(FetchData,AuthenticationService){
+				var url = "orders/my-orders";
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
 	}).
 	when('/booking_detail/:id/:type', {
 		templateUrl: 'booking_detail.html',
