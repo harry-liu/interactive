@@ -1194,6 +1194,10 @@ interactiveControllers.controller('SettingsCtrl', function($scope,$rootScope,Aut
 	$scope.logOut = function(){
 		AuthenticationService.logOut();
 	}
+
+	cordova.getAppVersion.getVersionNumber(function (version) {
+	    alert(version);
+	});
 });
 
 interactiveControllers.controller('TestListCtrl', function($scope,$rootScope) {
@@ -1206,7 +1210,6 @@ interactiveControllers.controller('TestListCtrl', function($scope,$rootScope) {
 		word:'商品考试'
 	}
 	$scope.$emit('changeTM',change);
-
 
 	$scope.$watch("showFileter", function(newValue, oldValue) {
 		if ($scope.showFileter) {
