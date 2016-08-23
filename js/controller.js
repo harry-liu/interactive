@@ -763,6 +763,8 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function(FormDataServi
 
 	if(NewOrder.getOrderData().length>0){
 		$scope.productFields = NewOrder.getOrderData();
+		$scope.customer_id = NewOrder.getOrderData().customer_id;
+		console.log($scope.customer_id);
 		FetchData.getData('orders/create?id='+$routeParams.id,AuthenticationService.getAccessToken())
 		.success(function(data){
 			console.log(data);
@@ -802,6 +804,7 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function(FormDataServi
 			else{
 				formData = FormDataService.getValueData($scope.productFields);
 				console.log(formData);
+				formData = formData+'&customer_id='+$scope.customer_id;
 				PushData.push(url,formData,AuthenticationService.getAccessToken())
 				.success(function(data){
 					console.log(data);
@@ -888,7 +891,6 @@ interactiveControllers.controller('InsertUserCtrl', function($window,$scope,$roo
 });
 
 interactiveControllers.controller('CommunityCtrl', function(communityList,$scope,$rootScope) {
-
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',true);
 	var change = {
