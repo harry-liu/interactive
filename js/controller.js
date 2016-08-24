@@ -548,7 +548,7 @@ interactiveControllers.controller('ClientHistoryCtrl', function($scope,$rootScop
 	})
 });
 
-interactiveControllers.controller('ClientDetailCtrl', function($scope,$rootScope,AuthenticationService,FetchData,$route,$location,$window) {
+interactiveControllers.controller('ClientDetailCtrl', function(OpenAlertBox,$scope,$rootScope,AuthenticationService,FetchData,$route,$location,$window) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -576,21 +576,21 @@ interactiveControllers.controller('ClientDetailCtrl', function($scope,$rootScope
 	}
 
 	$scope.deletClient = function(){
-		deleteUser = $window.confirm('确认删除客户?');
-	    if(deleteUser){
-	     	var deletUrl = 'customers/delete?id='+id;
-	     	FetchData.getData(deletUrl,token)
-	     	.success(function(data){
-	     		console.log(data);
-	     		if(data.success){
-	     			$window.history.back();
-	     		}
-	     	})
-	     	.error(function(status,error){
-	     		console.log(status);
-	     	})
-	    }
-
+		OpenAlertBox.openConfirm('确定删除此客户？').then(function(data){
+			if(data == 'ok'){
+		    	var deletUrl = 'customers/delete?id='+id;
+		    	FetchData.getData(deletUrl,token)
+		    	.success(function(data){
+		    		console.log(data);
+		    		if(data.success){
+		    			$window.history.back();
+		    		}
+		    	})
+		    	.error(function(status,error){
+		    		console.log(status);
+		    	})
+			}
+		});
 	}
 });
 
@@ -1115,7 +1115,8 @@ interactiveControllers.controller('PersonalDetailCtrl', function($scope,$rootSco
     $scope.$on('pushPersonalInformation',function(){
 
     	if(!$scope.user.username){
-    		alert('请输入姓名');
+    		//alert('请输入姓名');
+    		OpenAlertBox.openAlert('请输入姓名');
     	}
     	else if(!$scope.user.card_id){
     		alert('请输入身份证号');
@@ -1239,3 +1240,61 @@ interactiveControllers.controller('DisconnectCtrl', function($scope,$rootScope) 
 	$scope.$emit('hideTM',false);
 	$scope.$emit('hideBM',false);
 });
+
+// Please note that $uibModalInstance represents a modal window (instance) dependency.
+// It is not the same as the $uibModal service used above.
+interactiveControllers.controller('ModalInstanceCtrl', function ($uibModalInstance,item) {
+  var $ctrl = this;
+  $ctrl.msg = item;
+  $ctrl.ok = function () {
+    $uibModalInstance.close();
+  };
+
+  $ctrl.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
+
+interactiveControllers.service('OpenAlertBox',function($uibModal,$q){
+  this.openAlert = function(msg){
+    var modalInstance = $uibModal.open({
+      animation: true,
+      ariaLabelledBy: 'modal-title',
+      templateUrl: 'myModalAlertContent.html',
+      controller: 'ModalInstanceCtrl',
+      controllerAs: '$ctrl',
+      resolve: {
+        item: function () {
+          return msg;
+        }
+      }
+    });
+    return $q(function(resolve,reject){
+    	modalInstance.result.then(function () {
+    	  resolve('ok');
+    	});
+    })
+  };
+  
+  this.openConfirm = function(msg){
+  	var modalInstance = $uibModal.open({
+  	  animation: true,
+  	  ariaLabelledBy: 'modal-title',
+  	  templateUrl: 'myModalConfirmContent.html',
+  	  controller: 'ModalInstanceCtrl',
+  	  controllerAs: '$ctrl',
+  	  resolve: {
+  	    item: function () {
+  	      return msg;
+  	    }
+  	  }
+  	});
+  	return $q(function(resolve,reject){
+  		modalInstance.result.then(function () {
+  		  resolve('ok');
+  		}, function () {
+  		  resolve('cancle');
+  		});
+  	})
+  }
+})

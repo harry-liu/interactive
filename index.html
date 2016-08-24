@@ -21,6 +21,26 @@
                 <p style="position:absolute;bottom:40px;left:0;width:100%;">咨询 &nbsp; | &nbsp;开发&nbsp; | &nbsp;运营&nbsp; |&nbsp; 营销 &nbsp;| &nbsp;舆情</p>
             </div>
             <div class="main-div" ng-class="{true: '', false: 'disable-overflow'}[hideBlackCover]" ng-init="showTM = false;showBM = false">
+
+                <script type="text/ng-template" id="myModalConfirmContent.html">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modal-title">{{$ctrl.msg}}</h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+                        <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+                    </div>
+                </script>
+
+                <script type="text/ng-template" id="myModalAlertContent.html">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modal-title">{{$ctrl.msg}}</h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+                    </div>
+                </script>
+
                 <div class="spinner animate" ng-show = "loadingData">
                     <img src="imgs/spinner/1.png" alt="">
                     <p>玩命加载中...</p>
