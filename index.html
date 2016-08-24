@@ -23,21 +23,25 @@
             <div class="main-div" ng-class="{true: '', false: 'disable-overflow'}[hideBlackCover]" ng-init="showTM = false;showBM = false">
 
                 <script type="text/ng-template" id="myModalConfirmContent.html">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="modal-title">{{$ctrl.msg}}</h3>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
-                        <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+                    <div class = "alert-container">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="modal-title">{{$ctrl.msg}}</h3>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" type="button" ng-click="$ctrl.cancel()">取消</button>
+                            <button class="btn" type="button" ng-click="$ctrl.ok()"  style="margin:0;float:left">确定</button>
+                        </div>
                     </div>
                 </script>
 
                 <script type="text/ng-template" id="myModalAlertContent.html">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="modal-title">{{$ctrl.msg}}</h3>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+                    <div class = "alert-container">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="modal-title">{{$ctrl.msg}}</h3>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" type="button" ng-click="$ctrl.ok()">确定</button>
+                        </div>
                     </div>
                 </script>
 
