@@ -5,19 +5,18 @@ app.directive('focusMe', function($timeout) {
 	scope: { trigger: '@focusMe' },
 		link: function(scope, element) {
 			scope.$watch('trigger', function(value) {
-			if(value === "true") { 
-				// console.log('trigger',value);
-				$timeout(function() {
-				element[0].focus(); 
-				});
-			}
+				if(value === "true") { 
+					$timeout(function() {
+					element[0].focus(); 
+					});
+				}
 			});
 		}
 	};
 });
 
-//app.constant('ProductContImageReplace', 'http://192.168.1.16');
-app.constant('ProductContImageReplace', 'http://hdq.hudongcn.com');
+app.constant('ProductContImageReplace', 'http://192.168.1.16');
+//app.constant('ProductContImageReplace', 'http://hdq.hudongcn.com');
 
 app.factory('NewOrder', [function(){
 	var order;
