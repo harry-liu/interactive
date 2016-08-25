@@ -15,6 +15,50 @@ app.directive('focusMe', function($timeout) {
 	};
 });
 
+app.service('OpenAlertBox',function($uibModal,$q){
+  this.openAlert = function(msg){
+    var modalInstance = $uibModal.open({
+      animation: true,
+      ariaLabelledBy: 'modal-title',
+      templateUrl: 'myModalAlertContent.html',
+      controller: 'ModalInstanceCtrl',
+      controllerAs: '$ctrl',
+      resolve: {
+        item: function () {
+          return msg;
+        }
+      }
+    });
+    return $q(function(resolve,reject){
+    	modalInstance.result.then(function () {
+    	  resolve('ok');
+    	});
+    })
+  };
+  
+  this.openConfirm = function(msg){
+  	var modalInstance = $uibModal.open({
+  	  animation: true,
+  	  ariaLabelledBy: 'modal-title',
+  	  templateUrl: 'myModalConfirmContent.html',
+  	  controller: 'ModalInstanceCtrl',
+  	  controllerAs: '$ctrl',
+  	  resolve: {
+  	    item: function () {
+  	      return msg;
+  	    }
+  	  }
+  	});
+  	return $q(function(resolve,reject){
+  		modalInstance.result.then(function () {
+  		  resolve('ok');
+  		}, function () {
+  		  resolve('cancle');
+  		});
+  	})
+  }
+})
+
 app.constant('ProductContImageReplace', 'http://192.168.1.16');
 //app.constant('ProductContImageReplace', 'http://hdq.hudongcn.com');
 

@@ -146,7 +146,7 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 	}
 });
 
-interactiveControllers.controller('LoginCtrl', function($timeout,SaveToken,$scope,LogService,FetchData,AuthenticationService,$location,$rootScope) {
+interactiveControllers.controller('LoginCtrl', function(OpenAlertBox,$timeout,SaveToken,$scope,LogService,FetchData,AuthenticationService,$location,$rootScope) {
 	$rootScope.loadingData = false;
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
@@ -192,7 +192,8 @@ interactiveControllers.controller('LoginCtrl', function($timeout,SaveToken,$scop
 				if(data.success){
 				}
 				else{
-					alert('必须输入有效的号码');
+					//alert('必须输入有效的号码');
+					OpenAlertBox.openAlert('必须输入有效的号码');
 				}
 			})
 			.error(function(status,error){
@@ -200,7 +201,8 @@ interactiveControllers.controller('LoginCtrl', function($timeout,SaveToken,$scop
 			})
 		}
 		else{
-			alert('请输入电话号码');
+			//alert('请输入电话号码');
+			OpenAlertBox.openAlert('请输入电话号码');
 		}
 	}
 
@@ -325,11 +327,6 @@ interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$r
 
 	$scope.updateNumberUnreadMessage();
 	$scope.updateUnreadMessage($rootScope.tabStatus);
-
-
-	// $scope.downPage = function(){
-	// 	alert('up');
-	// }
 });
 
 interactiveControllers.controller('ClientListCtrl', function($scope,$rootScope,$filter,$anchorScroll,$location,FetchData,AuthenticationService,PushData) {
@@ -436,7 +433,7 @@ interactiveControllers.controller('ClientListCtrl', function($scope,$rootScope,$
 	}
 });
 
-interactiveControllers.controller('ClientAddCtrl', function(FormDataService,$scope,$rootScope,PushData,$location,AuthenticationService,FetchData) {
+interactiveControllers.controller('ClientAddCtrl', function(OpenAlertBox,FormDataService,$scope,$rootScope,PushData,$location,AuthenticationService,FetchData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -460,7 +457,8 @@ interactiveControllers.controller('ClientAddCtrl', function(FormDataService,$sco
 	$scope.$on('pushClientInformation',function(){
 		var errorMsg = FormDataService.getAlertMsg($scope.fields);
 		if(errorMsg){
-			alert(errorMsg);
+			//alert(errorMsg);
+			OpenAlertBox.openAlert(errorMsg);
 		}
 		else{
 			var url = "customers/create";
@@ -477,7 +475,7 @@ interactiveControllers.controller('ClientAddCtrl', function(FormDataService,$sco
 	})
 });
 
-interactiveControllers.controller('ClientChangeCtrl', function(FormDataService,$window,$location,$scope,$rootScope,FetchData,AuthenticationService,$route,PushData) {
+interactiveControllers.controller('ClientChangeCtrl', function(OpenAlertBox,FormDataService,$window,$location,$scope,$rootScope,FetchData,AuthenticationService,$route,PushData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -503,7 +501,8 @@ interactiveControllers.controller('ClientChangeCtrl', function(FormDataService,$
 	$scope.$on('pushClientInformationEdit',function(){
 		var errorMsg = FormDataService.getAlertMsg($scope.fields);
 		if(errorMsg){
-			alert(errorMsg);
+			//alert(errorMsg);
+			OpenAlertBox.openAlert(errorMsg);
 		}
 		else{
 			var id = $route.current.params.id;
@@ -544,7 +543,7 @@ interactiveControllers.controller('ClientHistoryCtrl', function($scope,$rootScop
 	})
 });
 
-interactiveControllers.controller('ClientDetailCtrl', function($scope,$rootScope,AuthenticationService,FetchData,$route,$location,$window) {
+interactiveControllers.controller('ClientDetailCtrl', function(OpenAlertBox,$scope,$rootScope,AuthenticationService,FetchData,$route,$location,$window) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -572,21 +571,21 @@ interactiveControllers.controller('ClientDetailCtrl', function($scope,$rootScope
 	}
 
 	$scope.deletClient = function(){
-		deleteUser = $window.confirm('确认删除客户?');
-	    if(deleteUser){
-	     	var deletUrl = 'customers/delete?id='+id;
-	     	FetchData.getData(deletUrl,token)
-	     	.success(function(data){
-	     		console.log(data);
-	     		if(data.success){
-	     			$window.history.back();
-	     		}
-	     	})
-	     	.error(function(status,error){
-	     		console.log(status);
-	     	})
-	    }
-
+		OpenAlertBox.openConfirm('确定删除此客户？').then(function(data){
+			if(data == 'ok'){
+		    	var deletUrl = 'customers/delete?id='+id;
+		    	FetchData.getData(deletUrl,token)
+		    	.success(function(data){
+		    		console.log(data);
+		    		if(data.success){
+		    			$window.history.back();
+		    		}
+		    	})
+		    	.error(function(status,error){
+		    		console.log(status);
+		    	})
+			}
+		});
 	}
 });
 
@@ -626,7 +625,7 @@ interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope) {
 	$scope.$emit('changeTM',change);
 });
 
-interactiveControllers.controller('OfflinePaymentCtrl', function($window,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,$route,FetchData) {
+interactiveControllers.controller('OfflinePaymentCtrl', function(OpenAlertBox,$window,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,$route,FetchData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -686,7 +685,8 @@ interactiveControllers.controller('OfflinePaymentCtrl', function($window,$scope,
     	var token = AuthenticationService.getAccessToken();
     	FetchData.getData(url,token)
     	.success(function(data){
-    		alert('success');
+    		//alert('success');
+    		OpenAlertBox.openAlert('成功');
     		$window.history.back();
     	})
     	.error(function(status,error){
@@ -747,7 +747,7 @@ interactiveControllers.controller('ProductDetailCtrl', function(productDetail,$s
 	$rootScope.loadingData = false;
 });
 
-interactiveControllers.controller('ProductBuyDetailCtrl', function(FormDataService,$scope,$rootScope,FetchData,AuthenticationService,PushData,$location,$routeParams,NewOrder) {
+interactiveControllers.controller('ProductBuyDetailCtrl', function(OpenAlertBox,FormDataService,$scope,$rootScope,FetchData,AuthenticationService,PushData,$location,$routeParams,NewOrder) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 
@@ -794,7 +794,8 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function(FormDataServi
 			var formData = '';
 			var alertMsg = FormDataService.getAlertMsg($scope.productFields);
 			if(alertMsg){
-				alert(alertMsg);
+				//alert(alertMsg);
+				OpenAlertBox.openAlert(alertMsg);
 				$scope.disableButton = false;
 			}
 			else{
@@ -1050,7 +1051,7 @@ interactiveControllers.controller('UsCtrl', function($scope,$rootScope,Authentic
 	getData();
 });
 
-interactiveControllers.controller('PersonalDetailCtrl', function($scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,FetchData,PushData,$location) {
+interactiveControllers.controller('PersonalDetailCtrl', function(OpenAlertBox,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,FetchData,PushData,$location) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -1111,10 +1112,12 @@ interactiveControllers.controller('PersonalDetailCtrl', function($scope,$rootSco
     $scope.$on('pushPersonalInformation',function(){
 
     	if(!$scope.user.username){
-    		alert('请输入姓名');
+    		//alert('请输入姓名');
+    		OpenAlertBox.openAlert('请输入姓名');
     	}
     	else if(!$scope.user.card_id){
-    		alert('请输入身份证号');
+    		//alert('请输入身份证号');
+    		OpenAlertBox.openAlert('请输入身份证号');
     	}
     	else{    	
     		var url = 'user/edit';
@@ -1127,7 +1130,8 @@ interactiveControllers.controller('PersonalDetailCtrl', function($scope,$rootSco
     		}
     		PushData.push(url,data,token)
     		.success(function(data){
-    			alert('修改成功！');
+    			//alert('修改成功！');
+    			OpenAlertBox.openAlert('修改成功！');
     			$location.path('/us');
     		})
     		.error(function(status,error){
@@ -1175,7 +1179,7 @@ interactiveControllers.controller('WithdrawCompleteCtrl', function($scope,$rootS
 	$scope.$emit('setBottomMenuImage','us');
 });
 
-interactiveControllers.controller('SettingsCtrl', function($scope,$rootScope,AuthenticationService) {
+interactiveControllers.controller('SettingsCtrl', function(OpenAlertBox,$scope,$rootScope,AuthenticationService) {
 	$rootScope.loadingData = false;
 
 	$scope.$emit('hideTM',true);
@@ -1192,7 +1196,8 @@ interactiveControllers.controller('SettingsCtrl', function($scope,$rootScope,Aut
 	}
 
 	cordova.getAppVersion.getVersionNumber(function (version) {
-	    alert(version);
+	    //alert(version);
+	    OpenAlertBox.openAlert(version);
 	});
 });
 
@@ -1234,4 +1239,18 @@ interactiveControllers.controller('DisconnectCtrl', function($scope,$rootScope) 
 
 	$scope.$emit('hideTM',false);
 	$scope.$emit('hideBM',false);
+});
+
+// Please note that $uibModalInstance represents a modal window (instance) dependency.
+// It is not the same as the $uibModal service used above.
+interactiveControllers.controller('ModalInstanceCtrl', function ($uibModalInstance,item) {
+  var $ctrl = this;
+  $ctrl.msg = item;
+  $ctrl.ok = function () {
+    $uibModalInstance.close();
+  };
+
+  $ctrl.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
 });
