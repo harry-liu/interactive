@@ -275,7 +275,15 @@ app.config(['$routeProvider', function($routeProvider) {
 	}).
 	when('/example/:id', {
 		templateUrl: 'example.html',
-		controller: 'ExampleCtrl'
+		controller: 'ExampleCtrl',
+		resolve:{
+			exampleData:function(FetchData,AuthenticationService,$route){
+				var id = $route.current.params.id;
+				var url = "productions/orders?id="+id;
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
 	}).
 	when('/example_detail/:id', {
 		templateUrl: 'example_detail.html',
@@ -313,7 +321,15 @@ app.config(['$routeProvider', function($routeProvider) {
 	}).
 	when('/client_add/:id', {
 		templateUrl: 'client_add.html',
-		controller: 'ClientChangeCtrl'
+		controller: 'ClientChangeCtrl',
+		resolve:{
+			clientData:function(FetchData,AuthenticationService,$route){
+				var id = $route.current.params.id;
+				var url = 'customers/edit?id='+id;
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
 	}).
 	when('/client_history/:id', {
 		templateUrl: 'client_history.html',
@@ -391,7 +407,14 @@ app.config(['$routeProvider', function($routeProvider) {
 	}).
 	when('/offline_payment/:id', {
 		templateUrl: 'offline_payment.html',
-		controller: 'OfflinePaymentCtrl'
+		controller: 'OfflinePaymentCtrl',
+		resolve:{
+			paymentData:function(FetchData,AuthenticationService,$route){
+				var url = 'orders/detail?id='+$route.current.params.id;
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
 	}).
 	when('/settings', {
 		templateUrl: 'settings.html',

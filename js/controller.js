@@ -457,7 +457,7 @@ interactiveControllers.controller('ClientAddCtrl', function(fieldsData,OpenAlert
 	})
 });
 
-interactiveControllers.controller('ClientChangeCtrl', function(OpenAlertBox,FormDataService,$window,$location,$scope,$rootScope,FetchData,AuthenticationService,$route,PushData) {
+interactiveControllers.controller('ClientChangeCtrl', function(clientData,OpenAlertBox,FormDataService,$window,$location,$scope,$rootScope,FetchData,AuthenticationService,$route,PushData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -466,19 +466,8 @@ interactiveControllers.controller('ClientChangeCtrl', function(OpenAlertBox,Form
 	}
 	$scope.$emit('changeTM',change);
 
-	var id = $route.current.params.id;
-	var url = 'customers/edit?id='+id;
-	var token = AuthenticationService.getAccessToken();
-
-	FetchData.getData(url,token)
-	.success(function(data){
-		console.log(data.fields);
-		$scope.fields = data.fields;
-		$rootScope.loadingData = false;
-	})
-	.error(function(status,error){
-		console.log(status);
-	})
+	$scope.fields = clientData.data.fields;
+	$rootScope.loadingData = false;
 
 	$scope.$on('pushClientInformationEdit',function(){
 		var errorMsg = FormDataService.getAlertMsg($scope.fields);
@@ -533,18 +522,15 @@ interactiveControllers.controller('ClientDetailCtrl', function(clientData,OpenAl
 	}
 
 	$scope.deletClient = function(){
+		var id = $route.current.params.id;
+		var token = AuthenticationService.getAccessToken();
 		OpenAlertBox.openConfirm('确定删除此客户？').then(function(data){
 			if(data == 'ok'){
 		    	var deletUrl = 'customers/delete?id='+id;
-		    	FetchData.getData(deletUrl,token)
-		    	.success(function(data){
-		    		console.log(data);
-		    		if(data.success){
+		    	FetchData.getData(deletUrl,token).then(function(data){
+		    		if(data.data.success){
 		    			$window.history.back();
 		    		}
-		    	})
-		    	.error(function(status,error){
-		    		console.log(status);
 		    	})
 			}
 		});
@@ -578,7 +564,7 @@ interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope) {
 	$scope.$emit('changeTM',change);
 });
 
-interactiveControllers.controller('OfflinePaymentCtrl', function(OpenAlertBox,$window,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,$route,FetchData) {
+interactiveControllers.controller('OfflinePaymentCtrl', function(paymentData,OpenAlertBox,$window,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,$route,FetchData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -587,18 +573,9 @@ interactiveControllers.controller('OfflinePaymentCtrl', function(OpenAlertBox,$w
 	}
 	$scope.$emit('changeTM',change);
 
-	var url = 'orders/detail?id='+$route.current.params.id;
-	var token = AuthenticationService.getAccessToken();
-	FetchData.getData(url,token)
-	.success(function(data){
-		console.log(data);
-		$rootScope.loadingData = false;
-		$scope.imageUrl = data.order.instrument;
-		$scope.imageID = data.order.payment_instrument_id;
-	})
-	.error(function(status,error){
-		console.log(status);
-	})
+	$rootScope.loadingData = false;
+	$scope.imageUrl = paymentData.data.order.instrument;
+	$scope.imageID = paymentData.data.order.payment_instrument_id;
 
     $scope.uploadFiles = function(file, errFiles) {
         $scope.f = file;
@@ -636,14 +613,9 @@ interactiveControllers.controller('OfflinePaymentCtrl', function(OpenAlertBox,$w
     	var id = $route.current.params.id
     	var url = 'orders/instrument?id='+id+'&instrument='+$scope.imageID;
     	var token = AuthenticationService.getAccessToken();
-    	FetchData.getData(url,token)
-    	.success(function(data){
-    		//alert('success');
-    		OpenAlertBox.openAlert('成功');
-    		$window.history.back();
-    	})
-    	.error(function(status,error){
-    		console.log(status);
+    	FetchData.getData(url,token).then(function(data){
+			OpenAlertBox.openAlert('成功');
+			$window.history.back();
     	})
     }
 });
@@ -797,24 +769,6 @@ interactiveControllers.controller('InsertUserCtrl', function(userListData,$windo
 			NewOrder.saveOrderData(allData);
 			$window.history.back();
 		})
-		// .success(function(data){
-		// 	console.log(data);
-		// 	var necessaryUserData = NewOrder.getOrderData();
-		// 	for(var i = 0;i<necessaryUserData.length;i++){
-		// 		if(necessaryUserData[i].section == "part_a"){
-		// 			var field = NewOrder.getOrderData()[i].field;
-		// 			necessaryUserData[i].value = data.customer[field];
-		// 		}
-		// 	}
-		// 	console.log(necessaryUserData);
-		// 	necessaryUserData.customer_id = data.customer.id;
-		// 	NewOrder.saveOrderData(necessaryUserData);
-		// 	$window.history.back();
-		// })
-		// .error(function(status,error){
-		// 	console.log(status);
-		// 	console.log(error);
-		// })
 	}
 
 	$scope.clients = [];
@@ -905,7 +859,7 @@ interactiveControllers.controller('SearchListCtrl', function(productList,$locati
 	$rootScope.loadingData = false;
 });
 
-interactiveControllers.controller('ExampleCtrl', function($scope,$rootScope,FetchData,AuthenticationService,$route) {
+interactiveControllers.controller('ExampleCtrl', function(exampleData,$scope,$rootScope) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 
@@ -915,18 +869,8 @@ interactiveControllers.controller('ExampleCtrl', function($scope,$rootScope,Fetc
 	}
 	$scope.$emit('changeTM',change);
 
-	var id = $route.current.params.id;
-	var url = "productions/orders?id="+id;
-	var token = AuthenticationService.getAccessToken();
-	FetchData.getData(url,token)
-	.success(function(data){
-		console.log(data);
-		$scope.examples = data.orders;
-		$rootScope.loadingData = false;
-	})
-	.error(function(status,error){
-		console.log(status);
-	})
+	$scope.examples = exampleData.data.orders;
+	$rootScope.loadingData = false;
 });
 
 interactiveControllers.controller('ExampleDetailCtrl', function($scope,$rootScope) {
