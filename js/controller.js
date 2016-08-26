@@ -329,7 +329,7 @@ interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$r
 	$scope.updateUnreadMessage($rootScope.tabStatus);
 });
 
-interactiveControllers.controller('ClientListCtrl', function($scope,$rootScope,$filter,$anchorScroll,$location,FetchData,AuthenticationService,PushData) {
+interactiveControllers.controller('ClientListCtrl', function(clientListData,$scope,$rootScope,$filter,$anchorScroll,$location,FetchData,AuthenticationService,PushData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -338,6 +338,20 @@ interactiveControllers.controller('ClientListCtrl', function($scope,$rootScope,$
 	}
 	$scope.$emit('changeTM',change);
 	
+
+	$scope.updateFirstCharList = function updateFirstCharList(list){
+		if(list){
+			$scope.firstCharList = [];
+			//console.log(list);
+			for(var i = 0; i<list.length; i++){
+			    if ($scope.firstCharList.indexOf(list[i].initial) == -1) {
+			        $scope.firstCharList.push(list[i].initial);
+			    }
+			}
+			console.log($scope.firstCharList);
+		}
+	}
+
 	console.log('run');
 	$scope.goto = function(x){
         var newHash = x;
@@ -352,33 +366,10 @@ interactiveControllers.controller('ClientListCtrl', function($scope,$rootScope,$
 		$location.path(url);
 	}
 
-	$scope.clients = [];
+	$scope.clients = clientListData.data.customers;
+	$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
+	$rootScope.loadingData = false;
 
-	var url = 'customers/my-customers';
-	var token = AuthenticationService.getAccessToken();
-	FetchData.getData(url,token)
-	.success(function(data){
-		console.log(data);
-		$rootScope.loadingData = false;
-		$scope.clients = data.customers;
-		$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
-	})
-	.error(function(status,error){
-		console.log(status);
-	})
-
-	$scope.updateFirstCharList = function updateFirstCharList(list){
-		if(list){
-			$scope.firstCharList = [];
-			//console.log(list);
-			for(var i = 0; i<list.length; i++){
-			    if ($scope.firstCharList.indexOf(list[i].initial) == -1) {
-			        $scope.firstCharList.push(list[i].initial);
-			    }
-			}
-			console.log($scope.firstCharList);
-		}
-	}
 
 	$scope.onHammer = function (e,client,direction) {
 		e.preventDefault();
@@ -433,7 +424,7 @@ interactiveControllers.controller('ClientListCtrl', function($scope,$rootScope,$
 	}
 });
 
-interactiveControllers.controller('ClientAddCtrl', function(OpenAlertBox,FormDataService,$scope,$rootScope,PushData,$location,AuthenticationService,FetchData) {
+interactiveControllers.controller('ClientAddCtrl', function(fieldsData,OpenAlertBox,FormDataService,$scope,$rootScope,PushData,$location,AuthenticationService,FetchData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -442,17 +433,8 @@ interactiveControllers.controller('ClientAddCtrl', function(OpenAlertBox,FormDat
 	}
 	$scope.$emit('changeTM',change);
 
-	var url = "customers/create";
-	var token = AuthenticationService.getAccessToken();
-	FetchData.getData(url,token)
-	.success(function(data){
-		console.log(data.fields);
-		$scope.fields = data.fields;
-		$rootScope.loadingData = false;
-	})
-	.error(function(status,error){
-		console.log(status);
-	})
+	$scope.fields = fieldsData.data.fields;
+	$rootScope.loadingData = false;
 
 	$scope.$on('pushClientInformation',function(){
 		var errorMsg = FormDataService.getAlertMsg($scope.fields);
@@ -520,7 +502,7 @@ interactiveControllers.controller('ClientChangeCtrl', function(OpenAlertBox,Form
 	})
 });
 
-interactiveControllers.controller('ClientHistoryCtrl', function($scope,$rootScope,FetchData,AuthenticationService,$route) {
+interactiveControllers.controller('ClientHistoryCtrl', function(historyData,$scope,$rootScope,FetchData,AuthenticationService,$route) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -529,21 +511,11 @@ interactiveControllers.controller('ClientHistoryCtrl', function($scope,$rootScop
 	}
 	$scope.$emit('changeTM',change);
 
-	var id = $route.current.params.id;
-	var url = 'customers/orders?id='+id;
-	var token = AuthenticationService.getAccessToken();
-	FetchData.getData(url,token)
-	.success(function(data){
-		console.log(data);
-		$scope.orders = data.orders;
-		$rootScope.loadingData = false;
-	})
-	.error(function(status,error){
-		console.log(status);
-	})
+	$scope.orders = historyData.data.orders;
+	$rootScope.loadingData = false;
 });
 
-interactiveControllers.controller('ClientDetailCtrl', function(OpenAlertBox,$scope,$rootScope,AuthenticationService,FetchData,$route,$location,$window) {
+interactiveControllers.controller('ClientDetailCtrl', function(clientData,OpenAlertBox,$scope,$rootScope,AuthenticationService,FetchData,$route,$location,$window) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -552,19 +524,9 @@ interactiveControllers.controller('ClientDetailCtrl', function(OpenAlertBox,$sco
 	}
 	$scope.$emit('changeTM',change);
 
-	var id = $route.current.params.id;
-	var url = 'customers/view?id='+id;
-	var token = AuthenticationService.getAccessToken();
-	FetchData.getData(url,token)
-	.success(function(data){
-		console.log(data);
-		$rootScope.loadingData = false;
-		$scope.client = data.customer;
-	})
-	.error(function(status,error){
-		console.log(status);
-		console.log(error);
-	})
+
+	$rootScope.loadingData = false;
+	$scope.client = clientData.data.customer;
 
 	$scope.goTo = function(url){
 		$location.path(url).replace();
@@ -751,8 +713,11 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function(productBuyDet
 	$scope.productoinAll = productBuyDetailData;
 
 	$scope.production = $scope.productoinAll.data.production;
-	$scope.customer_id = $scope.productoinAll.data.customer_id;
+	$scope.customer_id = $scope.productoinAll.data.fields.customer_id;
 	$scope.productFields = $scope.productoinAll.data.fields;
+
+	console.log(productBuyDetailData);
+	console.log($scope.customer_id);
 
 	$rootScope.loadingData = false;
 	

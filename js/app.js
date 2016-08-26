@@ -59,7 +59,7 @@ app.service('OpenAlertBox',function($uibModal,$q){
   }
 })
 
-app.constant('ProductContImageReplace', 'http://192.168.1.16');
+app.constant('ProductContImageReplace', 'https://192.168.1.16');
 //app.constant('ProductContImageReplace', 'http://hdq.hudongcn.com');
 
 app.factory('NewOrder', [function(){
@@ -291,11 +291,25 @@ app.config(['$routeProvider', function($routeProvider) {
 	when('/client_list', {
 		templateUrl: 'client_list.html',
 		controller: 'ClientListCtrl',
-		reloadOnSearch: false
+		reloadOnSearch: false,
+		resolve:{
+			clientListData:function(FetchData,AuthenticationService){
+				var url = 'customers/my-customers';
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
 	}).
 	when('/client_add', {
 		templateUrl: 'client_add.html',
-		controller: 'ClientAddCtrl'
+		controller: 'ClientAddCtrl',
+		resolve:{
+			fieldsData:function(FetchData,AuthenticationService){
+				var url = "customers/create";
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
 	}).
 	when('/client_add/:id', {
 		templateUrl: 'client_add.html',
@@ -303,11 +317,27 @@ app.config(['$routeProvider', function($routeProvider) {
 	}).
 	when('/client_history/:id', {
 		templateUrl: 'client_history.html',
-		controller: 'ClientHistoryCtrl'
+		controller: 'ClientHistoryCtrl',
+		resolve:{
+			historyData:function(FetchData,AuthenticationService,$route){
+				var id = $route.current.params.id;
+				var url = 'customers/orders?id='+id;
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
 	}).
 	when('/client_detail/:id', {
 		templateUrl: 'client_detail.html',
-		controller: 'ClientDetailCtrl'
+		controller: 'ClientDetailCtrl',
+		resolve:{
+			clientData:function($route,FetchData,AuthenticationService){
+				var id = $route.current.params.id;
+				var url = 'customers/view?id='+id;
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
 	}).
 	when('/personal_detail', {
 		templateUrl: 'personal_detail.html',
