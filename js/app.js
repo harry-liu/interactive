@@ -63,13 +63,21 @@ app.constant('ProductContImageReplace', 'http://192.168.1.16');
 //app.constant('ProductContImageReplace', 'http://hdq.hudongcn.com');
 
 app.factory('NewOrder', [function(){
-	var order;
+	var order = {};
 	return {
 		saveOrderData:function(data){
 			order = data;
 		},
 		getOrderData:function(){
 			return order;
+		},
+		checkOrderData:function(){
+			if(Object.keys(order).length == 0){
+				return false;
+			}
+			else{
+				return true;
+			}
 		}
 	}
 }])
@@ -200,11 +208,30 @@ app.config(['$routeProvider', function($routeProvider) {
 		controller: 'ProductBuyDetailCtrl',
 		data:{
 			requireUserlogin:true
+		},
+		resolve:{
+			productBuyDetailData:function(FetchData,AuthenticationService,NewOrder,$route){
+				if(NewOrder.checkOrderData()){
+					return NewOrder.getOrderData();
+				}
+				else{
+					var url = "orders/create?id="+$route.current.params.id;
+					var token = AuthenticationService.getAccessToken();
+					return FetchData.getData(url,token);
+				}
+			}
 		}
 	}).
 	when('/insert_user', {
 		templateUrl: 'insert_user.html',
-		controller: 'InsertUserCtrl'
+		controller: 'InsertUserCtrl',
+		resolve:{
+			userListData:function(FetchData,AuthenticationService){
+				var url = 'customers/my-customers';
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
 	}).
 	when('/teach', {
 		templateUrl: 'teach.html',
@@ -319,7 +346,14 @@ app.config(['$routeProvider', function($routeProvider) {
 	}).
 	when('/booking_detail/:id/:type', {
 		templateUrl: 'booking_detail.html',
-		controller: 'BookingDetailCtrl'
+		controller: 'BookingDetailCtrl',
+		resolve:{
+			bookingDetailData:function(FetchData,AuthenticationService,$route){
+				var url = 'orders/edit?id='+$route.current.params.id;
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
 	}).
 	when('/qr_payment/:id', {
 		templateUrl: 'qr_payment.html',

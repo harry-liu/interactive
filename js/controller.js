@@ -589,7 +589,7 @@ interactiveControllers.controller('ClientDetailCtrl', function(OpenAlertBox,$sco
 	}
 });
 
-interactiveControllers.controller('BookingDetailCtrl', function($scope,$rootScope,FetchData,AuthenticationService,$route) {
+interactiveControllers.controller('BookingDetailCtrl', function($scope,$rootScope,$route,bookingDetailData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -598,19 +598,10 @@ interactiveControllers.controller('BookingDetailCtrl', function($scope,$rootScop
 	}
 	$scope.$emit('changeTM',change);
 
-	var url = 'orders/edit?id='+$route.current.params.id;
-	var token = AuthenticationService.getAccessToken();
-	FetchData.getData(url,token)
-	.success(function(data){
-		console.log(data);
-		$rootScope.loadingData = false;
-		$scope.orderInfo = data.order;
-		$scope.fields = data.fields;
-		$scope.bookingStatus = $route.current.params.type;
-	})
-	.error(function(status,error){
-		console.log(status);
-	})
+	$scope.fields = bookingDetailData.data.fields;
+	$scope.orderInfo = bookingDetailData.data.order;
+	$scope.bookingStatus = $route.current.params.type;
+	$rootScope.loadingData = false;
 });
 
 interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope) {
@@ -747,7 +738,7 @@ interactiveControllers.controller('ProductDetailCtrl', function(productDetail,$s
 	$rootScope.loadingData = false;
 });
 
-interactiveControllers.controller('ProductBuyDetailCtrl', function(OpenAlertBox,FormDataService,$scope,$rootScope,FetchData,AuthenticationService,PushData,$location,$routeParams,NewOrder) {
+interactiveControllers.controller('ProductBuyDetailCtrl', function(productBuyDetailData,OpenAlertBox,FormDataService,$scope,$rootScope,FetchData,AuthenticationService,PushData,$location,$routeParams,NewOrder) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 
@@ -757,34 +748,14 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function(OpenAlertBox,
 	}
 	$scope.$emit('changeTM',change);
 
-	if(NewOrder.getOrderData().length>0){
-		$scope.productFields = NewOrder.getOrderData();
-		$scope.customer_id = NewOrder.getOrderData().customer_id;
-		console.log($scope.customer_id);
-		FetchData.getData('orders/create?id='+$routeParams.id,AuthenticationService.getAccessToken())
-		.success(function(data){
-			console.log(data);
-			$rootScope.loadingData = false;
-			$scope.production = data.production;
-		})
-		.error(function(status,data){
-			console.log(data);
-			console.log(status);
-		})
-	}
-	else{
-		FetchData.getData('orders/create?id='+$routeParams.id,AuthenticationService.getAccessToken())
-		.success(function(data){
-			console.log(data);
-			$rootScope.loadingData = false;
-			$scope.productFields = data.fields;
-			$scope.production = data.production;
-		})
-		.error(function(status,data){
-			console.log(data);
-			console.log(status);
-		})
-	}
+	$scope.productoinAll = productBuyDetailData;
+
+	$scope.production = $scope.productoinAll.data.production;
+	$scope.customer_id = $scope.productoinAll.data.customer_id;
+	$scope.productFields = $scope.productoinAll.data.fields;
+
+	$rootScope.loadingData = false;
+	
 	$scope.disableButton = false;
 	$scope.$on('pushBookingForm',function(){
 		//console.log('pushForm');
@@ -816,13 +787,12 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function(OpenAlertBox,
 	})
 
 	$scope.saveData = function(){
-		NewOrder.saveOrderData($scope.productFields);
-		console.log($scope.productFields);
+		NewOrder.saveOrderData($scope.productoinAll);
 		$location.path('/insert_user');
 	}
 });
 
-interactiveControllers.controller('InsertUserCtrl', function($window,$scope,$rootScope,FetchData,AuthenticationService,$filter,NewOrder) {
+interactiveControllers.controller('InsertUserCtrl', function(userListData,$window,$scope,$rootScope,FetchData,AuthenticationService,$filter,NewOrder) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 
@@ -832,59 +802,61 @@ interactiveControllers.controller('InsertUserCtrl', function($window,$scope,$roo
 	}
 	$scope.$emit('changeTM',change);
 
-	$scope.clients = [];
-
-	var url = 'customers/my-customers';
-	var token = AuthenticationService.getAccessToken();
-	FetchData.getData(url,token)
-	.success(function(data){
-		console.log(data);
-		$rootScope.loadingData = false;
-		$scope.clients = data.customers;
-		$scope.updateFirstCharList($scope.clients);
-	})
-	.error(function(status,error){
-		console.log(status);
-	})
-
 	$scope.updateFirstCharList = function updateFirstCharList(list){
 		if(list){
 			$scope.firstCharList = [];
-			//console.log(list);
 			for(var i = 0; i<list.length; i++){
 			    if ($scope.firstCharList.indexOf(list[i].initial) == -1) {
 			        $scope.firstCharList.push(list[i].initial);
 			    }
 			}
-			console.log($scope.firstCharList);
 		}
 	}
 
 	$scope.getUserInfo = function(id){
 		var url = 'customers/view?id='+id;
 		var token = AuthenticationService.getAccessToken();
-		FetchData.getData(url,token)
-		.success(function(data){
-			console.log(data);
-			var necessaryUserData = NewOrder.getOrderData();
+		FetchData.getData(url,token).then(function(data){
+			var necessaryUserData = NewOrder.getOrderData().data.fields;
 			for(var i = 0;i<necessaryUserData.length;i++){
 				if(necessaryUserData[i].section == "part_a"){
-					// for(var k = 0;k<data.customer.length;k++){
-					var field = NewOrder.getOrderData()[i].field;
-					necessaryUserData[i].value = data.customer[field];
-					// }
+					var field = necessaryUserData[i].field;
+					necessaryUserData[i].value = data.data.customer[field];
 				}
 			}
 			console.log(necessaryUserData);
-			necessaryUserData.customer_id = data.customer.id;
-			NewOrder.saveOrderData(necessaryUserData);
+			necessaryUserData.customer_id = data.data.customer.id;
+			var allData = NewOrder.getOrderData();
+			console.log(allData);
+			allData.data.fields = necessaryUserData;
+			NewOrder.saveOrderData(allData);
 			$window.history.back();
 		})
-		.error(function(status,error){
-			console.log(status);
-			console.log(error);
-		})
+		// .success(function(data){
+		// 	console.log(data);
+		// 	var necessaryUserData = NewOrder.getOrderData();
+		// 	for(var i = 0;i<necessaryUserData.length;i++){
+		// 		if(necessaryUserData[i].section == "part_a"){
+		// 			var field = NewOrder.getOrderData()[i].field;
+		// 			necessaryUserData[i].value = data.customer[field];
+		// 		}
+		// 	}
+		// 	console.log(necessaryUserData);
+		// 	necessaryUserData.customer_id = data.customer.id;
+		// 	NewOrder.saveOrderData(necessaryUserData);
+		// 	$window.history.back();
+		// })
+		// .error(function(status,error){
+		// 	console.log(status);
+		// 	console.log(error);
+		// })
 	}
+
+	$scope.clients = [];
+
+	$scope.clients = userListData.data.customers;
+	$scope.updateFirstCharList($scope.clients);
+	$rootScope.loadingData = false;
 });
 
 interactiveControllers.controller('CommunityCtrl', function(communityList,$scope,$rootScope) {
