@@ -93,6 +93,14 @@ body {
 	display: none !important;
 }
 
+.carousel-control.right{
+	display: none;
+}
+
+.carousel-control.left{
+	display: none;
+}
+
 .carousel-indicators li{
 	margin:0 2px !important;
 }
@@ -2831,6 +2839,7 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 	outline: medium;
 	font-size: 14px;
 	color: #868686;
+	width: 198px;
 }
 
 .hc-deplist-container .hc-deplist-box {
