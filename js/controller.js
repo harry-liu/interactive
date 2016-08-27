@@ -386,16 +386,6 @@ interactiveControllers.controller('ClientListCtrl', function(clientListData,$sco
 				$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
 			}
 		})
-		// .success(function(data){
-		// 	console.log(data);
-
-		// 	$scope.currentClient.top = 1;
-		// 	$scope.top = 0;
-		// 	$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
-		// })
-		// .error(function(status,error){
-		// 	console.log(status);
-		// })
 	}
 
 	$scope.pushBottom = function(e){
@@ -411,14 +401,6 @@ interactiveControllers.controller('ClientListCtrl', function(clientListData,$sco
 				$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
 			}
 		})
-		// .success(function(data){
-		// 	$scope.currentClient.top = 0;
-		// 	$scope.bottom = 0;
-		// 	$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
-		// })
-		// .error(function(status,error){
-		// 	console.log(status);
-		// })
 	}
 
 	$scope.pullBack = function(e){
@@ -455,12 +437,6 @@ interactiveControllers.controller('ClientAddCtrl', function(fieldsData,OpenAlert
 					$window.history.back();
 				}
 			})
-			// .success(function(data){
-			// 	$location.path('/client_list').replace();
-			// })
-			// .error(function(status,error){
-			// 	console.log(status);
-			// })
 		}
 	})
 });
@@ -493,12 +469,6 @@ interactiveControllers.controller('ClientChangeCtrl', function(clientData,OpenAl
 					$window.history.back();
 				}
 			})
-			// .success(function(data){
-			// 	$window.history.back();
-			// })
-			// .error(function(status,error){
-			// 	console.log(status);
-			// })
 		}
 	})
 });
@@ -720,14 +690,6 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function(productBuyDet
 				PushData.push(url,formData,AuthenticationService.getAccessToken()).then(function(data){
 					$location.path('/us');
 				})
-				// .success(function(data){
-				// 	console.log(data);
-				// 	$location.path('/us');
-				// })
-				// .error(function(error,data){
-				// 	console.log(error);
-				// 	$scope.disableButton = false;
-				// })
 			}
 		}
 	})
@@ -979,14 +941,6 @@ interactiveControllers.controller('PersonalDetailCtrl', function(OpenAlertBox,$s
     				OpenAlertBox.openAlert('好像有什么问题。。。');
     			}
     		})
-    		// .success(function(data){
-    		// 	//alert('修改成功！');
-    		// 	OpenAlertBox.openAlert('修改成功！');
-    		// 	$location.path('/us');
-    		// })
-    		// .error(function(status,error){
-    		// 	console.log(status);
-    		// })
     	}
     })
 });
