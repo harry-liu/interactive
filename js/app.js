@@ -100,7 +100,7 @@ app.run(['$rootScope', '$location','locals','AuthenticationService','FetchData',
 		$rootScope.loadingData = true;
 
 		//判断是否有填写订单数据
-		if(next.originalPath != "/product_buy/:id"||next.originalPath != "/insert_user"){
+		if(next.originalPath != "/product_buy/:id"&&next.originalPath != "/insert_user"){
 			var ob = {};
 			NewOrder.saveOrderData(ob);
 		}
@@ -284,10 +284,15 @@ app.config(['$routeProvider', function($routeProvider) {
 			requireUserlogin:true
 		},
 		resolve:{
-			checkUserLogin:function(ConfirmToken,$location){
+			checkUserLogin:function(ConfirmToken,$location,FetchData,AuthenticationService){
 				return ConfirmToken.confirm().then(function(data){
 					if(!data){
 						$location.path('/login');
+					}
+					else{
+						var url = 'user';
+						var token = AuthenticationService.getAccessToken();
+						return FetchData.getData(url,token);
 					}
 				})
 			}
@@ -354,7 +359,14 @@ app.config(['$routeProvider', function($routeProvider) {
 	}).
 	when('/personal_detail', {
 		templateUrl: 'personal_detail.html',
-		controller: 'PersonalDetailCtrl'
+		controller: 'PersonalDetailCtrl',
+		resolve:{
+			personalData:function(FetchData,AuthenticationService){
+				var url = 'user';
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
 	}).
 	when('/add_alipay', {
 		templateUrl: 'add_alipay.html',

@@ -186,18 +186,12 @@ interactiveControllers.controller('LoginCtrl', function(OpenAlertBox,$timeout,Sa
 		if($scope.phoneNumber){
 			$scope.startTimeOut();
 			var data = 'mobile='+$scope.phoneNumber;
-			LogService.sms(data)
-			.success(function(data){
-				console.log(data);
-				if(data.success){
+			LogService.sms(data).then(function(data){
+				if(data.data.success){
 				}
 				else{
-					//alert('必须输入有效的号码');
 					OpenAlertBox.openAlert('必须输入有效的号码');
 				}
-			})
-			.error(function(status,error){
-				console.log(status);
 			})
 		}
 		else{
@@ -207,17 +201,18 @@ interactiveControllers.controller('LoginCtrl', function(OpenAlertBox,$timeout,Sa
 	}
 
 	$scope.login = function(){
-		if($scope.phoneNumber&&$scope.password){
+		if(typeof $scope.phoneNumber == 'undefined'){
+			OpenAlertBox.openAlert('请输入电话号码');
+		}
+		else if(typeof $scope.password == 'undefined'){
+			OpenAlertBox.openAlert('请输入验证码');
+		}
+		else{
 			var user = $scope.phoneNumber;
 			var code = $scope.password;
-			LogService.login(user,code)
-			.success(function(data){
-				console.log(data);
-				SaveToken(data);
+			LogService.login(user,code).then(function(data){
+				SaveToken(data.data);
 				$location.path($rootScope.nextUrl||'/us').replace();
-			})
-			.error(function(status,error){
-				console.log(status);
 			})
 		}
 	}
@@ -283,15 +278,13 @@ interactiveControllers.controller('BookingListCtrl', function(PushData,$scope,$r
 		var data = 'status='+status;
 		var token = AuthenticationService.getAccessToken();
 
-		PushData.push(url,data,token)
-		.success(function(data){
-			angular.forEach($filter('filter')($scope.bookingList,{'status':status,'has_read':0}),function(value,key){
-				value.has_read = 1;
-			})
-			$scope.updateNumberUnreadMessage();
-		})
-		.error(function(status,error){
-			console.log('something wrong');
+		PushData.push(url,data,token).then(function(data){
+			if(data.data.message == 'success'){
+				angular.forEach($filter('filter')($scope.bookingList,{'status':status,'has_read':0}),function(value,key){
+					value.has_read = 1;
+				})
+				$scope.updateNumberUnreadMessage();
+			}
 		})
 	}
 
@@ -351,8 +344,6 @@ interactiveControllers.controller('ClientListCtrl', function(clientListData,$sco
 			console.log($scope.firstCharList);
 		}
 	}
-
-	console.log('run');
 	$scope.goto = function(x){
         var newHash = x;
         if ($location.hash() !== newHash) {
@@ -361,7 +352,6 @@ interactiveControllers.controller('ClientListCtrl', function(clientListData,$sco
           	$anchorScroll();
         }
 	}
-
 	$scope.goTo = function(url){
 		$location.path(url);
 	}
@@ -389,15 +379,23 @@ interactiveControllers.controller('ClientListCtrl', function(clientListData,$sco
 		var url = 'customers/top';
 		var data = 'id='+$scope.currentClient.id;
 		var token = AuthenticationService.getAccessToken();
-		PushData.push(url,data,token)
-		.success(function(data){
-			$scope.currentClient.top = 1;
-			$scope.top = 0;
-			$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
+		PushData.push(url,data,token).then(function(data){
+			if(data.data == 'success'){
+				$scope.currentClient.top = 1;
+				$scope.top = 0;
+				$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
+			}
 		})
-		.error(function(status,error){
-			console.log(status);
-		})
+		// .success(function(data){
+		// 	console.log(data);
+
+		// 	$scope.currentClient.top = 1;
+		// 	$scope.top = 0;
+		// 	$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
+		// })
+		// .error(function(status,error){
+		// 	console.log(status);
+		// })
 	}
 
 	$scope.pushBottom = function(e){
@@ -406,15 +404,21 @@ interactiveControllers.controller('ClientListCtrl', function(clientListData,$sco
 		var url = 'customers/top';
 		var data = 'id='+$scope.currentClient.id;
 		var token = AuthenticationService.getAccessToken();
-		PushData.push(url,data,token)
-		.success(function(data){
-			$scope.currentClient.top = 0;
-			$scope.bottom = 0;
-			$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
+		PushData.push(url,data,token).then(function(data){
+			if(data.data == 'success'){
+				$scope.currentClient.top = 0;
+				$scope.bottom = 0;
+				$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
+			}
 		})
-		.error(function(status,error){
-			console.log(status);
-		})
+		// .success(function(data){
+		// 	$scope.currentClient.top = 0;
+		// 	$scope.bottom = 0;
+		// 	$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
+		// })
+		// .error(function(status,error){
+		// 	console.log(status);
+		// })
 	}
 
 	$scope.pullBack = function(e){
@@ -424,7 +428,7 @@ interactiveControllers.controller('ClientListCtrl', function(clientListData,$sco
 	}
 });
 
-interactiveControllers.controller('ClientAddCtrl', function(fieldsData,OpenAlertBox,FormDataService,$scope,$rootScope,PushData,$location,AuthenticationService,FetchData) {
+interactiveControllers.controller('ClientAddCtrl', function(fieldsData,OpenAlertBox,FormDataService,$scope,$rootScope,PushData,$location,AuthenticationService,FetchData,$window) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -446,13 +450,17 @@ interactiveControllers.controller('ClientAddCtrl', function(fieldsData,OpenAlert
 			var url = "customers/create";
 			var data = FormDataService.getValueData($scope.fields);
 			var token = AuthenticationService.getAccessToken();
-			PushData.push(url,data,token)
-			.success(function(data){
-				$location.path('/client_list').replace();
+			PushData.push(url,data,token).then(function(data){
+				if(data.data.message == 'success'){
+					$window.history.back();
+				}
 			})
-			.error(function(status,error){
-				console.log(status);
-			})
+			// .success(function(data){
+			// 	$location.path('/client_list').replace();
+			// })
+			// .error(function(status,error){
+			// 	console.log(status);
+			// })
 		}
 	})
 });
@@ -480,13 +488,17 @@ interactiveControllers.controller('ClientChangeCtrl', function(clientData,OpenAl
 			var url = "customers/edit?id="+id;
 			var data = FormDataService.getValueData($scope.fields);
 			var token = AuthenticationService.getAccessToken();
-			PushData.push(url,data,token)
-			.success(function(data){
-				$window.history.back();
+			PushData.push(url,data,token).then(function(data){
+				if(data.data.message == 'success'){
+					$window.history.back();
+				}
 			})
-			.error(function(status,error){
-				console.log(status);
-			})
+			// .success(function(data){
+			// 	$window.history.back();
+			// })
+			// .error(function(status,error){
+			// 	console.log(status);
+			// })
 		}
 	})
 });
@@ -705,15 +717,17 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function(productBuyDet
 			else{
 				formData = FormDataService.getValueData($scope.productFields);
 				formData = formData+'&customer_id='+$scope.customer_id;
-				PushData.push(url,formData,AuthenticationService.getAccessToken())
-				.success(function(data){
-					console.log(data);
+				PushData.push(url,formData,AuthenticationService.getAccessToken()).then(function(data){
 					$location.path('/us');
 				})
-				.error(function(error,data){
-					console.log(error);
-					$scope.disableButton = false;
-				})
+				// .success(function(data){
+				// 	console.log(data);
+				// 	$location.path('/us');
+				// })
+				// .error(function(error,data){
+				// 	console.log(error);
+				// 	$scope.disableButton = false;
+				// })
 			}
 		}
 	})
@@ -881,46 +895,17 @@ interactiveControllers.controller('ExampleDetailCtrl', function($scope,$rootScop
 	$scope.$emit('changeTM',change);
 });
 
-interactiveControllers.controller('UsCtrl', function($scope,$rootScope,AuthenticationService,FetchData,LogService,$location,SaveToken) {
+interactiveControllers.controller('UsCtrl', function($scope,$rootScope,checkUserLogin) {
 	$scope.$emit('hideTM',false);
 	$scope.$emit('hideBM',true);
 
 	$scope.$emit('setBottomMenuImage','us');
 
-	FetchData.getUserInfo(AuthenticationService.getAccessToken())
-	.success(function(data){
-		console.log(data);
-		$scope.user = data.user;
-		$rootScope.loadingData = false;
-	})
-	.error(function(status,data){
-		//data == -1&&!status
-		// if(false){
-		// 	$location.path('/disconnect');
-		// }
-		// else{
-		// 	if (AuthenticationService.getRefreshToken() != ''){
-		// 		LogService.refreshToken(AuthenticationService.getRefreshToken()).success(function(data){
-		// 			SaveToken(data);
-		// 			FetchData.getUserInfo(AuthenticationService.getAccessToken()).success(function(data){
-		// 				$scope.user = data.user;
-		// 				$rootScope.loadingData = false;
-		// 			}).error(function(status,error){
-		// 				$location.path('/login');
-		// 			})
-		// 		}).error(function(status,error){
-		// 			$location.path('/login');
-		// 		})
-		// 	}
-		// 	else{
-		// 		$location.path('/login');
-		// 	}
-		// }
-	})
-
+	$scope.user = checkUserLogin.data.user;
+	$rootScope.loadingData = false;
 });
 
-interactiveControllers.controller('PersonalDetailCtrl', function(OpenAlertBox,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,FetchData,PushData,$location) {
+interactiveControllers.controller('PersonalDetailCtrl', function(OpenAlertBox,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,personalData,PushData,$location) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -942,12 +927,8 @@ interactiveControllers.controller('PersonalDetailCtrl', function(OpenAlertBox,$s
                 method:"post",
                 headers: {
                     'Authorization': 'Bearer '+AuthenticationService.getAccessToken()
-                   // 'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 file:file,
-                // data: {
-
-                // }
             });
 
             file.upload.then(function (response) {
@@ -969,23 +950,14 @@ interactiveControllers.controller('PersonalDetailCtrl', function(OpenAlertBox,$s
         }   
     }
 
-    FetchData.getUserInfo(AuthenticationService.getAccessToken())
-    .success(function(data){
-    	$rootScope.loadingData = false;
-    	$scope.user = data.user;
-    })
-    .error(function(status,error){
-    	console.log(status);
-    })
+    $rootScope.loadingData = false;
+    $scope.user = personalData.data.user;
 
     $scope.$on('pushPersonalInformation',function(){
-
     	if(!$scope.user.username){
-    		//alert('请输入姓名');
     		OpenAlertBox.openAlert('请输入姓名');
     	}
     	else if(!$scope.user.card_id){
-    		//alert('请输入身份证号');
     		OpenAlertBox.openAlert('请输入身份证号');
     	}
     	else{    	
@@ -997,15 +969,24 @@ interactiveControllers.controller('PersonalDetailCtrl', function(OpenAlertBox,$s
     		else{
     			var data = 'avatar='+'&username='+$scope.user.username+'&card_id='+$scope.user.card_id;
     		}
-    		PushData.push(url,data,token)
-    		.success(function(data){
-    			//alert('修改成功！');
-    			OpenAlertBox.openAlert('修改成功！');
-    			$location.path('/us');
+    		PushData.push(url,data,token).then(function(data){
+    			if(data.data.message == 'success'){
+					OpenAlertBox.openAlert('修改成功！').then(function(data){
+						$location.path('/us');
+					});
+    			}
+    			else{
+    				OpenAlertBox.openAlert('好像有什么问题。。。');
+    			}
     		})
-    		.error(function(status,error){
-    			console.log(status);
-    		})
+    		// .success(function(data){
+    		// 	//alert('修改成功！');
+    		// 	OpenAlertBox.openAlert('修改成功！');
+    		// 	$location.path('/us');
+    		// })
+    		// .error(function(status,error){
+    		// 	console.log(status);
+    		// })
     	}
     })
 });

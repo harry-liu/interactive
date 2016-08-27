@@ -35,17 +35,7 @@ APIService.factory('AuthenticationService', function(locals) {
 });
 
 APIService.factory('FetchData', function FetchData($http,PublicURL,$location) {  
-    return {  
-        getUserInfo: function getUserInfo(token) {  
-            return $http({
-                url:PublicURL+'user',
-                method:"post",
-                headers: {
-                    'Authorization': 'Bearer '+token,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            })
-        },
+    return {
         getPublicAPI:function getPublicAPI(url){
             return $http.get(PublicURL+url)
             .then(function successCallback(response){
@@ -68,7 +58,12 @@ APIService.factory('FetchData', function FetchData($http,PublicURL,$location) {
                 return response;
             }, function errorCallback(response) {
                 console.log(response);
-                $location.path('/disconnect');
+                if(response.status == -1){
+                    $location.path('/disconnect');
+                }
+                else{
+                    $location.path('/login');
+                }
             })
         }
     };  
@@ -86,7 +81,12 @@ APIService.factory('PushData', ['$http','PublicURL',function($http,PublicURL){
                 },
                 data:data
             })
-        } 
+            .then(function successCallback(response){
+                return response;
+            }, function errorCallback(response) {
+                return response;
+            })
+        }
     } 
 }])
 
@@ -101,6 +101,17 @@ APIService.factory('LogService', function LogService($http,PublicURL,$location) 
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 data: 'grant_type=password&client_id=hdq&client_secret=hdq&username='+phone+'&code='+code+'&password='
+            })
+            .then(function successCallback(response){
+                return response;
+            }, function errorCallback(response) {
+                console.log(response);
+                if(response.status == -1){
+                    $location.path('/disconnect');
+                }
+                else{
+                    $location.path('/login');
+                }
             });
         },
         sms:function(info){
@@ -112,6 +123,14 @@ APIService.factory('LogService', function LogService($http,PublicURL,$location) 
                 },
                 data:info
             })
+            .then(function successCallback(response){
+                return response;
+            }, function errorCallback(response) {
+                console.log(response);
+                if(response.status == -1){
+                    $location.path('/disconnect');
+                }
+            });
         },
         refreshToken:function(info){
             return $http({
