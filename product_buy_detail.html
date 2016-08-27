@@ -61,7 +61,7 @@
 
 			<li ng-repeat="(key, value) in productFields | filter:{'section':'part_a'}">
 				<h1>{{value.label}}:</h1>
-				<input type="text" placeholder="请输入{{value.instructions}}" ng-model = "value.value"></input>
+				<input type="text" placeholder="{{value.instructions}}" ng-model = "value.value"></input>
 				<a ng-show="value.label == '甲方名称'" ng-click="saveData()">
 					<img src="imgs/product_detail/mykh.png"/>
 				</a>
@@ -79,22 +79,22 @@
 
 			<li ng-repeat="(key, value) in productFields | filter:{'section':'extra'}" ng-switch on="value.slug">
 				<h1>{{value.label}}</h1>
-				<input type="text" placeholder="请输入{{value.instructions}}" ng-model = "value.value" ng-switch-default>
+				<input type="text" placeholder="{{value.instructions}}" ng-model = "value.value" ng-switch-default>
 				</input>
 				<select ng-switch-when="select" ng-model="value.value">
 					<option ng-repeat="option in value.options" value="{{option.id}}">{{option.name}}</option>
 				</select>
-				<textarea placeholder="请输入{{value.instructions}}" cols="30" rows="3" ng-switch-when="textarea" style=" width: 100%;margin: 10px 0;border-radius: 7px;" ng-model = "value.value"></textarea>
+				<textarea placeholder="{{value.instructions}}" cols="30" rows="3" ng-switch-when="textarea" style=" width: 100%;margin: 10px 0;border-radius: 7px;" ng-model = "value.value"></textarea>
 			</li>
 
 			<li ng-repeat="(key, value) in productFields | filter:{'section':'other'}" ng-switch on="value.slug">
 				<h1>{{value.label}}</h1>
-				<input type="text" placeholder="请输入{{value.instructions}}" ng-model = "value.value" ng-switch-default>
+				<input type="text" placeholder="{{value.instructions}}" ng-model = "value.value" ng-switch-default>
 				</input>
 				<select ng-switch-when="select" ng-model="value.value">
 					<option ng-repeat="option in value.options" value="{{option.id}}">{{option.name}}</option>
 				</select>
-				<textarea placeholder="请输入{{value.instructions}}" cols="30" rows="3" ng-switch-when="textarea" style=" width: 100%;margin: 10px 0;border-radius: 7px;border-color:#c0bbbb;" ng-model = "value.value"></textarea>
+				<textarea placeholder="{{value.instructions}}" cols="30" rows="3" ng-switch-when="textarea" style=" width: 100%;margin: 10px 0;border-radius: 7px;border-color:#c0bbbb;" ng-model = "value.value"></textarea>
 			</li>
 
 		</ul>
