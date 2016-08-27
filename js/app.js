@@ -100,33 +100,13 @@ app.run(['$rootScope', '$location','locals','AuthenticationService','FetchData',
 		$rootScope.loadingData = true;
 
 		//判断是否有填写订单数据
-		if(next.originalPath == "/product_buy/:id"||next.originalPath == "/insert_user"){
-		}
-		else{
+		if(next.originalPath != "/product_buy/:id"||next.originalPath != "/insert_user"){
 			var ob = {};
 			NewOrder.saveOrderData(ob);
 		}
 
-		//判断页面是否需要登录
-		if(next.data){
-		var permission = next.data.requireUserlogin;
-		if (permission&&(!AuthenticationService.getAccessToken())) {
-			evt.preventDefault();
-			if(next.params.id){
-			$rootScope.nextUrl = next.originalPath.replace(':id',next.params.id);
-			console.log($rootScope.nextUrl);
-			}
-			else{
-			$rootScope.nextUrl = next.originalPath;
-			}
-			$location.path('/login');
-		}
-		}
-
 		//判断是否第一次打开app
-		if(locals.get('alreadyLogIn',false)){
-		}
-		else{
+		if(!locals.get('alreadyLogIn',false)){
 			evt.preventDefault();
 			$location.path('/new_user');
 			locals.set('alreadyLogIn',true)
@@ -210,15 +190,23 @@ app.config(['$routeProvider', function($routeProvider) {
 			requireUserlogin:true
 		},
 		resolve:{
-			productBuyDetailData:function(FetchData,AuthenticationService,NewOrder,$route){
-				if(NewOrder.checkOrderData()){
-					return NewOrder.getOrderData();
-				}
-				else{
-					var url = "orders/create?id="+$route.current.params.id;
-					var token = AuthenticationService.getAccessToken();
-					return FetchData.getData(url,token);
-				}
+			productBuyDetailData:function(FetchData,AuthenticationService,NewOrder,$route,ConfirmToken,$location,$rootScope){
+				return ConfirmToken.confirm().then(function(data){
+					if(data){
+						if(NewOrder.checkOrderData()){
+							return NewOrder.getOrderData();
+						}
+						else{
+							var url = "orders/create?id="+$route.current.params.id;
+							var token = AuthenticationService.getAccessToken();
+							return FetchData.getData(url,token);
+						}
+					}
+					else{
+						$rootScope.nextUrl = $location.path();
+						$location.path('/login');
+					}
+				})
 			}
 		}
 	}).
@@ -294,6 +282,15 @@ app.config(['$routeProvider', function($routeProvider) {
 		controller: 'UsCtrl',
 		data:{
 			requireUserlogin:true
+		},
+		resolve:{
+			checkUserLogin:function(ConfirmToken,$location){
+				return ConfirmToken.confirm().then(function(data){
+					if(!data){
+						$location.path('/login');
+					}
+				})
+			}
 		}
 	}).
 	when('/client_list', {

@@ -688,14 +688,10 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function(productBuyDet
 	$scope.customer_id = $scope.productoinAll.data.fields.customer_id;
 	$scope.productFields = $scope.productoinAll.data.fields;
 
-	console.log(productBuyDetailData);
-	console.log($scope.customer_id);
-
 	$rootScope.loadingData = false;
 	
 	$scope.disableButton = false;
 	$scope.$on('pushBookingForm',function(){
-		//console.log('pushForm');
 		if(!$scope.disableButton){
 			$scope.disableButton = true;
 			var url = 'orders/create?id='+$routeParams.id;
@@ -708,7 +704,6 @@ interactiveControllers.controller('ProductBuyDetailCtrl', function(productBuyDet
 			}
 			else{
 				formData = FormDataService.getValueData($scope.productFields);
-				console.log(formData);
 				formData = formData+'&customer_id='+$scope.customer_id;
 				PushData.push(url,formData,AuthenticationService.getAccessToken())
 				.success(function(data){
@@ -887,49 +882,42 @@ interactiveControllers.controller('ExampleDetailCtrl', function($scope,$rootScop
 });
 
 interactiveControllers.controller('UsCtrl', function($scope,$rootScope,AuthenticationService,FetchData,LogService,$location,SaveToken) {
-
 	$scope.$emit('hideTM',false);
 	$scope.$emit('hideBM',true);
 
 	$scope.$emit('setBottomMenuImage','us');
 
-	//$rootScope.loadingData = false;
-	
-	function getData(){
-		FetchData.getUserInfo(AuthenticationService.getAccessToken())
-		.success(function(data){
-			console.log(data);
-			//return data;
-			$scope.user = data.user;
-			$rootScope.loadingData = false;
-		})
-		.error(function(status,data){
-			//data == -1&&!status
-			if(false){
-				$location.path('/disconnect');
-			}
-			else{
-				if (AuthenticationService.getRefreshToken() != ''){
-					LogService.refreshToken(AuthenticationService.getRefreshToken()).success(function(data){
-						SaveToken(data);
-						FetchData.getUserInfo(AuthenticationService.getAccessToken()).success(function(data){
-							$scope.user = data.user;
-							$rootScope.loadingData = false;
-						}).error(function(status,error){
-							$location.path('/login');
-						})
-					}).error(function(status,error){
-						$location.path('/login');
-					})
-				}
-				else{
-					$location.path('/login');
-				}
-			}
-		})
-	}
+	FetchData.getUserInfo(AuthenticationService.getAccessToken())
+	.success(function(data){
+		console.log(data);
+		$scope.user = data.user;
+		$rootScope.loadingData = false;
+	})
+	.error(function(status,data){
+		//data == -1&&!status
+		// if(false){
+		// 	$location.path('/disconnect');
+		// }
+		// else{
+		// 	if (AuthenticationService.getRefreshToken() != ''){
+		// 		LogService.refreshToken(AuthenticationService.getRefreshToken()).success(function(data){
+		// 			SaveToken(data);
+		// 			FetchData.getUserInfo(AuthenticationService.getAccessToken()).success(function(data){
+		// 				$scope.user = data.user;
+		// 				$rootScope.loadingData = false;
+		// 			}).error(function(status,error){
+		// 				$location.path('/login');
+		// 			})
+		// 		}).error(function(status,error){
+		// 			$location.path('/login');
+		// 		})
+		// 	}
+		// 	else{
+		// 		$location.path('/login');
+		// 	}
+		// }
+	})
 
-	getData();
 });
 
 interactiveControllers.controller('PersonalDetailCtrl', function(OpenAlertBox,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,FetchData,PushData,$location) {
