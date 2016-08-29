@@ -144,6 +144,11 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 			$scope.toggleSort();
 		}
 	}
+
+	$scope.controlSubMenu = function(id){
+		$scope.showSubMenu = id;
+		console.log($scope.showSubMenu);
+	}
 });
 
 interactiveControllers.controller('LoginCtrl', function(OpenAlertBox,$timeout,SaveToken,$scope,LogService,FetchData,AuthenticationService,$location,$rootScope) {

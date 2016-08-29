@@ -1,4 +1,4 @@
-/*harry added*/
+harry added*/
 
 
 /*static css*/
@@ -93,12 +93,12 @@ body {
 	display: none !important;
 }
 
-.carousel-control.right{
-	display: none;
+.right.carousel-control.right{
+	background-image:none !important;
 }
 
-.carousel-control.left{
-	display: none;
+.left.carousel-control.left{
+	background-image:none !important;
 }
 
 .carousel-indicators li{
@@ -337,7 +337,7 @@ body {
 }
 
 .sort-container {
-	width: 50%;
+	width: 100%;
 	margin: 0;
 	padding: 0;
 	position: fixed;
@@ -357,7 +357,6 @@ body {
 
 .sort-container-show {
     height: 100%;
-    background-color: white;
 }
 
 .sort-container-show ul li ul{
@@ -367,6 +366,9 @@ body {
 .sort-container ul {
 	margin: 0;
 	padding: 0;
+    width: 50%;
+    height: 100%;
+    background-color: white;
 }
 
 .sort-container ul a{
@@ -391,7 +393,7 @@ body {
 	background-color: #e5e5e5;
 }
 
-.sort-container ul li:hover ul {
+/*.sort-container ul li:hover ul {
 	display: block;
 	position: fixed;
 	top: 44px;
@@ -399,16 +401,16 @@ body {
 	width: 50%;
 	height: 30px;
 	line-height: 30px;
-}
+}*/
 
 .sort-container ul li ul {
-	display: none;
-	overflow: hidden;
-	-moz-transition: all .5s ease;
-	-webkit-transition: all .5s ease;
-	-ms-transition: all .5s ease;
-	-o-transition: all .5s ease;
-	transition: all .5s ease;
+	/*display: none;*/
+	position: fixed;
+	top: 44px;
+	left: 50%;
+	width: 50%;
+	height: 30px;
+	line-height: 30px;
 }
 
 .sort-container ul li ul li {
@@ -3927,4 +3929,4 @@ border: 1px solid #ff0000; color: #FF0000; font-size: 10px !important;border-rad
 
 /*.lk-add-alipay-container button:active{
     outline: none;
-}*/
+}
