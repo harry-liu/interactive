@@ -1,6 +1,6 @@
 var interactiveControllers = angular.module('interactiveControllers', []);
 
-interactiveControllers.controller('BodyControl', function($scope,$window,locals,$location,$rootScope,FetchData) {
+interactiveControllers.controller('BodyControl', function($scope,$window,locals,$location,$rootScope,FetchData,$timeout) {
 
 	$scope.showTM = true;
 	$scope.showBM = true;
@@ -142,12 +142,16 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 		if(id){
 			$location.path('/product_list/'+id);
 			$scope.toggleSort();
+			$timeout(function(){
+				$scope.showSubMenu = 10000;
+				console.log($scope.showSubMenu);
+				console.log('timeout');
+			},1000);
 		}
 	}
 
 	$scope.controlSubMenu = function(id){
 		$scope.showSubMenu = id;
-		console.log($scope.showSubMenu);
 	}
 });
 

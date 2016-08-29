@@ -359,9 +359,9 @@ body {
     height: 100%;
 }
 
-.sort-container-show ul li ul{
+/*.sort-container-show ul li ul{
 	height: auto !important;
-}
+}*/
 
 .sort-container ul {
 	margin: 0;
@@ -404,13 +404,22 @@ body {
 }*/
 
 .sort-container ul li ul {
-	/*display: none;*/
+	display: none;
 	position: fixed;
+	overflow: hidden;
 	top: 44px;
 	left: 50%;
 	width: 50%;
-	height: 30px;
+	height: auto;
 	line-height: 30px;
+}
+
+.sort-container ul li .sub-menu-hide{
+	display: none;
+}
+
+.sort-container ul li .sub-menu-show{
+	display: block !important;
 }
 
 .sort-container ul li ul li {

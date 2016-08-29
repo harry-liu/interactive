@@ -77,12 +77,12 @@
                             <span>西安</span>
 <!--                             <img ng-src="imgs/menu/t_menu_down.png" alt="" ng-click="toggleCity()"> -->
                         </div>
-                        <div class="sort-container" ng-class="{true: 'sort-container-hide', false: 'sort-container-show'}[hideSort]" ng-init="showSubMenu">
+                        <div class="sort-container" ng-class="{true: 'sort-container-hide', false: 'sort-container-show'}[hideSort]">
                             <ul>
                                 <li ng-repeat="menu in menus track by $index " ng-click="menu.children.length>0?controlSubMenu($index):goTo(menu.id)">
                                     {{menu.name}}
                                     <img src="imgs/menu/arrow_right.png" alt="" ng-show="menu.children.length>0">
-                                    <ul ng-show="showSubMenu === $index">
+                                    <ul ng-class="{true: 'sub-menu-show', false: 'sub-menu-hide'}[showSubMenu == $index]">
                                         <li ng-repeat="menuItem in menu.children" ng-click="goTo(menuItem.id)">
                                             {{menuItem.name}}
                                         </li>
