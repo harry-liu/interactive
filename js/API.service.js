@@ -69,7 +69,7 @@ APIService.factory('FetchData', function FetchData($http,PublicURL,$location) {
     };  
 });
 
-APIService.factory('PushData', ['$http','PublicURL',function($http,PublicURL){
+APIService.factory('PushData', ['$http','PublicURL','Upload',function($http,PublicURL,Upload){
     return {
         push:function push(url,data,token){
             return $http({
@@ -86,6 +86,25 @@ APIService.factory('PushData', ['$http','PublicURL',function($http,PublicURL){
             }, function errorCallback(response) {
                 return response;
             })
+        },
+        uploadImage:function uploadImage(file,token){
+            return Upload.upload({
+                url: PublicURL+'upload',
+                method:"post",
+                headers: {
+                    'Authorization': 'Bearer '+token
+                },
+                file:file
+            }).then(function (response) {
+                return response;
+            }, function (response) {
+                //if (response.status > 0)
+                    //$scope.errorMsg = response.status + ': ' + response.data;
+                console.log(response);
+            }, function (evt) {
+                file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                console.log(file.progress);
+            });
         }
     } 
 }])

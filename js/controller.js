@@ -555,7 +555,7 @@ interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope) {
 	$scope.$emit('changeTM',change);
 });
 
-interactiveControllers.controller('OfflinePaymentCtrl', function(paymentData,OpenAlertBox,$window,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,$route,FetchData) {
+interactiveControllers.controller('OfflinePaymentCtrl', function(paymentData,OpenAlertBox,$window,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,$route,FetchData,PushData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -572,31 +572,12 @@ interactiveControllers.controller('OfflinePaymentCtrl', function(paymentData,Ope
         $scope.f = file;
         $scope.errFile = errFiles && errFiles[0];
         if (file) {
-            file.upload = Upload.upload({
-                url: PublicURL+'upload',
-                method:"post",
-                headers: {
-                    'Authorization': 'Bearer '+AuthenticationService.getAccessToken()
-                },
-                file:file
-            });
-
-            file.upload.then(function (response) {
-                $timeout(function () {
-                    file.result = response.data;
-                    console.log(response);
-                    $scope.imageUrl = response.data.url;
-                    $scope.imageID = response.data.id;
-                });
-            }, function (response) {
-                if (response.status > 0)
-                    $scope.errorMsg = response.status + ': ' + response.data;
-                console.log($scope.errorMsg);
-            }, function (evt) {
-                file.progress = Math.min(100, parseInt(100.0 * 
-                                         evt.loaded / evt.total));
-                console.log(file.progress);
-            });
+	    	var token = AuthenticationService.getAccessToken();
+	    	PushData.uploadImage(file,token).then(function(data){
+	    		file.result = data.data;
+	            $scope.imageUrl = data.data.url;
+	            $scope.imageID = data.data.id;
+	    	})
         }   
     }
 
@@ -876,7 +857,7 @@ interactiveControllers.controller('UsCtrl', function($scope,$rootScope,checkUser
 	$rootScope.loadingData = false;
 });
 
-interactiveControllers.controller('PersonalDetailCtrl', function(OpenAlertBox,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,personalData,PushData,$location) {
+interactiveControllers.controller('PersonalDetailCtrl', function(OpenAlertBox,$scope,$rootScope,$http,Upload,PublicURL,AuthenticationService,personalData,PushData,$location) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -893,36 +874,18 @@ interactiveControllers.controller('PersonalDetailCtrl', function(OpenAlertBox,$s
         $scope.f = file;
         $scope.errFile = errFiles && errFiles[0];
         if (file) {
-            file.upload = Upload.upload({
-                url: PublicURL+'upload',
-                method:"post",
-                headers: {
-                    'Authorization': 'Bearer '+AuthenticationService.getAccessToken()
-                },
-                file:file,
-            });
-
-            file.upload.then(function (response) {
-                $timeout(function () {
-                    file.result = response.data;
-                    console.log(response);
-                    $scope.user.avatarUrl = response.data.url;
-                    $scope.user.avatarId = response.data.id;
-                });
-            }, function (response) {
-                if (response.status > 0)
-                    $scope.errorMsg = response.status + ': ' + response.data;
-                console.log($scope.errorMsg);
-            }, function (evt) {
-                file.progress = Math.min(100, parseInt(100.0 * 
-                                         evt.loaded / evt.total));
-                console.log(file.progress);
-            });
+        	var token = AuthenticationService.getAccessToken();
+        	PushData.uploadImage(file,token).then(function(data){
+		        file.result = data.data;
+		        $scope.user.avatarUrl = data.data.url;
+		        $scope.user.avatarId = data.data.id;
+        	})
         }   
     }
 
     $rootScope.loadingData = false;
     $scope.user = personalData.data.user;
+    $scope.user.avatarId = personalData.data.user.avatar_id;
 
     $scope.$on('pushPersonalInformation',function(){
     	if(!$scope.user.username){
@@ -934,12 +897,7 @@ interactiveControllers.controller('PersonalDetailCtrl', function(OpenAlertBox,$s
     	else{    	
     		var url = 'user/edit';
     		var token = AuthenticationService.getAccessToken();
-    		if($scope.user.avatarId){
-    			var data = 'avatar='+$scope.user.avatarId+'&username='+$scope.user.username+'&card_id='+$scope.user.card_id;
-    		}
-    		else{
-    			var data = 'avatar='+'&username='+$scope.user.username+'&card_id='+$scope.user.card_id;
-    		}
+    		var data = 'avatar='+$scope.user.avatarId+'&username='+$scope.user.username+'&card_id='+$scope.user.card_id;
     		PushData.push(url,data,token).then(function(data){
     			if(data.data.message == 'success'){
 					OpenAlertBox.openAlert('修改成功！').then(function(data){
