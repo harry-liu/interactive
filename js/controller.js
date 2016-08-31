@@ -287,7 +287,7 @@ interactiveControllers.controller('MenuCtrl', function(menuData,$scope,$rootScop
 	}
 
 	for(var menu in menuData.data.categories){
-		$scope.changeSubMenu(menu.children,menu.name,0);
+		$scope.changeSubMenu(menuData.data.categories[menu].children,menuData.data.categories[menu].name,0);
 		break;
 	}
 
@@ -1013,8 +1013,7 @@ interactiveControllers.controller('SettingsCtrl', function(OpenAlertBox,$scope,$
 	}
 
 	cordova.getAppVersion.getVersionNumber(function (version) {
-	    //alert(version);
-	    OpenAlertBox.openAlert(version);
+	    $scope.appVersion = version;
 	});
 });
 
