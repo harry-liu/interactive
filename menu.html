@@ -1,0 +1,20 @@
+<div class="container-fluid lk-menu-container">
+	<div class="row">
+		<div class="sort-container">
+		    <ul class="sort-first-container">
+		        <li ng-repeat="menu in menus" ng-click="changeSubMenu(menu.children,menu.name)">
+		            {{menu.name}}
+		        </li>
+		    </ul>
+	        <ul class="sort-second-container">
+	        	<h3>{{menuTitle}}</h3>
+	        	<a ng-href="#/product_list/{{secondMenu.id}}" ng-repeat="secondMenu in secondMenus">
+	        		<li>
+	        			<img ng-src="{{secondMenu.image}}" alt="">
+	        		    <p>{{secondMenu.name}}</p>
+	        		</li>
+	        	</a>
+	        </ul>
+		</div>
+	</div>
+</div>

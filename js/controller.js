@@ -33,10 +33,10 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 	$scope.goBackClicked = function(){
 		$window.history.back();
 	}
-	$scope.goToSearch = function(){
+	//$scope.goToSearch = function(){
 		//$window.location.href = "#search";
-		$location.path('#search');
-	}
+		//$location.path('#search');
+	//}
 
 	$scope.addSearchItem = function(){
 		var list = locals.getObject("searchList","")
@@ -135,24 +135,23 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 
 	$scope.$on('setTM',function(e,data){
 		$scope.menus = data;
-		console.log($scope.menus);
 	})
 
-	$scope.goTo = function(id){
-		if(id){
-			$location.path('/product_list/'+id);
-			$scope.toggleSort();
-			$timeout(function(){
-				$scope.showSubMenu = 10000;
-				console.log($scope.showSubMenu);
-				console.log('timeout');
-			},1000);
-		}
-	}
+	// $scope.goTo = function(id){
+	// 	if(id){
+	// 		$location.path('/product_list/'+id);
+	// 		//$scope.toggleSort();
+	// 		$timeout(function(){
+	// 			$scope.showSubMenu = 10000;
+	// 			console.log($scope.showSubMenu);
+	// 			console.log('timeout');
+	// 		},1000);
+	// 	}
+	// }
 
-	$scope.controlSubMenu = function(id){
-		$scope.showSubMenu = id;
-	}
+	// $scope.controlSubMenu = function(id){
+	// 	$scope.showSubMenu = id;
+	// }
 });
 
 interactiveControllers.controller('LoginCtrl', function(OpenAlertBox,$timeout,SaveToken,$scope,LogService,FetchData,AuthenticationService,$location,$rootScope) {
@@ -236,7 +235,7 @@ interactiveControllers.controller('NewUserCtrl', function($scope,$rootScope) {
 	$scope.$emit('hideBM',false);
 });
 
-interactiveControllers.controller('HomeCtrl', function(listData,menuData,$scope,$rootScope) {
+interactiveControllers.controller('HomeCtrl', function(listData,$scope,$rootScope) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',true);
 	$scope.$emit('setBottomMenuImage','home');
@@ -244,7 +243,6 @@ interactiveControllers.controller('HomeCtrl', function(listData,menuData,$scope,
 		type:1
 	}
 	$scope.$emit('changeTM',change);
-	$scope.$emit('setTM',menuData.data.categories);
 
 	$scope.myInterval = 6000;
 	$scope.slides = [
@@ -262,8 +260,27 @@ interactiveControllers.controller('HomeCtrl', function(listData,menuData,$scope,
 	}
 	];
 
-	//console.log(listData);
 	$scope.dataList = listData.data.productions;
+	$rootScope.loadingData = false;
+});
+
+interactiveControllers.controller('MenuCtrl', function(menuData,$scope,$rootScope) {
+	$scope.$emit('hideTM',true);
+	$scope.$emit('hideBM',false);
+	$scope.$emit('setBottomMenuImage','home');
+	var change = {
+		type:6
+	}
+	$scope.$emit('changeTM',change);
+	$scope.menus = menuData.data.categories;
+
+	$scope.changeSubMenu = function(subMenus,title){
+		$scope.menuTitle = title;
+		$scope.secondMenus = subMenus;
+	}
+
+	$scope.changeSubMenu(menuData.data.categories[0].children,menuData.data.categories[0].name);
+
 	$rootScope.loadingData = false;
 });
 

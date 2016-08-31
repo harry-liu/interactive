@@ -336,7 +336,7 @@ body {
     font-size: 14px;
 }
 
-.sort-container {
+/*.sort-container {
 	width: 100%;
 	margin: 0;
 	padding: 0;
@@ -357,13 +357,13 @@ body {
 
 .sort-container-show {
     height: 100%;
-}
+}*/
 
 /*.sort-container-show ul li ul{
 	height: auto !important;
 }*/
 
-.sort-container ul {
+/*.sort-container ul {
 	margin: 0;
 	padding: 0;
     width: 50%;
@@ -391,7 +391,7 @@ body {
 
 .sort-container ul li:hover {
 	background-color: #e5e5e5;
-}
+}*/
 
 /*.sort-container ul li:hover ul {
 	display: block;
@@ -403,12 +403,12 @@ body {
 	line-height: 30px;
 }*/
 
-.sort-container ul li ul {
+/*.sort-container ul li ul {
 	display: none;
 	position: fixed;
 	overflow: hidden;
 	top: 44px;
-	left: 50%;
+	left: 30%;
 	width: 50%;
 	height: auto;
 	line-height: 30px;
@@ -439,6 +439,77 @@ body {
 
 .sort-container ul li span {
 	padding-left: 40px;
+}*/
+
+.sort-container {
+	width: 100%;
+	height:100%;
+	position: absolute;
+	top: 44px;
+	left: 0;
+	z-index: 99;
+	overflow: hidden;
+}
+
+.sort-container ul{
+	padding:0;
+	margin:0;
+	list-style-type: none;
+}
+
+.sort-first-container{
+	position: absolute;
+	left:0;
+	width:30%;
+	height:100%;
+	background-color: #fff;
+}
+
+.sort-first-container li{
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid #dadada;
+    line-height: 50px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.sort-first-container li.active{
+    background-color: #efefef;
+}
+
+.sort-second-container{
+	position: absolute;
+	left:30%;
+	width:70%;
+	height:100%;
+	background-color: #efefef;
+}
+
+.sort-second-container h3{
+	padding:15px;
+	margin:0;
+	font-size: 14px;
+}
+
+.sort-second-container li{
+	position: relative;
+	float: left;
+	width:33.33%;
+	text-align: center;
+	color:#666666;
+	font-size: 12px;
+}
+
+.sort-second-container li p{
+	margin:10px 0;
+}
+
+.sort-second-container li img{
+	width:55px;
+	height:55px;
+	border-radius: 16px;
+	background-color: white;
 }
 
 .top-menu .location-container-hide {

@@ -86,7 +86,6 @@ app.run(['$rootScope', '$location','locals','AuthenticationService','FetchData',
 	$anchorScroll.yOffset = 44;   // always scroll by 50 extra pixels
 
 	$rootScope.$on('$routeChangeStart', function(evt, next, current){
-	//console.log('route begin change');
 	//check black cover is opern
 	if(!$rootScope.hideBlackCover){
 		if(next.originalPath == "/search_list/:id"||next.originalPath == "/product_list/:id"){
@@ -130,12 +129,18 @@ app.config(['$routeProvider', function($routeProvider) {
 		templateUrl: 'home.html',
 		controller: 'HomeCtrl',
 		resolve:{
-			menuData: function (FetchData) {
-				var url = "categories";
-				return FetchData.getPublicAPI(url);
-			},
 			listData:function(FetchData){
 				var url = "categories/get?id=5";
+				return FetchData.getPublicAPI(url);
+			}
+		}
+	}).
+	when('/menu', {                                          //首页
+		templateUrl: 'menu.html',
+		controller: 'MenuCtrl',
+		resolve:{
+			menuData: function (FetchData) {
+				var url = "categories";
 				return FetchData.getPublicAPI(url);
 			}
 		}
