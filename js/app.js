@@ -2,9 +2,9 @@ var app = angular.module('hudongquan', ['interactiveControllers','ngRoute','ngAn
 
 app.directive('focusMe', function($timeout) {
 	return {
-	scope: { trigger: '@focusMe' },
+		scope: { trigger: '@focusMe' },
 		link: function(scope, element) {
-			scope.$watch('trigger', function(value) {
+		scope.$watch('trigger', function(value) {
 				if(value === "true") { 
 					$timeout(function() {
 					element[0].focus(); 

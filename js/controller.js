@@ -22,6 +22,7 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 		//top menu type 9:返回+文字+完成添加客户按钮
 		//top menu type 9:返回+文字+完成修改客户按钮
 		//top menu type 10:返回+文字+完成修改个人信息按钮
+		//top menu type 11:返回+首页搜索框
 		$scope.topMenuContent = data;
 	});
 	$scope.$on('setBottomMenuImage', function(e,data){
@@ -273,7 +274,7 @@ interactiveControllers.controller('MenuCtrl', function(menuData,$scope,$rootScop
 	$scope.$emit('hideBM',false);
 	$scope.$emit('setBottomMenuImage','home');
 	var change = {
-		type:6
+		type:12
 	}
 	$scope.$emit('changeTM',change);
 	$scope.menus = menuData.data.categories;

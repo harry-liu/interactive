@@ -80,6 +80,16 @@
                             <span>西安</span>
 <!--                             <img ng-src="imgs/menu/t_menu_down.png" alt="" ng-click="toggleCity()"> -->
                         </div>
+
+
+                        <div class = 'col-xs-2 top-menu-left-img' ng-show="topMenuContent.type == 12" ng-click="goBackClicked()">
+                            <img src="imgs/menu/back_icon.png" alt="">
+                        </div>
+                        <div class="col-xs-8 top-menu-search" ng-show="topMenuContent.type == 12" style="padding:0">
+                            <a href="#search">
+                                <input type="text" placeholder="输入搜索关键词" ng-click="goToSearch()" ng-disabled="true">
+                            </a>
+                        </div>
 <!--                         <div class="sort-container" ng-class="{true: 'sort-container-hide', false: 'sort-container-show'}[hideSort]">
                             <ul>
                                 <li ng-repeat="menu in menus track by $index " ng-click="menu.children.length>0?controlSubMenu($index):goTo(menu.id)">
@@ -113,7 +123,7 @@
                             <img src="imgs/menu/back_icon.png" alt="">
                         </div>
                         <div class="col-xs-8 top-menu-search" ng-show="topMenuContent.type == 5" style="padding:0">
-                            <input type="text" placeholder="输入搜索关键词" ng-model = "searchInput" style="background-image:none;padding-left:10px;">
+                            <input type="text" placeholder="输入搜索关键词" ng-model = "searchInput" style="background-image:none;padding-left:10px;"  focus-me="true">
                         </div>
                         <div class = 'col-xs-2 top-menu-right-search-img' ng-show="topMenuContent.type == 5">
                             <a href="#search_list/{{searchInput}}">
