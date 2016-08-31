@@ -235,7 +235,7 @@ interactiveControllers.controller('NewUserCtrl', function($scope,$rootScope) {
 	$scope.$emit('hideBM',false);
 });
 
-interactiveControllers.controller('HomeCtrl', function(listData,$scope,$rootScope) {
+interactiveControllers.controller('HomeCtrl', function(listData,$scope,$rootScope,$location) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',true);
 	$scope.$emit('setBottomMenuImage','home');
@@ -262,6 +262,10 @@ interactiveControllers.controller('HomeCtrl', function(listData,$scope,$rootScop
 
 	$scope.dataList = listData.data.productions;
 	$rootScope.loadingData = false;
+
+	$scope.goLeft = function(){
+		$location.path('/community');
+	}
 });
 
 interactiveControllers.controller('MenuCtrl', function(menuData,$scope,$rootScope) {
@@ -274,12 +278,13 @@ interactiveControllers.controller('MenuCtrl', function(menuData,$scope,$rootScop
 	$scope.$emit('changeTM',change);
 	$scope.menus = menuData.data.categories;
 
-	$scope.changeSubMenu = function(subMenus,title){
+	$scope.changeSubMenu = function(subMenus,title,id){
 		$scope.menuTitle = title;
 		$scope.secondMenus = subMenus;
+		$scope.menuID = id;
 	}
 
-	$scope.changeSubMenu(menuData.data.categories[0].children,menuData.data.categories[0].name);
+	$scope.changeSubMenu(menuData.data.categories[0].children,menuData.data.categories[0].name,0);
 
 	$rootScope.loadingData = false;
 });
@@ -756,7 +761,7 @@ interactiveControllers.controller('InsertUserCtrl', function(userListData,$windo
 	$rootScope.loadingData = false;
 });
 
-interactiveControllers.controller('CommunityCtrl', function(communityList,$scope,$rootScope) {
+interactiveControllers.controller('CommunityCtrl', function(communityList,$scope,$rootScope,$location) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',true);
 	var change = {
@@ -768,6 +773,13 @@ interactiveControllers.controller('CommunityCtrl', function(communityList,$scope
 	$scope.$emit('setBottomMenuImage','community');
 	$scope.articles = communityList.data.articles.data;
 	$rootScope.loadingData = false;
+
+	$scope.goLeft = function(){
+		$location.path('/us');
+	}
+	$scope.goRight = function(){
+		$location.path('/home');
+	}
 });
 
 interactiveControllers.controller('CommunityDetailCtrl', function(communityDetail,$route,$scope,$rootScope,$sce,ProductContImageReplace) {
@@ -792,7 +804,7 @@ interactiveControllers.controller('CommunityDetailCtrl', function(communityDetai
 	$scope.thisCanBeusedInsideNgBindHtml = $sce.trustAsHtml(communityDetail.data.article.content.replace(/src=["]/g,'src="'+ProductContImageReplace));
 });
 
-interactiveControllers.controller('TeachCtrl', function($scope,$rootScope) {
+interactiveControllers.controller('TeachCtrl', function($scope,$rootScope,$location) {
 	$rootScope.loadingData = false;
 
 	$scope.$emit('hideTM',true);
@@ -804,6 +816,13 @@ interactiveControllers.controller('TeachCtrl', function($scope,$rootScope) {
 	$scope.$emit('changeTM',change);
 
 	$scope.$emit('setBottomMenuImage','community');
+
+	$scope.goLeft = function(){
+		$location.path('/us');
+	}
+	$scope.goRight = function(){
+		$location.path('/home');
+	}
 });
 
 interactiveControllers.controller('SearchCtrl', function($scope,locals,$rootScope) {
@@ -864,7 +883,7 @@ interactiveControllers.controller('ExampleDetailCtrl', function($scope,$rootScop
 	$scope.$emit('changeTM',change);
 });
 
-interactiveControllers.controller('UsCtrl', function($scope,$rootScope,checkUserLogin) {
+interactiveControllers.controller('UsCtrl', function($scope,$rootScope,checkUserLogin,$location) {
 	$scope.$emit('hideTM',false);
 	$scope.$emit('hideBM',true);
 
@@ -872,6 +891,10 @@ interactiveControllers.controller('UsCtrl', function($scope,$rootScope,checkUser
 
 	$scope.user = checkUserLogin.data.user;
 	$rootScope.loadingData = false;
+
+	$scope.goRight = function(){
+		$location.path('/community');
+	}
 });
 
 interactiveControllers.controller('PersonalDetailCtrl', function(OpenAlertBox,$scope,$rootScope,$http,Upload,PublicURL,AuthenticationService,personalData,PushData,$location) {

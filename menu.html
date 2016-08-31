@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="sort-container">
 		    <ul class="sort-first-container">
-		        <li ng-repeat="menu in menus" ng-click="changeSubMenu(menu.children,menu.name)">
+		        <li ng-repeat="menu in menus track by $index" ng-click="changeSubMenu(menu.children,menu.name,$index)" ng-class="{active:menuID == $index}">
 		            {{menu.name}}
 		        </li>
 		    </ul>
