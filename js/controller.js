@@ -278,13 +278,18 @@ interactiveControllers.controller('MenuCtrl', function(menuData,$scope,$rootScop
 	$scope.$emit('changeTM',change);
 	$scope.menus = menuData.data.categories;
 
+	console.log(menuData.data.categories);
+
 	$scope.changeSubMenu = function(subMenus,title,id){
 		$scope.menuTitle = title;
 		$scope.secondMenus = subMenus;
 		$scope.menuID = id;
 	}
 
-	$scope.changeSubMenu(menuData.data.categories[0].children,menuData.data.categories[0].name,0);
+	for(var menu in menuData.data.categories){
+		$scope.changeSubMenu(menu.children,menu.name,0);
+		break;
+	}
 
 	$rootScope.loadingData = false;
 });
