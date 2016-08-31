@@ -391,9 +391,9 @@ interactiveControllers.controller('ClientListCtrl', function(clientListData,$sco
 	$scope.updateFirstCharList($filter('filter')($scope.clients,{'top':0}));
 	$rootScope.loadingData = false;
 
-
 	$scope.onHammer = function (e,client,direction) {
 		e.preventDefault();
+		$rootScope.hideBodyOverflow = 'disable-overflow';
 		if(direction == 'top'){
 			$scope.currentClient = client;
 			$scope.top = 1;
@@ -406,7 +406,7 @@ interactiveControllers.controller('ClientListCtrl', function(clientListData,$sco
 
 	$scope.pushTop = function(e){
 		e.preventDefault();
-
+		$rootScope.hideBodyOverflow = '';
 		var url = 'customers/top';
 		var data = 'id='+$scope.currentClient.id;
 		var token = AuthenticationService.getAccessToken();
@@ -421,7 +421,7 @@ interactiveControllers.controller('ClientListCtrl', function(clientListData,$sco
 
 	$scope.pushBottom = function(e){
 		e.preventDefault();
-
+		$rootScope.hideBodyOverflow = '';
 		var url = 'customers/top';
 		var data = 'id='+$scope.currentClient.id;
 		var token = AuthenticationService.getAccessToken();
@@ -436,6 +436,7 @@ interactiveControllers.controller('ClientListCtrl', function(clientListData,$sco
 
 	$scope.pullBack = function(e){
 		e.preventDefault();
+		$rootScope.hideBodyOverflow = '';
 		$scope.top = 0;
 		$scope.bottom = 0;
 	}
