@@ -1,6 +1,6 @@
 var interactiveControllers = angular.module('interactiveControllers', []);
 
-interactiveControllers.controller('BodyControl', function($scope,$window,locals,$location,$rootScope,FetchData,$timeout) {
+interactiveControllers.controller('BodyControl', function($scope,$window,locals,$location,$rootScope,FetchData,$timeout,$route) {
 
 	$scope.showTM = true;
 	$scope.showBM = true;
@@ -32,6 +32,9 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 	$rootScope.tabStatus = 1;
 
 	$scope.goBackClicked = function(){
+		if($route.current.originalPath == '/login'){
+			$window.history.back();
+		}
 		$window.history.back();
 	}
 	//$scope.goToSearch = function(){
