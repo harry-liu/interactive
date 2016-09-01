@@ -1,4 +1,4 @@
-harry added*/
+/*harry added*/
 
 
 /*static css*/
@@ -33,6 +33,17 @@ body {
 	-ms-transition: all .5s ease;
 	-o-transition: all .5s ease;
 	transition: all .5s ease;
+}
+
+.auto-hide-words{
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	-icab-text-overflow: ellipsis;
+	-khtml-text-overflow: ellipsis;
+	-moz-text-overflow: ellipsis;
+	-webkit-text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 .nav,
@@ -3627,26 +3638,64 @@ border: 1px solid #ff0000; color: #FF0000; font-size: 10px !important;border-rad
 
 .w-client-container .w-myclient-top-message {
 	background-color: #eeeded;
-	width: 90%;
-	height: 50px;
+	width: 94%;
+	height: 75px;
 	border-bottom: 1px solid #f5f5f5;
-	margin-left: 3%;
+	padding-left: 3%;
 	color: #868686;
+	padding-top: 12px;
 }
 
 .w-client-container .w-myclient-top-messages {
 	border: none
 }
 
+.w-client-container .w-myclient-top-message img,
+.w-client-container .w-myclient-cont img {
+	float: left;
+	width:42px;
+	height:42px;
+	margin:2px;
+	margin-top: 5px;
+}
+
+.w-client-container .w-myclient-top-message div,
+.w-client-container .w-myclient-cont div {
+	float: left;
+	/* Firefox */
+	width: -moz-calc(100% - 50px);
+	/* WebKit */
+	width: -webkit-calc(100% - 50px);
+	/* Opera */
+	width: -o-calc(100% - 50px);
+	/* Standard */
+	width: calc(100% - 50px);
+	height:50px;
+}
+
 .w-client-container .w-myclient-top-message span,
-.w-myclient-cont span {
+.w-client-container .w-myclient-cont span {
 	width: 33.3%;
-	line-height: 50px;
-	text-align: center;
+	line-height: 25px;
+	text-align: left;
 	display: block;
 	float: left;
-	height: 50px;
-	font-size: 14px;
+	height: 25px;
+	font-size: 12px;
+	padding:4px 5px 0 8px;
+}
+
+.w-client-container .w-myclient-top-message .addr-span,
+.w-client-container .w-myclient-cont .addr-span {
+	width: 100%;
+	line-height: 25px;
+	text-align: left;
+	display: block;
+	float: left;
+	height: 25px;
+	font-size: 12px;
+	padding:0px 5px 0 8px;
+	color:#bbb8b8;
 }
 
 .w-client-container .w-myclient-top-message-text {
@@ -3677,10 +3726,11 @@ border: 1px solid #ff0000; color: #FF0000; font-size: 10px !important;border-rad
 
 .w-client-container .w-myclient-cont-message {
 	background-color: #fff;
-	height: 50px;
+	height: 75px;
 	border-bottom: 1px solid #f5f5f5;
 	width: 87%;
 	margin-left: 6%;
+	padding-top: 12px;
 }
 
 .w-client-container .w-myclient-top-message-padding {
