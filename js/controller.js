@@ -481,32 +481,31 @@ interactiveControllers.controller('ClientAddCtrl', function(fieldsData,OpenAlert
 		}
 	})
 
-	function getContact() {
-	    navigator.contacts.find(
-	        [navigator.contacts.fieldType.displayName],
-	        gotContacts,
-	        errorHandler);
-	}
+	function onSuccess(contacts) {
+		var url = "customers/compare";
+		var data = [];
+		var token = AuthenticationService.getAccessToken();
 
-	function errorHandler(e) {
-	    alert("errorHandler: "+e);
-	}
-
-	function gotContacts(c) {
-	    alert("gotContacts, number of results "+c.length);
-	    for(var i=0, len=c.length; i<len; i++) {
-	        alert(c[i]);
+	    for (var i = 0; i < contacts.length; i++) {
+	        data[i] = {'name':contacts[i].name.formatted,'number':contacts[i].phoneNumbers[0].value}
 	    }
 
-		var url = "customers/compare";
-		var data = "contacts="+c;
-		var token = AuthenticationService.getAccessToken();
+	    data = JSON.stringify(data);
+
 	    PushData.push(url,data,token).then(function(data){
-
+	    	alert(data.data[0].name);
 	    })
-	}
+	};
 
-	getContact();
+	function onError(contactError) {
+	    alert('onError!');
+	};
+
+	var options = new ContactFindOptions();
+	options.filter = "";
+	options.multiple = true;
+	filter = ["displayName", "name",navigator.contacts.fieldType.phoneNumbers];
+	navigator.contacts.find(filter, onSuccess, onError, options);
 });
 
 interactiveControllers.controller('ClientChangeCtrl', function(clientData,OpenAlertBox,FormDataService,$window,$location,$scope,$rootScope,FetchData,AuthenticationService,$route,PushData) {
