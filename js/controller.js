@@ -480,6 +480,33 @@ interactiveControllers.controller('ClientAddCtrl', function(fieldsData,OpenAlert
 			})
 		}
 	})
+
+	function getContact() {
+	    navigator.contacts.find(
+	        [navigator.contacts.fieldType.displayName],
+	        gotContacts,
+	        errorHandler);
+	}
+
+	function errorHandler(e) {
+	    alert("errorHandler: "+e);
+	}
+
+	function gotContacts(c) {
+	    alert("gotContacts, number of results "+c.length);
+	    for(var i=0, len=c.length; i<len; i++) {
+	        alert(c[i]);
+	    }
+
+		var url = "customers/compare";
+		var data = "contacts="+c;
+		var token = AuthenticationService.getAccessToken();
+	    PushData.push(url,data,token).then(function(data){
+
+	    })
+	}
+
+	getContact();
 });
 
 interactiveControllers.controller('ClientChangeCtrl', function(clientData,OpenAlertBox,FormDataService,$window,$location,$scope,$rootScope,FetchData,AuthenticationService,$route,PushData) {
