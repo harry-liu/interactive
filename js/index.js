@@ -51,6 +51,26 @@
 //             }
 //         }, false);
 
+		// document.addEventListener("deviceready", init, false);
+		// function init() {
+		//     navigator.contacts.find(
+		//         [navigator.contacts.fieldType.displayName],
+		//         gotContacts,
+		//         errorHandler);
+		// }
+
+		// function errorHandler(e) {
+		//     alert("errorHandler: "+e);
+		// }
+
+		// function gotContacts(c) {
+		//     alert("gotContacts, number of results "+c.length);
+		//     for(var i=0, len=c.length; i<len; i++) {
+		//         console.dir(c[i]);
+		//     }
+		// }
+
+
         var parentElement = document.getElementById('deviceready');
         var listeningElement = parentElement.querySelector('.loading-div');
         var receivedElement = parentElement.querySelector('.main-div');
