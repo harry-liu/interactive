@@ -1,4 +1,4 @@
-avar app = angular.module('hudongquan', ['interactiveControllers','ngRoute','ngAnimate','ui.bootstrap','ngTouch','ngFileUpload','hmTouchEvents','localStorageService','APIService','DataService']);
+var app = angular.module('hudongquan', ['interactiveControllers','ngRoute','ngAnimate','ui.bootstrap','ngTouch','ngFileUpload','hmTouchEvents','localStorageService','APIService','DataService']);
 
 app.directive('focusMe', function($timeout) {
 	return {
@@ -445,6 +445,10 @@ app.config(['$routeProvider', function($routeProvider) {
 	when('/disconnect', {
 		templateUrl: 'disconnect.html',
 		controller: 'DisconnectCtrl'
+	}).
+	when('/client_import', {
+		templateUrl: 'client_import.html',
+		controller: 'ClientImportCtrl'
 	}).
 	otherwise({
 		redirectTo: '/home'

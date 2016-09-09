@@ -451,6 +451,18 @@ interactiveControllers.controller('ClientListCtrl', function(clientListData,$sco
 	}
 });
 
+interactiveControllers.controller('ClientImportCtrl', function($scope,$rootScope){
+	$scope.$emit('hideTM',true);
+	$scope.$emit('hideBM',false);
+	var change = {
+		type:3,
+		word:'通讯录导入'
+	}
+	$scope.$emit('changeTM',change);
+
+	$rootScope.loadingData = false;
+});
+
 interactiveControllers.controller('ClientAddCtrl', function(fieldsData,OpenAlertBox,FormDataService,$scope,$rootScope,PushData,$location,AuthenticationService,FetchData,$window) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);

@@ -4057,6 +4057,60 @@ border: 1px solid #ff0000; color: #FF0000; font-size: 10px !important;border-rad
     outline: none !important;
 }
 
-/*.lk-add-alipay-container button:active{
-    outline: none;
+/*hxj added*/
+.w-client-container .xj-dr-btn{
+	height: 50px;
+	font-size: 12px;
+	line-height: 50px;
+}
+
+.w-client-container .xj-dr-btn img{
+	float: left;
+	width: 30px;
+	margin-top: 10px;
+}
+
+.w-client-container .xj-dr-btn span{
+	color: #686868;
+	margin-left: 2%;
+}
+
+/*hxj added*/
+.hxj-container{
+	margin-top: 44px;
+}
+.hxj-container .xj-letter{
+	height: 30px;
+	background-color: #f6f6f6;
+	padding-left: 3%;
+	line-height: 30px;
+	font-size: 14px;
+	font-weight: bold;
+}
+.hxj-container .xj-detail{
+	width: 90%;
+	margin: 0 auto;
+	overflow: hidden;
+	border-bottom: 1px solid #dadada;
+}
+.hxj-container .xj-client-p1{
+	margin: 0;
+	line-height: 25px;
+	color: #383838;
+}
+.hxj-container .xj-client-p2{
+	line-height: 50px;
+	color: #868686;
+	margin: 0;
+}
+.hxj-container ul{
+	padding: 0
+}
+.hxj-container .xj-client-btn{
+	border: 1px solid #a0a0a0;
+	border-radius: 3px;
+	color: #a4a4a4;
+	padding:2px 7px;
+	margin-top: 12px;
+	cursor: pointer;
 }
