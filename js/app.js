@@ -326,6 +326,63 @@ app.config(['$routeProvider', function($routeProvider) {
 			}
 		}
 	}).
+	when('/client_add/:name/:number', {
+		templateUrl: 'client_add.html',
+		controller: 'ClientAddImportCtrl',
+		resolve:{
+			fieldsData:function(FetchData,AuthenticationService){
+				var url = "customers/create";
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
+	}).
+	when('/client_import', {
+		templateUrl: 'client_import.html',
+		controller: 'ClientImportCtrl',
+		resolve:{
+			mobileContacts:function(PushData,AuthenticationService,$q,$window,OpenAlertBox){
+				function getContactList() {
+					return $q(function(resolve,reject) {
+				    	function onSuccess(contacts) {
+		    				var data = [];
+		    			    for (var i = 0; i < contacts.length; i++) {
+		    			        data[i] = {'name':contacts[i].name.formatted,'number':contacts[i].phoneNumbers[0].value}
+		    			    }
+		    			    //data = JSON.stringify([{"name":"Harry ","number":"789"},{"name":"Test ","number":"120"},{"name":"Jess ","number":"550"}]);
+		    			    data = JSON.stringify(data);
+		    			    resolve(data);
+				    	};
+
+				    	function onError(contactError) {
+				    	    reject('无法获取联系人，请开启权限!');
+		    			    //var data = JSON.stringify([{"name":"Harry ","number":"789"},{"name":"Test ","number":"120"},{"name":"Jess ","number":"550"}]);
+		    			    //data = JSON.stringify(data);
+		    			    //resolve(data);
+				    	};
+
+				    	var options      = new ContactFindOptions();
+				    	options.filter   = "";
+				    	options.multiple = true;
+				    	options.hasPhoneNumber = true;
+
+				    	filter = ["displayName", "name",navigator.contacts.fieldType.phoneNumbers];
+				    	navigator.contacts.find(filter, onSuccess, onError, options);
+					});
+				}
+
+				var promise = getContactList();
+				return promise.then(function(data) {
+					var url = "customers/compare";
+					var token = AuthenticationService.getAccessToken();
+					return PushData.push(url,data,token);
+				}, function(reason) {
+					OpenAlertBox.openAlert(reason);
+					$window.history.back();
+				});
+			}
+		}
+	}).
 	when('/client_add/:id', {
 		templateUrl: 'client_add.html',
 		controller: 'ClientChangeCtrl',
@@ -445,10 +502,6 @@ app.config(['$routeProvider', function($routeProvider) {
 	when('/disconnect', {
 		templateUrl: 'disconnect.html',
 		controller: 'DisconnectCtrl'
-	}).
-	when('/client_import', {
-		templateUrl: 'client_import.html',
-		controller: 'ClientImportCtrl'
 	}).
 	otherwise({
 		redirectTo: '/home'

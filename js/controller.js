@@ -30,12 +30,15 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 	});
 
 	$rootScope.tabStatus = 1;
+	$rootScope.disableAllButton = false;
 
 	$scope.goBackClicked = function(){
 		if($route.current.originalPath == '/login'){
+			$location.path('/home').replace();
+		}
+		else{
 			$window.history.back();
 		}
-		$window.history.back();
 	}
 	//$scope.goToSearch = function(){
 		//$window.location.href = "#search";
@@ -129,6 +132,7 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 	}
 	$scope.pushClientInformation = function(){
 		$scope.$broadcast ('pushClientInformation');
+		$rootScope.disableAllButton = true;
 	}
 	$scope.pushClientInformationEdit = function(){
 		$scope.$broadcast ('pushClientInformationEdit');
@@ -164,7 +168,7 @@ interactiveControllers.controller('LoginCtrl', function(OpenAlertBox,$timeout,Sa
 	$scope.$emit('hideBM',false);
 	var change = {
 		type:3,
-		word:'登陆'
+		word:'登录'
 	}
 
 	$scope.sendSms = '发送验证码';
@@ -451,7 +455,7 @@ interactiveControllers.controller('ClientListCtrl', function(clientListData,$sco
 	}
 });
 
-interactiveControllers.controller('ClientImportCtrl', function($scope,$rootScope){
+interactiveControllers.controller('ClientImportCtrl', function($scope,$rootScope,mobileContacts){
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -459,6 +463,21 @@ interactiveControllers.controller('ClientImportCtrl', function($scope,$rootScope
 		word:'通讯录导入'
 	}
 	$scope.$emit('changeTM',change);
+
+	$scope.updateFirstCharList = function updateFirstCharList(list){
+		if(list){
+			$scope.firstCharList = [];
+			//console.log(list);
+			for(var i = 0; i<list.length; i++){
+			    if ($scope.firstCharList.indexOf(list[i].initial) == -1) {
+			        $scope.firstCharList.push(list[i].initial);
+			    }
+			}
+		}
+	}
+
+	$scope.contactList = mobileContacts.data;
+	$scope.updateFirstCharList($scope.contactList);
 
 	$rootScope.loadingData = false;
 });
@@ -478,7 +497,7 @@ interactiveControllers.controller('ClientAddCtrl', function(fieldsData,OpenAlert
 	$scope.$on('pushClientInformation',function(){
 		var errorMsg = FormDataService.getAlertMsg($scope.fields);
 		if(errorMsg){
-			//alert(errorMsg);
+			$rootScope.disableAllButton = false;
 			OpenAlertBox.openAlert(errorMsg);
 		}
 		else{
@@ -489,35 +508,51 @@ interactiveControllers.controller('ClientAddCtrl', function(fieldsData,OpenAlert
 				if(data.data.message == 'success'){
 					$window.history.back();
 				}
+				$rootScope.disableAllButton = false;
 			})
 		}
 	})
+});
 
-	function onSuccess(contacts) {
-		var url = "customers/compare";
-		var data = [];
-		var token = AuthenticationService.getAccessToken();
+interactiveControllers.controller('ClientAddImportCtrl', function(fieldsData,OpenAlertBox,FormDataService,$scope,$rootScope,PushData,$location,AuthenticationService,FetchData,$window,$route) {
+	$scope.$emit('hideTM',true);
+	$scope.$emit('hideBM',false);
+	var change = {
+		type:9,
+		word:'添加客户'
+	}
+	$scope.$emit('changeTM',change);
 
-	    for (var i = 0; i < contacts.length; i++) {
-	        data[i] = {'name':contacts[i].name.formatted,'number':contacts[i].phoneNumbers[0].value}
-	    }
+	$scope.fields = fieldsData.data.fields;
+	$rootScope.loadingData = false;
 
-	    data = JSON.stringify(data);
+	for(var i = 0;i<$scope.fields.length;i++){
+		if($scope.fields[i].field == 'contact'){
+			$scope.fields[i].value = $route.current.params.name;
+		}
+		else if($scope.fields[i].field == "phone_number"){
+			$scope.fields[i].value = $route.current.params.number;
+		}
+	}
 
-	    PushData.push(url,data,token).then(function(data){
-	    	alert(data.data[0].name);
-	    })
-	};
-
-	function onError(contactError) {
-	    alert('onError!');
-	};
-
-	var options = new ContactFindOptions();
-	options.filter = "";
-	options.multiple = true;
-	filter = ["displayName", "name",navigator.contacts.fieldType.phoneNumbers];
-	navigator.contacts.find(filter, onSuccess, onError, options);
+	$scope.$on('pushClientInformation',function(){
+		var errorMsg = FormDataService.getAlertMsg($scope.fields);
+		if(errorMsg){
+			$rootScope.disableAllButton = false;
+			OpenAlertBox.openAlert(errorMsg);
+		}
+		else{
+			var url = "customers/create";
+			var data = FormDataService.getValueData($scope.fields);
+			var token = AuthenticationService.getAccessToken();
+			PushData.push(url,data,token).then(function(data){
+				if(data.data.message == 'success'){
+					$window.history.back();
+				}
+				$rootScope.disableAllButton = false;
+			})
+		}
+	})
 });
 
 interactiveControllers.controller('ClientChangeCtrl', function(clientData,OpenAlertBox,FormDataService,$window,$location,$scope,$rootScope,FetchData,AuthenticationService,$route,PushData) {

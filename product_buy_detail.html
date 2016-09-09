@@ -55,6 +55,9 @@
 		<div class=" hc_titlebox hc_border_b col-xs-12">
 			<img src="imgs/product_detail/juxing.png" alt="" style="float: left;margin-top: 17px;margin-right: 10px;">
 			<h1>甲方信息</h1>
+			<a ng-click="saveData()">
+				<img src="imgs/product_detail/mykh.png" style="float: right;height: 19px;margin-top: 16px;"/>
+			</a>
 		</div>
 
 		<ul class="hc_center col-xs-12">
@@ -62,9 +65,9 @@
 			<li ng-repeat="(key, value) in productFields | filter:{'section':'part_a'}">
 				<h1>{{value.label}}:</h1>
 				<input type="text" placeholder="{{value.instructions}}" ng-model = "value.value"></input>
-				<a ng-show="value.label == '甲方名称'" ng-click="saveData()">
+<!-- 				<a ng-show="value.field == 'contact'" ng-click="saveData()">
 					<img src="imgs/product_detail/mykh.png"/>
-				</a>
+				</a> -->
 			</li>
 
 		</ul>

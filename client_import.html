@@ -1,95 +1,28 @@
-<div class="hxj-container">
-	<ul >
-		<li>
-			<div class="xj-letter">C</div>
-			<ul>
-				<li style="height: 50px;">
-					<div class="xj-detail">
-						<div class="pull-left">
-							<p class="xj-client-p1">陈雷</p>
-							<p class="xj-client-p1" style="color: #868686;">13856562323</p>
+<div class="hxj-container container-fluid">
+	<div class="row">
+		<ul>
+			<li ng-repeat="char in firstCharList">
+				<div class="xj-letter">{{char}}</div>
+				<ul>
+					<li style="height: 50px;" ng-repeat="contact in contactList | filter:{'initial':char}">
+						<div class="xj-detail">
+							<div class="pull-left">
+								<p class="xj-client-p1">{{contact.name}}</p>
+								<p class="xj-client-p1" style="color: #868686;">{{contact.number}}</p>
+							</div>
+							<div class="pull-right">
+								<p class="xj-client-p2" ng-show="contact.added">已添加</p>
+								<a ng-href="{{'#/client_add/'+contact.name+'/'+contact.number}}">
+									<div class="xj-client-btn" ng-show="!contact.added">添加</div>
+								</a>
+							</div>
 						</div>
-						<div class="pull-right">
-							<p class="xj-client-p2">已添加</p>
-						</div>
-					</div>
-				</li>
-				
-				<li style="height: 50px;">
-					<div class="xj-detail">
-						<div class="pull-left">
-							<p class="xj-client-p1">陈雷</p>
-							<p class="xj-client-p1" style="color: #868686;">13856562323</p>
-						</div>
-						<div class="pull-right">
-							<div class="xj-client-btn">添加</div>
-						</div>
-					</div>
-				</li>
-			</ul>
-		
-     </li>
-      
-      <li>
-			<div class="xj-letter">D</div>
-			<ul>
-				<li style="height: 50px;">
-					<div class="xj-detail">
-						<div class="pull-left">
-							<p class="xj-client-p1">党晓晓</p>
-							<p class="xj-client-p1" style="color: #868686;">13856562323</p>
-						</div>
-						<div class="pull-right">
-							<p class="xj-client-p2">已添加</p>
-						</div>
-					</div>
-				</li>
-				
-				<li style="height: 50px;">
-					<div class="xj-detail">
-						<div class="pull-left">
-							<p class="xj-client-p1">党晓晓</p>
-							<p class="xj-client-p1" style="color: #868686;">13856562323</p>
-						</div>
-						<div class="pull-right">
-							<div class="xj-client-btn">添加</div>
-						</div>
-					</div>
-				</li>
-			</ul>
-      </li>
-      
-      
-      <li>
-		<div class="xj-letter">E</div>
-			<ul>
-				<li style="height: 50px;">
-					<div class="xj-detail">
-						<div class="pull-left">
-							<p class="xj-client-p1">尹小雪</p>
-							<p class="xj-client-p1" style="color: #868686;">13856562323</p>
-						</div>
-						<div class="pull-right">
-							<p class="xj-client-p2">已添加</p>
-						</div>
-					</div>
-				</li>
-				
-				<li style="height: 50px;">
-					<div class="xj-detail">
-						<div class="pull-left">
-							<p class="xj-client-p1">尹小雪</p>
-							<p class="xj-client-p1" style="color: #868686;">13856562323</p>
-						</div>
-						<div class="pull-right">
-							<div class="xj-client-btn">添加</div>
-						</div>
-					</div>
-				</li>
-			</ul>
-		
-      </li>
-      
-   
-   </ul>
+					</li>
+				</ul>
+	    	</li>
+	   </ul>
+	   <div>
+	   		<h1 style="text-align:center;margin-top:40%" ng-show="!(contactList.length>0)">手机中没有联系人或未开启权限</h1>
+	   </div>
+	</div>
 </div>

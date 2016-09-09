@@ -154,6 +154,13 @@ body {
 	margin-top: 10px;
 	color: #d1d1d1;
 }
+
+.white-cover{
+	position: fixed;
+	z-index: 1000;
+	width:100vw;
+	height:100vh;
+}
 /*lk added*/
 /*spinner*/
 .spinner{
@@ -2183,7 +2190,7 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 }
 
 .hc_pcenter .hc_topbg {
-	background: url(../imgs/us/background.jpeg);
+	background: url(../imgs/us/background.png);
 	padding-top: 40px;
 	background-size: 300px;
 }
