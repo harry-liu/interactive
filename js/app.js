@@ -472,6 +472,17 @@ app.config(['$routeProvider', function($routeProvider) {
 			}
 		}
 	}).
+	when('/booking_change/:id', {
+		templateUrl: 'booking_change.html',
+		controller: 'BookingChangeCtrl',
+		resolve:{
+			bookingDetailData:function(FetchData,AuthenticationService,$route){
+				var url = 'orders/edit?id='+$route.current.params.id;
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
+	}).
 	when('/qr_payment/:id', {
 		templateUrl: 'qr_payment.html',
 		controller: 'QRPaymentCtrl'

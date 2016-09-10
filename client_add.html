@@ -2,7 +2,7 @@
 	<div class="row w-client-message">
 		<div class="col-xs-3 w-client-pic text-left">
 			<div class="w-client-img-box text-center">
-				<img src="imgs/home/2.png"/>
+				<img src="imgs/client_list/header.png"/>
 			</div>
 		</div>
 		<div class="col-xs-9 w-client-name">
@@ -43,16 +43,16 @@
 				<h1>{{fild.label}}</h1>
 				<span>
 					<input type="text" placeholder="{{fild.instructions}}" ng-model="fild.value" ng-switch-default>
-					<select ng-switch-when="select" ng-model="fild.value"
-						ng-options="option.name for option in fild.options"
-					>
+					<select ng-switch-when="select" ng-model="fild.value" ng-options="option.name for option in fild.options">
 					</select>
 				</span>
 			</li>
 	    </ul>
 	    <ul class="list-group">
 	    	<li class=" w-client-peoplemessage-li" ng-repeat="fild in fields | filter:{'section':'other'}" style="height:auto" ng-switch on="fild.slug">
-	    		<textarea ng-switch-when="textarea" class="w-client-text-message"  placeholder="{{fild.instructions}}" ng-model="fild.value"></textarea>
+	    		<!-- <textarea ng-switch-when="textarea" class="w-client-text-message" cols="30" rows="3" placeholder="{{fild.instructions}}" ng-model="fild.value"></textarea> -->
+
+				<textarea placeholder="{{fild.instructions}}" cols="30" rows="3" ng-switch-when="textarea" style=" width: 100%;margin: 10px 0;border-radius: 7px;border-color:#c0bbbb;font-size:15px;line-height:15px;" ng-model = "fild.value"></textarea>
 				<input type="text" placeholder="{{fild.instructions}}" ng-model="fild.value" ng-switch-default>
 	    	</li>
 	    </ul>

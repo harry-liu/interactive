@@ -1,0 +1,111 @@
+<div class="container-fluid hc-deplist-container">
+	<div class="row hc-deplist-box">
+		<div class=" hc_titlebox col-xs-12">
+			<span id="">
+			</span>
+			<h1>商品信息</h1>
+		</div>
+		<div class="col-xs-12 hc-deplist-box01 hc_border_bp">
+			<div class=" col-xs-3 hc-headbox">
+				<img ng-src="{{orderInfo.production.thumbUrl}}" style="min-height:70px;min-width:70px" />
+			</div>
+			<div class=" col-xs-9 hc-deptext">
+				<h1>{{orderInfo.production.name}}</h1>
+				<p>¥
+<!-- 				<span id="">
+					{{orderInfo.subtotal}}
+				</span> -->
+				<input type="text" ng-model = "orderInfo.subtotal" style="width:50%">
+				</p>
+				<strong>{{orderInfo.production.description}}</strong>
+			</div>
+			<div class="hc-statebox">
+				<ul>
+					<li class="hc-state hc_on">
+						<div class="hc-state01">
+						</div>
+						<span>
+						</span> 订单
+					</li>
+					<li class="hc-state">
+						<div class="hc-state01">
+						</div>
+						<span>
+						</span> 审核
+					</li>
+					<li class="hc-state">
+						<div class="hc-state01">
+						</div>
+						<span>
+						</span> 审核通过
+					</li>
+					<li class="hc-state">
+						<div class="hc-state01">
+						</div>
+						<span>
+						</span> 支付
+					</li>
+					<li class="hc-state">
+						<div class="hc-state01">
+						</div>
+						<span style="display: none;">
+						</span> 完成
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="row hc-deplist-box" ng-show="bookingStatus == 4">
+		<div class=" hc_titlebox hc_border_b col-xs-12">
+			<span id="">
+			</span>
+			<h1>反馈信息</h1>
+		</div>
+
+		<ul class="hc_center col-xs-12">
+			<li class="hc_border_no">
+				<strong>
+					{{orderInfo.reason}}
+				</strong>
+			</li>
+			
+		</ul>
+	</div>
+	<div class="row hc-deplist-box">
+		<div class=" hc_titlebox hc_border_b col-xs-12">
+			<span id="">
+			</span>
+			<h1>甲方信息</h1>
+		</div>
+
+		<ul class="hc_center col-xs-12">
+			<li ng-repeat="(key, value) in fields | filter:{'section':'part_a'}">
+				<h1>{{value.label}}</h1>
+				<p>
+					{{value.value}}
+				</p>
+			</li>
+		</ul>
+	</div>
+	<div class="row hc-deplist-box">
+		<div class=" hc_titlebox hc_border_b col-xs-12">
+			<span id="">
+			</span>
+			<h1>订单信息</h1>
+		</div>
+
+		<ul class="hc_center col-xs-12">
+			<li class="hc_border_no" ng-repeat="(key, value) in fields | filter:{'section':'extra'}">
+				<h1>{{value.label}}</h1>
+				<input type="text" ng-model = "value.value">
+			</li>
+
+			<li class="hc_border_no" ng-repeat="(key, value) in fields | filter:{'section':'other'}" ng-switch on="value.slug">
+				<h1>{{value.label}}</h1>
+				<input type="text" placeholder="{{value.instructions}}" ng-model = "value.value" ng-switch-default>
+				</input>
+				<textarea placeholder="{{value.instructions}}" cols="30" rows="3" ng-switch-when="textarea" style=" width: 100%;margin: 10px 0;border-radius: 7px;border-color:#c0bbbb;" ng-model = "value.value"></textarea>
+			</li>
+		</ul>
+	</div>
+</div>

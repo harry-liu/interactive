@@ -12,11 +12,10 @@
 			{{firstChar | uppercase}}
 			<ul class="w-myclient-cont-number-ul">
 				<a ng-click="getUserInfo(client.id)" ng-repeat = "client in clients | filter:{'initial':firstChar} | orderBy:'name'">
-					<li class="w-myclient-cont-message">
+					<li class="w-myclient-cont-message" style="height:50px">
 						<span style="color:#383838" class="w-myclient-top-message-text">{{client.contact}}</span>
-					<span class="w-myclient-top-message-color w-myclient-top-message-padding">{{client.position}}
-					</span>
-					<span class="w-myclient-top-message-color">{{client.phone_number}}</span>
+						<span class="w-myclient-top-message-color w-myclient-top-message-padding">{{client.phone_number}}</span>
+						<!-- <span class="w-myclient-top-message-color">{{client.position}}</span> -->
 					</li>
 				</a>
 			</ul>

@@ -56,10 +56,10 @@
 					<img src="imgs/client_list/header.png" alt="">
 					<div>
 						<span style="color:#383838" class="auto-hide-words">{{client.contact}}</span>
-						<span class="w-myclient-top-message-color auto-hide-words"></span>
-						<span class="w-myclient-top-message-color auto-hide-words">{{client.phone_number}}</span>
+						<!-- <span class="w-myclient-top-message-color auto-hide-words"></span> -->
+						<span class="w-myclient-top-message-color" style="float:right;text-align:right">{{client.phone_number}}</span>
 						<span class="addr-span auto-hide-words">
-							地址：西安互动未来信息技术有限公司
+							{{client.position}}
 						</span>
 					</div>
 				</li>
@@ -73,17 +73,17 @@
 		  	{{firstChar | uppercase}}
 		  	<ul class="w-myclient-cont-number-ul">
 		  		<a ng-click="goTo('/client_detail/'+client.id)" ng-repeat = "client in clients | filter:{'initial':firstChar,'top':0} | orderBy:'name'">
-		  			  <li class="w-myclient-cont-message" hm-press="onHammer($event,client,'top')">
+					<li class="w-myclient-cont-message" hm-press="onHammer($event,client,'top')">
 						<img src="imgs/client_list/header.png" alt="">
 						<div>
 							<span style="color:#383838" class="auto-hide-words">{{client.contact}}</span>
-							<span class="w-myclient-top-message-color auto-hide-words"></span>
-							<span class="w-myclient-top-message-color auto-hide-words">{{client.phone_number}}</span>
+							<!-- <span class="w-myclient-top-message-color auto-hide-words"></span> -->
+							<span class="w-myclient-top-message-color" style="float:right;text-align:right">{{client.phone_number | limitTo : 15}}</span>
 							<span class="addr-span auto-hide-words">
-								地址：西安互动未来信息技术有限公司
+								{{client.position}}
 							</span>
 						</div>
-		  			  </li>
+					</li>
 		  		</a>
 		  	</ul>
 		  </li>

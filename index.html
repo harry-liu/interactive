@@ -192,6 +192,26 @@
                             <a href="" ng-click="pushClientInformationEdit()">完成</a>
                         </div>
 
+                        <div class = 'col-xs-2 top-menu-left-img' ng-show="topMenuContent.type == 13" ng-click="goBackClicked()">
+                            <img src="imgs/menu/back_icon.png" alt="">
+                        </div>
+                        <div class = "col-xs-8" ng-show="topMenuContent.type == 13">
+                            <p>{{topMenuContent.word}}</p>
+                        </div>
+                        <div class="col-xs-2 top-menu-complete-btn" ng-show="topMenuContent.type == 13">
+                            <a href="" ng-click="changeBookingDetail()">修改</a>
+                        </div>
+
+                        <div class = 'col-xs-2 top-menu-left-img' ng-show="topMenuContent.type == 14" ng-click="goBackClicked()">
+                            <img src="imgs/menu/back_icon.png" alt="">
+                        </div>
+                        <div class = "col-xs-8" ng-show="topMenuContent.type == 14">
+                            <p>{{topMenuContent.word}}</p>
+                        </div>
+                        <div class="col-xs-2 top-menu-complete-btn" ng-show="topMenuContent.type == 14">
+                            <a href="" ng-click="changeBookingInformation()">完成</a>
+                        </div>
+
                         <div class="col-xs-12" ng-show="topMenuContent.type == 2">
                             <span class = "col-xs-4 switch-span-container">
                                 <span class = "animate" ng-class="{1: 'switch-span-background-1 ', 2: 'switch-span-background-2'}[topMenuContent.buttonType]"></span>
@@ -241,7 +261,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="cordova.js"></script>
+<!--     <script type="text/javascript" src="cordova.js"></script> -->
     <script type="text/javascript" src="js/hammer.min.js"></script>
     <script type="text/javascript" src="js/angular.min.js"></script>
     <script type="text/javascript" src="js/angular.hammer.js"></script>

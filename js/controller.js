@@ -23,6 +23,7 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 		//top menu type 9:返回+文字+完成修改客户按钮
 		//top menu type 10:返回+文字+完成修改个人信息按钮
 		//top menu type 11:返回+首页搜索框
+		//top menu type 13:返回+文字+添加客户按钮
 		$scope.topMenuContent = data;
 	});
 	$scope.$on('setBottomMenuImage', function(e,data){
@@ -140,6 +141,13 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 	$scope.pushPersonalInformation = function(){
 		$scope.$broadcast ('pushPersonalInformation');
 	}
+	$scope.changeBookingDetail = function(){
+		$scope.$broadcast ('changeBookingDetail');
+	}
+	$scope.changeBookingInformation = function(){
+		$scope.$broadcast ('changeBookingInformation');
+	}
+
 
 	$scope.$on('setTM',function(e,data){
 		$scope.menus = data;
@@ -633,12 +641,20 @@ interactiveControllers.controller('ClientDetailCtrl', function(clientData,OpenAl
 	}
 });
 
-interactiveControllers.controller('BookingDetailCtrl', function($scope,$rootScope,$route,bookingDetailData) {
+interactiveControllers.controller('BookingDetailCtrl', function($scope,$rootScope,$route,bookingDetailData,$location) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
-	var change = {
-		type:3,
-		word:'订单详情'
+	if($route.current.params.type == 4){
+		var change = {
+			type:13,
+			word:'订单详情'
+		}
+	}
+	else{
+		var change = {
+			type:3,
+			word:'订单详情'
+		}
 	}
 	$scope.$emit('changeTM',change);
 
@@ -646,6 +662,46 @@ interactiveControllers.controller('BookingDetailCtrl', function($scope,$rootScop
 	$scope.orderInfo = bookingDetailData.data.order;
 	$scope.bookingStatus = $route.current.params.type;
 	$rootScope.loadingData = false;
+
+	$scope.$on('changeBookingDetail', function(){
+		$location.path('/booking_change/'+$route.current.params.id);
+	})
+});
+
+interactiveControllers.controller('BookingChangeCtrl', function($scope,$rootScope,$route,bookingDetailData,PushData,AuthenticationService,FormDataService,OpenAlertBox,$routeParams,$location) {
+	$scope.$emit('hideTM',true);
+	$scope.$emit('hideBM',false);
+	var change = {
+		type:14,
+		word:'订单详情'
+	}
+	$scope.$emit('changeTM',change);
+
+	$scope.fields = bookingDetailData.data.fields;
+	$scope.orderInfo = bookingDetailData.data.order;
+	$rootScope.loadingData = false;
+
+	$scope.$on('changeBookingInformation',function(){
+		var url = 'orders/edit?id='+$routeParams.id;
+		var formData = '';
+		var alertMsg = FormDataService.getAlertMsg($scope.fields);
+		if(alertMsg){
+			//alert(alertMsg);
+			OpenAlertBox.openAlert(alertMsg);
+			$scope.disableButton = false;
+		}
+		else{
+			for(var fields in $scope.fields){
+				if($scope.fields[fields].field == "subtotal"){
+					$scope.fields[fields].value = $scope.orderInfo.subtotal
+				}
+			}
+			formData = FormDataService.getValueData($scope.fields);
+			PushData.push(url,formData,AuthenticationService.getAccessToken()).then(function(data){
+				$location.path('/booking_list');
+			})
+		}
+	})
 });
 
 interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope) {
