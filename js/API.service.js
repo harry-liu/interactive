@@ -66,6 +66,27 @@ APIService.factory('FetchData', function FetchData($http,PublicURL,$location) {
                     $location.path('/login');
                 }
             })
+        },
+        getImageData:function getImageData(url,token){
+            return $http({
+                url:PublicURL+url,
+                method:'post',
+                headers: {
+                    'Authorization': 'Bearer '+token,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then(function successCallback(response){
+                return response;
+            }, function errorCallback(response) {
+                console.log(response);
+                if(response.status == -1){
+                    $location.path('/disconnect');
+                }
+                else{
+                    $location.path('/login');
+                }
+            })
         }
     };  
 });

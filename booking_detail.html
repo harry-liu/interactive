@@ -111,7 +111,7 @@
 </div>
 
 <div class=" hc_deposit_foot" ng-show="bookingStatus == 1">
-	<a href="#/qr_payment/1">
+	<a href="#/qr_payment/{{orderInfo.id}}">
 		<div class=" hc_btn hc_left">二维码支付</div>
 	</a>
 	<a ng-href="#/offline_payment/{{orderInfo.id}}">

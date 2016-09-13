@@ -704,7 +704,7 @@ interactiveControllers.controller('BookingChangeCtrl', function($scope,$rootScop
 	})
 });
 
-interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope) {
+interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope,getQRCode) {
 	$rootScope.loadingData = false;
 
 	$scope.$emit('hideTM',true);
@@ -714,6 +714,8 @@ interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope) {
 		word:'二维码支付'
 	}
 	$scope.$emit('changeTM',change);
+
+	$scope.imageData = getQRCode.data.qrCode;
 });
 
 interactiveControllers.controller('OfflinePaymentCtrl', function(paymentData,OpenAlertBox,$window,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,$route,FetchData,PushData) {
@@ -1129,7 +1131,7 @@ interactiveControllers.controller('WithdrawCompleteCtrl', function($scope,$rootS
 	$scope.$emit('setBottomMenuImage','us');
 });
 
-interactiveControllers.controller('SettingsCtrl', function(OpenAlertBox,$scope,$rootScope,AuthenticationService) {
+interactiveControllers.controller('SettingsCtrl', function(OpenAlertBox,$scope,$rootScope,AuthenticationService,FetchData,$http,getUrl) {
 	$rootScope.loadingData = false;
 
 	$scope.$emit('hideTM',true);
@@ -1148,6 +1150,15 @@ interactiveControllers.controller('SettingsCtrl', function(OpenAlertBox,$scope,$
 	cordova.getAppVersion.getVersionNumber(function (version) {
 	    $scope.appVersion = version;
 	});
+
+	if(getUrl.data == "is latest"){
+		$scope.versionMessage = '您的APP已经是最新版本';
+		$scope.downloadUrl = '';
+	}
+	else{
+		$scope.versionMessage = '有新版本，点击下载';
+		$scope.downloadUrl = getUrl.data.newVersion.url;
+	}
 });
 
 interactiveControllers.controller('TestListCtrl', function($scope,$rootScope) {

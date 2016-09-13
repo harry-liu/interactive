@@ -485,7 +485,14 @@ app.config(['$routeProvider', function($routeProvider) {
 	}).
 	when('/qr_payment/:id', {
 		templateUrl: 'qr_payment.html',
-		controller: 'QRPaymentCtrl'
+		controller: 'QRPaymentCtrl',
+		resolve:{
+			getQRCode:function(FetchData,AuthenticationService,$route){
+				var url = "orders/pay?id="+$route.current.params.id;
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getImageData(url,token);
+			}
+		}
 	}).
 	when('/offline_payment/:id', {
 		templateUrl: 'offline_payment.html',
@@ -500,7 +507,37 @@ app.config(['$routeProvider', function($routeProvider) {
 	}).
 	when('/settings', {
 		templateUrl: 'settings.html',
-		controller: 'SettingsCtrl'
+		controller: 'SettingsCtrl',
+		resolve:{
+			getUrl:function(FetchData,$q){
+				function getVersion(){
+					return $q(function(resolve,reject){
+						cordova.getAppVersion.getVersionNumber(function (version) {
+							alert(version);
+						    resolve(version);
+						});
+					})
+				}
+
+				var promise = getVersion();
+				return promise.then(function(data){
+					var devicePlatform = cordova.platformId;
+					var url = "version/view-group?type="+devicePlatform+"&version="+data;
+					return FetchData.getPublicAPI(url);
+				},function(reason){
+					alert(reason);
+				})
+
+				// var appVersion;
+				// cordova.getAppVersion.getVersionNumber(function (version) {
+				//     alert(version);
+				//     appVersion = version;
+				// });
+				// var url = "version/view-group?type=ios&version=1.00.01";
+				// return FetchData.getPublicAPI(url);
+
+			}
+		}
 	}).
 	when('/test_list', {
 		templateUrl: 'test_list.html',
