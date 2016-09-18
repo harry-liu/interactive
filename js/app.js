@@ -491,6 +491,11 @@ app.config(['$routeProvider', function($routeProvider) {
 				var url = "orders/pay?id="+$route.current.params.id;
 				var token = AuthenticationService.getAccessToken();
 				return FetchData.getImageData(url,token);
+			},
+			bookingDetailData:function(FetchData,AuthenticationService,$route){
+				var url = 'orders/edit?id='+$route.current.params.id;
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
 			}
 		}
 	}).

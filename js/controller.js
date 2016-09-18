@@ -1,6 +1,6 @@
 var interactiveControllers = angular.module('interactiveControllers', []);
 
-interactiveControllers.controller('BodyControl', function($scope,$window,locals,$location,$rootScope,FetchData,$timeout,$route) {
+interactiveControllers.controller('BodyControl', function($scope,$window,locals,$location,$rootScope,FetchData,$timeout,$route,$q,FetchData,OpenAlertBox) {
 
 	$scope.showTM = true;
 	$scope.showBM = true;
@@ -148,26 +148,41 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 		$scope.$broadcast ('changeBookingInformation');
 	}
 
-
 	$scope.$on('setTM',function(e,data){
 		$scope.menus = data;
 	})
 
-	// $scope.goTo = function(id){
-	// 	if(id){
-	// 		$location.path('/product_list/'+id);
-	// 		//$scope.toggleSort();
-	// 		$timeout(function(){
-	// 			$scope.showSubMenu = 10000;
-	// 			console.log($scope.showSubMenu);
-	// 			console.log('timeout');
-	// 		},1000);
-	// 	}
-	// }
+	var devicePlatform = cordova.platformId;
+	if (devicePlatform == 'ios'||devicePlatform == 'android') {
+		function getVersion(){
+			return $q(function(resolve,reject){
+				cordova.getAppVersion.getVersionNumber(function (version) {
+				    resolve(version);
+				});
+			})
+		}
 
-	// $scope.controlSubMenu = function(id){
-	// 	$scope.showSubMenu = id;
-	// }
+		var promise = getVersion();
+		return promise.then(function(data){
+			var devicePlatform = cordova.platformId;
+			var url = "version/view-group?type="+devicePlatform+"&version="+data;
+			FetchData.getPublicAPI(url).then(function(versionData){
+				//alert(JSON.stringify(data, null, 4));
+				if (versionData.data == "is latest") {
+					//alert('is latest');
+				}
+				else{
+					OpenAlertBox.openConfirm('升级新版本？').then(function(data){
+						if(data == "ok"){
+							window.open(versionData.data.newVersion.url,'_system')
+						}
+					})
+				}
+			});
+		},function(reason){
+			alert(reason);
+		})
+	}
 });
 
 interactiveControllers.controller('LoginCtrl', function(OpenAlertBox,$timeout,SaveToken,$scope,LogService,FetchData,AuthenticationService,$location,$rootScope) {
@@ -251,7 +266,7 @@ interactiveControllers.controller('NewUserCtrl', function($scope,$rootScope) {
 	$scope.$emit('hideBM',false);
 });
 
-interactiveControllers.controller('HomeCtrl', function(listData,$scope,$rootScope,$location) {
+interactiveControllers.controller('HomeCtrl', function(listData,$scope,$rootScope,$location,$q,FetchData) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',true);
 	$scope.$emit('setBottomMenuImage','home');
@@ -704,9 +719,7 @@ interactiveControllers.controller('BookingChangeCtrl', function($scope,$rootScop
 	})
 });
 
-interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope,getQRCode,$interval) {
-	$rootScope.loadingData = false;
-
+interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope,getQRCode,$interval,bookingDetailData,FetchData,AuthenticationService) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -717,18 +730,32 @@ interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope,ge
 
 	$scope.imageData = getQRCode.data.qrCode;
 
+	$scope.bookinginfo = bookingDetailData.data.order;
+
+	$rootScope.loadingData = false;
+
+	var url = "orders/query?out_trade_no="+getQRCode.data.out_trade_no;
+	var token = AuthenticationService.getAccessToken();
+
 	var p = $interval(function() {
-		alert("test");
-	}, 2000);
+		FetchData.getData(url,token).then(function(data){
+			if(data.data.result){
+				console.log(true);
+			}
+			else{
+				console.log(false);
+			}
+		})
+	}, 5000);
 
 	$scope.$on('$locationChangeStart', function( event ) {
-	    var answer = confirm("Are you sure you want to leave this page?")
-	    if (!answer) {
-	        event.preventDefault();
-	    }
-	    else{
-	    	$interval.cancel(p);
-	    }
+	    // var answer = confirm("Are you sure you want to leave this page?")
+	    // if (!answer) {
+	    //     event.preventDefault();
+	    // }
+	    // else{
+	    // 	$interval.cancel(p);
+	    // }
 	});
 });
 
@@ -1166,11 +1193,11 @@ interactiveControllers.controller('SettingsCtrl', function(OpenAlertBox,$scope,$
 	});
 
 	if(getUrl.data == "is latest"){
-		$scope.versionMessage = '您的APP已经是最新版本';
+		$scope.versionMessage = $scope.appVersion;
 		$scope.downloadUrl = '';
 	}
 	else{
-		$scope.versionMessage = '有新版本，点击下载';
+		$scope.versionMessage = $scope.appVersion;
 		$scope.downloadUrl = getUrl.data.newVersion.url;
 	}
 });
