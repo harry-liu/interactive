@@ -704,7 +704,7 @@ interactiveControllers.controller('BookingChangeCtrl', function($scope,$rootScop
 	})
 });
 
-interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope,getQRCode) {
+interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope,getQRCode,$interval) {
 	$rootScope.loadingData = false;
 
 	$scope.$emit('hideTM',true);
@@ -716,6 +716,20 @@ interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope,ge
 	$scope.$emit('changeTM',change);
 
 	$scope.imageData = getQRCode.data.qrCode;
+
+	var p = $interval(function() {
+		alert("test");
+	}, 2000);
+
+	$scope.$on('$locationChangeStart', function( event ) {
+	    var answer = confirm("Are you sure you want to leave this page?")
+	    if (!answer) {
+	        event.preventDefault();
+	    }
+	    else{
+	    	$interval.cancel(p);
+	    }
+	});
 });
 
 interactiveControllers.controller('OfflinePaymentCtrl', function(paymentData,OpenAlertBox,$window,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,$route,FetchData,PushData) {

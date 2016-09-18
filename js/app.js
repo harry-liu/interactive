@@ -513,7 +513,6 @@ app.config(['$routeProvider', function($routeProvider) {
 				function getVersion(){
 					return $q(function(resolve,reject){
 						cordova.getAppVersion.getVersionNumber(function (version) {
-							alert(version);
 						    resolve(version);
 						});
 					})
@@ -527,15 +526,6 @@ app.config(['$routeProvider', function($routeProvider) {
 				},function(reason){
 					alert(reason);
 				})
-
-				// var appVersion;
-				// cordova.getAppVersion.getVersionNumber(function (version) {
-				//     alert(version);
-				//     appVersion = version;
-				// });
-				// var url = "version/view-group?type=ios&version=1.00.01";
-				// return FetchData.getPublicAPI(url);
-
 			}
 		}
 	}).
