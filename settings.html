@@ -14,12 +14,13 @@
 				</div>
 			</div>
 		</a>
-		<a class="col-xs-12 hc_setlist" ng-href="{{downloadUrl}}">
+		<a class="col-xs-12 hc_setlist" ng-href="{{NewVersionUrl}}">
 			<div class="">
 				<h1 class="pull-left">检查更新</h1>
 				<h1 class="pull-right hc_pr">
-						{{versionMessage}}
+					{{appVersion}}
 				</h1>
+				<div ng-show="NewVersionUrl" style = "width: 15px;height: 15px;border-radius: 17px;background-color: red;display: inline-block;text-align: center;color: white;margin: 18px 32px 16px 0;line-height: 16px;float: right;">1</div>
 			</div>
 		</a>
 	</div>

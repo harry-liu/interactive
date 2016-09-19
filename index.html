@@ -212,6 +212,16 @@
                             <a href="" ng-click="changeBookingInformation()">完成</a>
                         </div>
 
+                        <div class = 'col-xs-2 top-menu-left-img'>
+                        </div>
+                        <div class = "col-xs-8" ng-show="topMenuContent.type == 15">
+                            <p>{{topMenuContent.word}}</p>
+                        </div>
+                        <div class="col-xs-2 top-menu-complete-btn" ng-show="topMenuContent.type == 15">
+                            <a href="" ng-click="finishBookingQRPayment()">完成</a>
+                        </div>
+
+
                         <div class="col-xs-12" ng-show="topMenuContent.type == 2">
                             <span class = "col-xs-4 switch-span-container">
                                 <span class = "animate" ng-class="{1: 'switch-span-background-1 ', 2: 'switch-span-background-2'}[topMenuContent.buttonType]"></span>

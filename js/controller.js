@@ -20,10 +20,11 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 		//top menu type 7:返回+文字+购买按钮
 		//top menu type 8:返回+文字+添加客户按钮
 		//top menu type 9:返回+文字+完成添加客户按钮
-		//top menu type 9:返回+文字+完成修改客户按钮
-		//top menu type 10:返回+文字+完成修改个人信息按钮
-		//top menu type 11:返回+首页搜索框
+		//top menu type 10:返回+文字+完成修改客户按钮
+		//top menu type 11:返回+文字+完成修改个人信息按钮
+		//top menu type 12:返回+首页搜索框
 		//top menu type 13:返回+文字+添加客户按钮
+		//top menu type 15:返回+文字+完成订单支付按钮
 		$scope.topMenuContent = data;
 	});
 	$scope.$on('setBottomMenuImage', function(e,data){
@@ -147,6 +148,9 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 	$scope.changeBookingInformation = function(){
 		$scope.$broadcast ('changeBookingInformation');
 	}
+	$scope.finishBookingQRPayment = function(){
+		$scope.$broadcast ('finishBookingQRPayment');
+	}
 
 	$scope.$on('setTM',function(e,data){
 		$scope.menus = data;
@@ -157,6 +161,7 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 		function getVersion(){
 			return $q(function(resolve,reject){
 				cordova.getAppVersion.getVersionNumber(function (version) {
+					$rootScope.appVersion = version;
 				    resolve(version);
 				});
 			})
@@ -164,19 +169,15 @@ interactiveControllers.controller('BodyControl', function($scope,$window,locals,
 
 		var promise = getVersion();
 		return promise.then(function(data){
-			var devicePlatform = cordova.platformId;
 			var url = "version/view-group?type="+devicePlatform+"&version="+data;
 			FetchData.getPublicAPI(url).then(function(versionData){
-				//alert(JSON.stringify(data, null, 4));
-				if (versionData.data == "is latest") {
-					//alert('is latest');
-				}
-				else{
+				if (versionData.data != "is latest") {
 					OpenAlertBox.openConfirm('升级新版本？').then(function(data){
 						if(data == "ok"){
-							window.open(versionData.data.newVersion.url,'_system')
+							window.open(versionData.data.newVersion.url,'_system');
 						}
 					})
+					$rootScope.NewVersionUrl = versionData.data.newVersion.url;
 				}
 			});
 		},function(reason){
@@ -719,7 +720,7 @@ interactiveControllers.controller('BookingChangeCtrl', function($scope,$rootScop
 	})
 });
 
-interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope,getQRCode,$interval,bookingDetailData,FetchData,AuthenticationService) {
+interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope,getQRCode,$interval,bookingDetailData,FetchData,AuthenticationService,$location) {
 	$scope.$emit('hideTM',true);
 	$scope.$emit('hideBM',false);
 	var change = {
@@ -729,6 +730,7 @@ interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope,ge
 	$scope.$emit('changeTM',change);
 
 	$scope.imageData = getQRCode.data.qrCode;
+	$scope.out_trade_no = getQRCode.data.out_trade_no;
 
 	$scope.bookinginfo = bookingDetailData.data.order;
 
@@ -741,6 +743,7 @@ interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope,ge
 		FetchData.getData(url,token).then(function(data){
 			if(data.data.result){
 				console.log(true);
+				$location.path('/qr_payment_finish/'+getQRCode.data.out_trade_no);
 			}
 			else{
 				console.log(false);
@@ -749,14 +752,26 @@ interactiveControllers.controller('QRPaymentCtrl', function($scope,$rootScope,ge
 	}, 5000);
 
 	$scope.$on('$locationChangeStart', function( event ) {
-	    // var answer = confirm("Are you sure you want to leave this page?")
-	    // if (!answer) {
-	    //     event.preventDefault();
-	    // }
-	    // else{
-	    // 	$interval.cancel(p);
-	    // }
+	    $interval.cancel(p);
 	});
+});
+
+interactiveControllers.controller('QRPaymentFinishCtrl', function($scope,$rootScope,bookingDetailData,$location) {
+	$scope.$emit('hideTM',true);
+	$scope.$emit('hideBM',false);
+	var change = {
+		type:15,
+		word:'交易详情'
+	}
+	$scope.$emit('changeTM',change);
+
+	$scope.bookinginfo = bookingDetailData.data;
+
+	$rootScope.loadingData = false;
+
+	$scope.$on('finishBookingQRPayment', function(){
+		$location.path('/booking_list');
+	})
 });
 
 interactiveControllers.controller('OfflinePaymentCtrl', function(paymentData,OpenAlertBox,$window,$scope,$rootScope,$http,Upload, $timeout,PublicURL,AuthenticationService,$route,FetchData,PushData) {
@@ -1172,7 +1187,7 @@ interactiveControllers.controller('WithdrawCompleteCtrl', function($scope,$rootS
 	$scope.$emit('setBottomMenuImage','us');
 });
 
-interactiveControllers.controller('SettingsCtrl', function(OpenAlertBox,$scope,$rootScope,AuthenticationService,FetchData,$http,getUrl) {
+interactiveControllers.controller('SettingsCtrl', function(OpenAlertBox,$scope,$rootScope,AuthenticationService) {
 	$rootScope.loadingData = false;
 
 	$scope.$emit('hideTM',true);
@@ -1186,19 +1201,6 @@ interactiveControllers.controller('SettingsCtrl', function(OpenAlertBox,$scope,$
 
 	$scope.logOut = function(){
 		AuthenticationService.logOut();
-	}
-
-	cordova.getAppVersion.getVersionNumber(function (version) {
-	    $scope.appVersion = version;
-	});
-
-	if(getUrl.data == "is latest"){
-		$scope.versionMessage = $scope.appVersion;
-		$scope.downloadUrl = '';
-	}
-	else{
-		$scope.versionMessage = $scope.appVersion;
-		$scope.downloadUrl = getUrl.data.newVersion.url;
 	}
 });
 

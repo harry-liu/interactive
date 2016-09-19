@@ -1,0 +1,28 @@
+<div class="container-fluid wl-jyxq-container">
+    <div class="row zhifu">
+        <span>
+            <img src="imgs/jycg.png">
+        </span>
+        <span class="text_1">
+            支付成功!
+        </span>
+    </div>
+    <div class="row money">
+        <p class="ltd">西安互动未来信息技术有限公司</p>
+        <p class="money_m">￥{{bookinginfo.order.subtotal}}</p>
+    </div>
+       <dl class="row pay">
+           <dd>
+               <span class="text_1">商品</span>
+               <span class="text_2">{{bookinginfo.order.production.name}}</span>
+           </dd>
+           <dd>
+               <span class="text_1">订单号</span>
+               <span class="text_2">{{bookinginfo.order.out_trade_no | limitTo : 15}}</span>
+           </dd>
+           <dd>
+               <span class="text_1">交易时间</span>
+               <span class="text_2">{{bookinginfo.queryResult.send_pay_date}}</span>
+           </dd>
+       </dl>
+</div>

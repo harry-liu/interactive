@@ -1,8 +1,8 @@
 var APIService = angular.module('APIService', []);
 
 APIService.factory('PublicURL', function(){
-  return 'http://192.168.1.16/api/';
-  //return 'http://hdq.hudongcn.com/api/';
+  //return 'http://192.168.1.16/api/';
+  return 'http://hdq.hudongcn.com/api/';
   //return 'http://192.168.40.27/api/';
 })
 
@@ -133,8 +133,7 @@ APIService.factory('PushData', ['$http','PublicURL','Upload',function($http,Publ
 
 APIService.factory('LogService', function LogService($http,PublicURL,$location) {  
     return {  
-        login: function (phone,code) {  
-            //return $http.post('http://192.168.1.16/api/access_token',info,{'headers':{'Content-Type': 'application/x-www-form-urlencoded'}});
+        login: function (phone,code) {
             return $http({
                 url:PublicURL+'access_token',
                 method:"POST",

@@ -59,8 +59,8 @@ app.service('OpenAlertBox',function($uibModal,$q){
   }
 })
 
-app.constant('ProductContImageReplace', 'http://192.168.1.16');
-//app.constant('ProductContImageReplace', 'http://hdq.hudongcn.com');
+//app.constant('ProductContImageReplace', 'http://192.168.1.16');
+app.constant('ProductContImageReplace', 'http://hdq.hudongcn.com');
 
 app.factory('NewOrder', [function(){
 	var order = {};
@@ -499,6 +499,17 @@ app.config(['$routeProvider', function($routeProvider) {
 			}
 		}
 	}).
+	when('/qr_payment_finish/:id', {
+		templateUrl: 'qr_payment_finish.html',
+		controller: 'QRPaymentFinishCtrl',
+		resolve:{
+			bookingDetailData:function(FetchData,AuthenticationService,$route){
+				var url = 'orders/pay-detail?out_trade_no='+$route.current.params.id;
+				var token = AuthenticationService.getAccessToken();
+				return FetchData.getData(url,token);
+			}
+		}
+	}).
 	when('/offline_payment/:id', {
 		templateUrl: 'offline_payment.html',
 		controller: 'OfflinePaymentCtrl',
@@ -512,27 +523,7 @@ app.config(['$routeProvider', function($routeProvider) {
 	}).
 	when('/settings', {
 		templateUrl: 'settings.html',
-		controller: 'SettingsCtrl',
-		resolve:{
-			getUrl:function(FetchData,$q){
-				function getVersion(){
-					return $q(function(resolve,reject){
-						cordova.getAppVersion.getVersionNumber(function (version) {
-						    resolve(version);
-						});
-					})
-				}
-
-				var promise = getVersion();
-				return promise.then(function(data){
-					var devicePlatform = cordova.platformId;
-					var url = "version/view-group?type="+devicePlatform+"&version="+data;
-					return FetchData.getPublicAPI(url);
-				},function(reason){
-					alert(reason);
-				})
-			}
-		}
+		controller: 'SettingsCtrl'
 	}).
 	when('/test_list', {
 		templateUrl: 'test_list.html',

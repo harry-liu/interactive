@@ -1,6 +1,4 @@
 /*harry added*/
-
-
 /*static css*/
 
 * {
@@ -161,6 +159,7 @@ body {
 	width:100vw;
 	height:100vh;
 }
+
 /*lk added*/
 /*spinner*/
 .spinner{
@@ -3407,7 +3406,7 @@ h1,h2,h3,h4,h5,h6{font-weight: normal !important;}
 	margin-top: 44px;
 	background-color: #FFFFFF;
 	padding-top: 40px;
-	padding-bottom: 40px;
+	padding-bottom: 20px;
 	background-color: white;
 }
 
@@ -4120,4 +4119,67 @@ border: 1px solid #ff0000; color: #FF0000; font-size: 10px !important;border-rad
 	padding:2px 7px;
 	margin-top: 12px;
 	cursor: pointer;
+}
+
+/*wl added*/
+/*static css*/
+.wl-jyxq-container{
+    width: auto;
+    height: 100vh;
+    background: #f5f5f5;
+    padding-top: 40px;
+}
+.wl-jyxq-container .zhifu{
+    background-color: #fff;
+    height: 40px;
+    padding: 10px 10px 0 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.wl-jyxq-container .zhifu img{
+    width: 27px;
+    height: 27px;
+    margin-top: -3px;
+}
+.wl-jyxq-container .zhifu .text_1{
+    margin-left: 5px;
+    font-size: 13px;
+}
+.wl-jyxq-container .money{
+    background-color: #fff;
+    height: 73px;
+    padding-top: 17px;
+}
+.wl-jyxq-container .money .ltd{
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    color:#383838;
+}
+.wl-jyxq-container .money .money_m{
+    display: block;
+    text-align: center;
+    font-size: 15px;
+    margin-top: -5px;
+    color:#383838;
+}
+.wl-jyxq-container .pay{
+    height: 113px;
+    background-color: #fff;
+    /*border-top: 1px solid #f5f5f5;*/
+    padding: 10px 10px 0 10px;
+}
+.wl-jyxq-container .pay dd{
+    height: 25px;
+    margin-bottom: 8px;
+}
+.wl-jyxq-container .pay .text_1{
+    float: left;
+    font-size: 13px;
+    color:#383838;
+}
+.wl-jyxq-container .pay .text_2{
+    float: right;
+    font-size: 13px;
+    color:#030303;
 }
